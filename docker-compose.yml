@@ -1,0 +1,11 @@
+services:
+  mailer:
+    image: maildev/maildev:latest
+    ports:
+      - 1080:1080
+      - 1025:1025
+    environment:
+      - MAILDEV_WEB_PORT=1080
+      - MAILDEV_SMTP_PORT=1025
+      - MAILDEV_INCOMING_PASS=secret
+      - MAILDEV_INCOMING_USER=user
