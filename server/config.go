@@ -1,15 +1,5 @@
 package server
 
-type Mailer struct {
-	Host        string
-	Port        int
-	User        string
-	Password    string
-	Retries     int
-	SendTo      string
-	FromAddress string
-}
-
 type Kind string
 
 const (
@@ -26,8 +16,9 @@ type KeyInfo struct {
 }
 
 type Config struct {
-	Title    string
-	Port     int
-	LogLevel string
-	KeyInfo  KeyInfo
+	Title     string
+	Port      int
+	LogLevel  string
+	KeyInfo   KeyInfo
+	MailerDSN string
 }
