@@ -18,7 +18,7 @@ func LoadKey(info *server.KeyInfo) KeyLike {
 	if err != nil {
 		log.Fatal().Err(err)
 	}
-
+	// FIXME: move key & password validation logic from implementations to this function
 	switch info.KeyKind {
 	case server.Age:
 		recipient, err := age.ParseX25519Recipient(string(content))

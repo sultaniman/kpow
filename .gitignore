@@ -12,3 +12,7 @@
 *.out
 *.age
 *.env
+
+# OS files & folders
+*.DS_Store
+Thumbs.db
