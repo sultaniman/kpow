@@ -2,6 +2,7 @@ package enc
 
 import (
 	"bytes"
+	"errors"
 	"io"
 
 	"filippo.io/age"
@@ -10,10 +11,31 @@ import (
 )
 
 type AgeKey struct {
-	recipient *age.X25519Recipient
+	recipient age.Recipient
+	Password  string
 }
 
 func (k *AgeKey) Encrypt(message string) (string, error) {
+	// try with recipient if set
+	if k.recipient != nil {
+		return k.withRecipient(message)
+	}
+
+	// else try with password
+	if k.Password != "" {
+		recipient, err := age.NewScryptRecipient(k.Password)
+		if err != nil {
+			log.Error().Err(err)
+			return "", err
+		}
+		k.recipient = recipient
+		return k.withRecipient(message)
+	}
+
+	return "", errors.New("no recipient or password provided")
+}
+
+func (k *AgeKey) withRecipient(message string) (string, error) {
 	buf := &bytes.Buffer{}
 	armorWriter := armor.NewWriter(buf)
 	writer, err := age.Encrypt(armorWriter, k.recipient)
@@ -40,8 +62,9 @@ func (k *AgeKey) Encrypt(message string) (string, error) {
 	return buf.String(), nil
 }
 
-func NewAgeKey(recipient *age.X25519Recipient) *AgeKey {
+func NewAgeKey(recipient age.Recipient, password string) *AgeKey {
 	return &AgeKey{
 		recipient,
+		password,
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"filippo.io/age"
+	"github.com/ProtonMail/gopenpgp/v3/crypto"
 	"github.com/rs/zerolog/log"
 	"github.com/sultaniman/kpow/server"
 )
@@ -24,9 +25,19 @@ func LoadKey(info *server.KeyInfo) KeyLike {
 		if err != nil {
 			log.Fatal().Err(err)
 		}
-		return NewAgeKey(recipient)
+		return NewAgeKey(recipient, info.Password)
 	case server.PGP:
-		return NewPGPKey(info.Path, info.Password)
+		pubkey, err := os.ReadFile(info.Path)
+		if err != nil {
+			log.Fatal().Err(err)
+		}
+
+		publicKey, err := crypto.NewKeyFromArmored(string(pubkey))
+		if err != nil {
+			log.Fatal().Err(err)
+		}
+
+		return NewPGPKey(publicKey, info.Password)
 	default:
 		log.Fatal().Msgf("Uknown key kind %v", info.KeyKind)
 		return nil

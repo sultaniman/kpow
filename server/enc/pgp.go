@@ -2,46 +2,32 @@ package enc
 
 import (
 	"errors"
-	"os"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
 
 type PGPKey struct {
-	Path     string
+	Key      *crypto.Key
 	Password string
 }
 
 func (k *PGPKey) Encrypt(message string) (string, error) {
-	if k.Path == "" && k.Password == "" {
+	if k.Key == nil && k.Password == "" {
 		return "", errors.New("path or password expected")
 	}
 
-	if k.Path != "" {
+	if k.Key != nil {
 		return k.withPubKey(message)
 	} else if k.Password != "" {
 		return k.withPassword(message)
 	}
 
-	return "", errors.New(`
-		Please specify path and passphrase (if set)
-		or set password for password encryption
-	`)
+	return "", errors.New("Please specify path or password")
 }
 
 func (k *PGPKey) withPubKey(message string) (string, error) {
-	pubkey, err := os.ReadFile(k.Path)
-	if err != nil {
-		return "", err
-	}
-
-	publicKey, err := crypto.NewKeyFromArmored(string(pubkey))
-	if err != nil {
-		return "", err
-	}
-
 	pgp := crypto.PGP()
-	encHandle, err := pgp.Encryption().Recipient(publicKey).New()
+	encHandle, err := pgp.Encryption().Recipient(k.Key).New()
 	if err != nil {
 		return "", err
 	}
@@ -79,9 +65,9 @@ func (k *PGPKey) withPassword(message string) (string, error) {
 	return string(armored), nil
 }
 
-func NewPGPKey(path string, password string) *PGPKey {
+func NewPGPKey(key *crypto.Key, password string) *PGPKey {
 	return &PGPKey{
-		path,
+		key,
 		password,
 	}
 }
