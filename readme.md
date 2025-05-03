@@ -1,4 +1,4 @@
-# KPow
+# KPow 💥
 
 Simple loopback form.
 
@@ -13,7 +13,9 @@ $ kpow start --pubkey=public_key_path \
              --password=password \
              --port=8080 \
              --host=localhost \
-             --mailer-dsn=smtp://user:password@smtp.example.com:587
+             --mailer=smtp://user:password@smtp.example.com:587 \
+             --mailer-from=sender@example.com \
+             --mailer-to=recipient@example.com
 ```
 
 ### Using configuration file
@@ -26,7 +28,7 @@ $ kpow start --config=path-to-config.toml
 
 | Name             | Purpose            | Value |
 | ---------------- | ------------------ | ----- |
-| KPOW_PUBKEY      | Path to public key | null  |
+| KPOW_PUBKEY_PATH | Path to public key | null  |
 | KPOW_PASSWORD    | Password           | null  |
 | KPOW_PORT        | Port               | null  |
 | KPOW_HOST        | Host               | null  |
