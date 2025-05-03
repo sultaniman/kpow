@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/davecgh/go-spew/spew"
+	"github.com/kortschak/utter"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -24,7 +24,7 @@ var (
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if viper.GetBool("debug") {
-				spew.Dump(config)
+				utter.Dump(config)
 			}
 
 			return nil
