@@ -1,7 +1,10 @@
 package cmd
 
 import (
+	"github.com/davecgh/go-spew/spew"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/sultaniman/kpow/server"
 )
 
@@ -16,39 +19,65 @@ var (
 	toEmail      string
 	advertiseKey bool
 	config       = server.NewConfig()
-	startCmd = &cobra.Command{
-		Use: "start",
+	startCmd     = &cobra.Command{
+		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if viper.GetBool("debug") {
+				spew.Dump(config)
+			}
+
 			return nil
 		},
 	}
 )
 
 func init() {
+	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Path to config file")
+	startCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Path to config file")
 
 	// Server options
-	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", server.Port, "Server port")
-	rootCmd.PersistentFlags().StringVarP(&host, "host", "h", server.Host, "Server host")
+	startCmd.PersistentFlags().IntVar(&port, "port", server.Port, "Server port")
+	startCmd.PersistentFlags().StringVar(&host, "host", server.Host, "Server host")
 
 	// Mailer options
-	rootCmd.PersistentFlags().StringVarP(
+	startCmd.PersistentFlags().StringVarP(
 		&fromEmail, "mailer-from", "f", "",
 		"From email address",
 	)
-	rootCmd.PersistentFlags().StringVarP(
+	startCmd.PersistentFlags().StringVarP(
 		&toEmail, "mailer-to", "t", "",
 		"Recipient email (usually your email)",
 	)
-	rootCmd.PersistentFlags().StringVarP(
+	startCmd.PersistentFlags().StringVarP(
 		&mailerDsn, "mailer", "m", "",
 		"Mailer DSN, example: smtp://user:password@smtp.example.com:587",
 	)
 
 	// Encryption and key options
-	rootCmd.PersistentFlags().StringVar(&password, "password", "", "Password for message encryption")
-	rootCmd.PersistentFlags().StringVarP(&pubKeyPath, "pubkey", "k", "", "Path to public key file")
-	rootCmd.PersistentFlags().BoolVarP(&advertiseKey, "advertise-key", "ka", false, "Advertise public key")
+	startCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Password for message encryption")
+	startCmd.PersistentFlags().StringVarP(&pubKeyPath, "pubkey", "k", "", "Path to public key file")
+	startCmd.PersistentFlags().BoolVarP(&advertiseKey, "advertise-key", "s", false, "Advertise public key")
+}
+
+func initConfig() {
+	viper.SetEnvPrefix(envPrefix)
+	viper.AutomaticEnv()
+	viper.AllowEmptyEnv(true)
+
+	if configFile == "" {
+		return
+	}
+
+	viper.SetConfigType("toml")
+	viper.SetConfigFile(configFile)
+
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatal().Err(err)
+	}
+
+	if err := viper.Unmarshal(config); err != nil {
+		log.Fatal().Err(err)
+	}
 }
