@@ -12,17 +12,11 @@ type PGPKey struct {
 }
 
 func (k *PGPKey) Encrypt(message string) (string, error) {
-	if k.Key == nil && k.Password == "" {
-		return "", errors.New("path or password expected")
-	}
-
 	if k.Key != nil {
 		return k.withPubKey(message)
-	} else if k.Password != "" {
-		return k.withPassword(message)
 	}
 
-	return "", errors.New("Please specify path or password")
+	return k.withPassword(message)
 }
 
 func (k *PGPKey) withPubKey(message string) (string, error) {
@@ -65,9 +59,13 @@ func (k *PGPKey) withPassword(message string) (string, error) {
 	return string(armored), nil
 }
 
-func NewPGPKey(key *crypto.Key, password string) *PGPKey {
+func NewPGPKey(key *crypto.Key, password string) (*PGPKey, error) {
+	if key == nil && password == "" {
+		return nil, errors.New("path or password expected")
+	}
+
 	return &PGPKey{
 		key,
 		password,
-	}
+	}, nil
 }

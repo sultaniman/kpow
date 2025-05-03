@@ -33,7 +33,7 @@ func TestAgeDecryptWithKey(t *testing.T) {
 
 func TestAgeEncryptDecryptWithKey(t *testing.T) {
 	recipient, identity := getAgeCredentials(true)
-	ageKey := NewAgeKey(recipient, "")
+	ageKey, _ := NewAgeKey(recipient, "")
 	encryptedMessage, _ := ageKey.Encrypt("message")
 	assert.Contains(t, encryptedMessage, "BEGIN AGE ENCRYPTED")
 	decryptedMessage := decrypAgeMessage(encryptedMessage, identity)
@@ -42,9 +42,9 @@ func TestAgeEncryptDecryptWithKey(t *testing.T) {
 
 // Sanity check for passphrase encryption
 func TestAgeEncryptDecryptWithPassphrase(t *testing.T) {
-	ageKey := NewAgeKey(nil, "password")
+	ageKey, _ := NewAgeKey(nil, "password")
 	recipient, identity := getAgeCredentials(false)
-	ageKey.recipient = recipient
+	ageKey.Recipient = recipient
 	encryptedMessage, _ := ageKey.Encrypt("message")
 	decryptedMessage := decrypAgeMessage(encryptedMessage, identity)
 	assert.Equal(t, decryptedMessage, "message")

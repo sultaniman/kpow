@@ -13,12 +13,12 @@ type KeyLike interface {
 	Encrypt(message string) (string, error)
 }
 
-func LoadKey(info *server.KeyInfo) KeyLike {
+func LoadKey(info *server.KeyInfo) (KeyLike, error) {
 	content, err := os.ReadFile(info.Path)
 	if err != nil {
 		log.Fatal().Err(err)
 	}
-	// FIXME: move key & password validation logic from implementations to this function
+
 	switch info.KeyKind {
 	case server.Age:
 		recipient, err := age.ParseX25519Recipient(string(content))
@@ -40,6 +40,6 @@ func LoadKey(info *server.KeyInfo) KeyLike {
 		return NewPGPKey(publicKey, info.Password)
 	default:
 		log.Fatal().Msgf("Uknown key kind %v", info.KeyKind)
-		return nil
+		return nil, nil
 	}
 }

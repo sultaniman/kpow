@@ -70,7 +70,7 @@ func TestPGPDecryptWithKey(t *testing.T) {
 }
 
 func TestPGPEncryptAndDecryptWithKey(t *testing.T) {
-	pgpKey := NewPGPKey(gpgPublicKey, "")
+	pgpKey, _ := NewPGPKey(gpgPublicKey, "")
 	encryptedMessage, _ := pgpKey.Encrypt(secretMessage)
 	decHandle, _ := pgp.
 		Decryption().
@@ -82,7 +82,7 @@ func TestPGPEncryptAndDecryptWithKey(t *testing.T) {
 }
 
 func TestPGPEncryptAndDecryptWithPassword(t *testing.T) {
-	pgpKey := NewPGPKey(nil, gpgPassword)
+	pgpKey, _ := NewPGPKey(nil, gpgPassword)
 	encryptedMessage, _ := pgpKey.Encrypt(secretMessage)
 	decHandle, _ := pgp.Decryption().Password([]byte(gpgPassword)).New()
 	decResult, _ := decHandle.Decrypt([]byte(encryptedMessage), crypto.Armor)
