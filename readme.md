@@ -26,12 +26,16 @@ $ kpow start --config=path-to-config.toml
 
 ### Environment variables
 
-| Name             | Purpose            | Value |
-| ---------------- | ------------------ | ----- |
-| KPOW_PUBKEY_PATH | Path to public key | null  |
-| KPOW_PASSWORD    | Password           | null  |
-| KPOW_PORT        | Port               | null  |
-| KPOW_HOST        | Host               | null  |
-| KPOW_MAILER_DSN  | Mailer DSN         | null  |
-| KPOW_MAILER_FROM | Mailer From        | null  |
-| KPOW_MAILER_TO   | Mailer To          | null  |
+| Name             | Purpose                | Default Value |
+| ---------------- | ---------------------- | ------------- |
+| KPOW_KEY_KIND    | Key Kind               | null          |
+| KPOW_PUBKEY_PATH | Path to public key     | null          |
+| KPOW_PASSWORD    | Password               | ""            |
+| KPOW_ADVERTISE   | Show pubkey on website | false         |
+| KPOW_MAILER_DSN  | Mailer DSN             | null          |
+| KPOW_MAILER_FROM | Mailer From            | null          |
+| KPOW_MAILER_TO   | Mailer To              | null          |
+| KPOW_TITLE       | Page title             | ""            |
+| KPOW_PORT        | Port                   | 8080          |
+| KPOW_HOST        | Host                   | localhost     |
+| KPOW_LOG_LEVEL   | Log Level              | info          |
