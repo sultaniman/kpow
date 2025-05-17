@@ -4,8 +4,6 @@ Simple loopback form.
 
 ## Starting server
 
-> [!NOTE] CLI arguments always override environment variables and configuration files.
-
 ### Using cli arguments
 
 ```sh
@@ -20,6 +18,14 @@ $ kpow start --pubkey=public_key_path \
 
 ### Using configuration file
 
+> [!NOTE] CLI arguments always override environment variables and configuration files.
+
+Configuration resolution order:
+
+1. Configuration - first load from config file if provided,
+2. Environment variables - Environment variables override values from configuration file,
+3. CLI arguments - CLI arguments override environment variables and configuration file values
+
 ```sh
 $ kpow start --config=path-to-config.toml
 ```
@@ -29,7 +35,7 @@ $ kpow start --config=path-to-config.toml
 | Name             | Purpose                | Default Value |
 | ---------------- | ---------------------- | ------------- |
 | KPOW_KEY_KIND    | Key Kind               | null          |
-| KPOW_PUBKEY_PATH | Path to public key     | null          |
+| KPOW_KEY_PATH    | Path to public key     | null          |
 | KPOW_PASSWORD    | Password               | ""            |
 | KPOW_ADVERTISE   | Show pubkey on website | false         |
 | KPOW_MAILER_DSN  | Mailer DSN             | null          |

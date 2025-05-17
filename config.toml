@@ -1,16 +1,16 @@
+[server]
+title = "KPow"
+port = 6543
+host = "0.0.0.0"
+log_level = "DEBUG"
+
 [key]
-key_kind = "pgp"
-pubkey_path = "/path/to/pubkey"
+kind = "pgp"
+path = "/path/to/pubkey"
 password = ""
-advertise = ""
+advertise = true
 
 [mailer]
 dsn = "smtp://user:password@smtp.example.com:587"
 from = "sender@example.com"
 to = "recipient@example.com"
-
-[server]
-title = "KPow"
-port = 6543
-host = "0.0.0.0"
-log_level = "ERROR"

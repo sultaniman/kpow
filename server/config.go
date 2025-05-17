@@ -3,17 +3,20 @@ package server
 import (
 	"errors"
 	"fmt"
+	"net/mail"
+	"net/url"
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"github.com/spf13/viper"
+	"github.com/rs/zerolog"
+	"github.com/sultaniman/env"
 )
 
-type Kind string
+type KeyKind string
 
 const (
-	PGP Kind = "pgp"
-	Age Kind = "age"
+	PGP KeyKind = "pgp"
+	Age KeyKind = "age"
 )
 
 const (
@@ -24,88 +27,157 @@ const (
 // For kind=PGP and unset path
 // password pgp encryption is used.
 type KeyInfo struct {
-	Path         string
-	KeyKind      Kind
-	Password     string
-	AdvertiseKey bool
+	Path      string
+	Kind      KeyKind
+	Password  string
+	Advertise bool
+}
+
+type ServerConfig struct {
+	Title    string
+	Port     int
+	Host     string
+	LogLevel string `toml:"log_level"`
+}
+
+type Mailer struct {
+	From string
+	To   string
+	DSN  string
 }
 
 type Config struct {
-	Title      string
-	Port       int
-	Host       string
-	LogLevel   string
-	KeyInfo    KeyInfo
-	MailerFrom string
-	MailerTo   string
-	MailerDSN  string
+	Server ServerConfig
+	Key    KeyInfo
+	Mailer Mailer
+
+	// Use webhook instead of mailer
+	WebhookUrl string
+
+	// Resend config
+	BacklogPath string
+	BacklogCron string
 }
 
 func (c *Config) Validate() error {
-	if c.KeyInfo.KeyKind != Age && c.KeyInfo.KeyKind != PGP {
-		return errors.New(fmt.Sprintf("unknown key kind %s", c.KeyInfo.KeyKind))
+	if c.Key.Kind != Age && c.Key.Kind != PGP {
+		return fmt.Errorf("unsupported key kind %s", c.Key.Kind)
 	}
 
-	if c.KeyInfo.Path == "" && c.KeyInfo.Password == "" {
+	if c.Key.Path == "" && c.Key.Password == "" {
 		return errors.New("key path or password is required")
 	}
 
-	if _, err := os.Stat(c.KeyInfo.Path); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(c.Key.Path); errors.Is(err, os.ErrNotExist) {
 		return errors.New("public key file does not exist")
 	}
 
-	if c.MailerFrom == "" {
+	if c.Mailer.From == "" {
 		return errors.New("mailer from is required")
 	}
 
-	if c.MailerTo == "" {
+	if _, err := mail.ParseAddress(c.Mailer.From); err != nil {
+		return errors.New("invalid sender address")
+	}
+
+	if c.Mailer.To == "" {
 		return errors.New("recipient email is required")
 	}
 
-	if c.MailerDSN == "" {
+	if _, err := mail.ParseAddress(c.Mailer.To); err != nil {
+		return errors.New("invalid recipient address")
+	}
+
+	if c.Mailer.DSN == "" {
 		return errors.New("mailer dsn is required")
+	}
+
+	parts, err := url.Parse(c.Mailer.DSN)
+	if err != nil {
+		return errors.New("invalid mailer dsn")
+	}
+
+	if parts.Scheme != "smtp" {
+		return errors.New("only smpt servers supported")
 	}
 
 	return nil
 }
 
+func (c *Config) ParseLogLevel(level string) (zerolog.Level, error) {
+	logLevel, err := zerolog.ParseLevel(level)
+
+	if err != nil {
+		return 0, err
+	}
+
+	c.Server.LogLevel = level
+	return logLevel, nil
+}
+
+// GetConfig loads configuration from toml file
+// then substitutes values with the ones from environment.
 func GetConfig(path string) (*Config, error) {
-	// If config path is empty then we load the default config
-	// Else we load the config from the given path
-	// Then assign values from viper later they will be substituted
-	// with relevant CLI arguments
-	var config *Config
-	if path == "" {
-		config = &Config{
-			Title:    "KPow",
-			Port:     Port,
-			Host:     Host,
-			LogLevel: "info",
-			KeyInfo:  KeyInfo{AdvertiseKey: true},
-		}
-	} else {
-		config = &Config{}
+	var config = &Config{}
+
+	if path != "" {
 		if _, err := toml.DecodeFile(path, config); err != nil {
 			return nil, err
 		}
 	}
 
 	// server
-	config.Title = viper.GetString("title")
-	config.Port = viper.GetInt("port")
-	config.Host = viper.GetString("host")
-	config.LogLevel = viper.GetString("log_level")
+	if title := env.GetString("TITLE"); title != "" {
+		config.Server.Title = title
+	}
+
+	if serverPort, err := env.GetIntE("PORT"); err == nil {
+		config.Server.Port = serverPort
+	}
+
+	if serverHost := env.GetString("HOST"); serverHost != "" {
+		config.Server.Host = serverHost
+	}
+
+	if logLevel := env.GetString("LOG_LEVEL"); logLevel != "" {
+		config.Server.LogLevel = logLevel
+	}
 
 	// mailer
-	config.MailerFrom = viper.GetString("mailer_from")
-	config.MailerTo = viper.GetString("mailer_to")
-	config.MailerDSN = viper.GetString("mailer_dsn")
+	if fromEmail := env.GetString("MAILER_FROM"); fromEmail != "" {
+		config.Mailer.From = fromEmail
+	}
+
+	if toEmail := env.GetString("MAILER_TO"); toEmail != "" {
+		config.Mailer.To = toEmail
+	}
+
+	if mailerDSN := env.GetString("MAILER_DSN"); mailerDSN != "" {
+		config.Mailer.DSN = mailerDSN
+	}
 
 	// key
-	config.KeyInfo.KeyKind = Kind(viper.GetString("key_kind"))
-	config.KeyInfo.Password = viper.GetString("password")
-	config.KeyInfo.AdvertiseKey = viper.GetBool("advertise")
-	config.KeyInfo.Path = viper.GetString("pubkey_path")
+	if keyKind := env.GetString("KEY_KIND"); keyKind != "" {
+		config.Key.Kind = KeyKind(env.GetString("KEY_KIND"))
+	}
+
+	if password := env.GetString("KEY_PASSWORD"); password != "" {
+		config.Key.Password = password
+	}
+
+	config.Key.Advertise = config.Key.Advertise || env.GetBool("ADVERTISE")
+
+	if keyPath := env.GetString("KEY_PATH"); keyPath != "" {
+		config.Key.Path = keyPath
+	}
+
+	if backlogPath := env.GetString("BACKLOG_PATH"); backlogPath != "" {
+		config.BacklogPath = backlogPath
+	}
+
+	if backlogCron := env.GetString("BACKLOG_CRON"); backlogCron != "" {
+		config.BacklogCron = backlogCron
+	}
 
 	return config, nil
 }

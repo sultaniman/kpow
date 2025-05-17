@@ -1,5 +1,9 @@
 .PHONY: build
 
+clean:
+	go mod tidy
+	rm -f kpow
+
 build:
 	go build -o kpow
 

@@ -19,7 +19,7 @@ func LoadKey(info *server.KeyInfo) (KeyLike, error) {
 		log.Fatal().Err(err)
 	}
 
-	switch info.KeyKind {
+	switch info.Kind {
 	case server.Age:
 		recipient, err := age.ParseX25519Recipient(string(content))
 		if err != nil {
@@ -39,7 +39,7 @@ func LoadKey(info *server.KeyInfo) (KeyLike, error) {
 
 		return NewPGPKey(publicKey, info.Password)
 	default:
-		log.Fatal().Msgf("Uknown key kind %v", info.KeyKind)
+		log.Fatal().Msgf("Uknown key kind %v", info.Kind)
 		return nil, nil
 	}
 }
