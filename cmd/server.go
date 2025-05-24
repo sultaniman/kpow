@@ -69,7 +69,12 @@ var (
 				utter.Dump(config)
 			}
 
-			app := server.CreateServer(config)
+			app, err := server.CreateServer(config)
+			if err != nil {
+				log.Fatal().Err(err)
+				return err
+			}
+
 			err = app.Start(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port))
 			log.Fatal().Err(err)
 

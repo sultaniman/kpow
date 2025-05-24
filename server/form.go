@@ -1,7 +1,14 @@
 package server
 
-import "github.com/labstack/echo/v4"
+import (
+	"net/http"
 
-func RenderForm(ctx *echo.Context) {
+	"github.com/labstack/echo/v4"
+)
 
+func RenderForm(ctx echo.Context) error {
+	return ctx.Render(http.StatusOK, "form.html", map[string]any{
+		"name": "HOME",
+		"msg":  "Hello, Boatswain!",
+	})
 }

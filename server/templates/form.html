@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Version: {{.Version}} -->
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <title>Kpow | {{.Title}}</title>
+  </head>
+  <body>
+    <form method="post">
+      {{if .AdvertiseKey}}
+      <span class="note note-info">{{.PubKey}}</span>
+      {{end}} {{if .Note}}
+      <span class="note note-{{if .IsError}}error{{else}}info{{end}}">
+        {{.Note}}
+      </span>
+      {{end}}
+      <label for="subject">Subject</label>
+      <input
+        type="text"
+        name="subject"
+        id="subject"
+        value="{{.Message.Subject}}"
+      />
+
+      <label for="body">Your message</label>
+      <textarea name="body" id="body" rows="8">{{.Message.Body}}</textarea>
+      <button type="submit" class="button button-black float-right">
+        Send
+      </button>
+    </form>
+  </body>
+  <link type="text/css" rel="stylesheet" href="/kpow.min.css" />
+</html>

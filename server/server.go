@@ -1,18 +1,37 @@
 package server
 
 import (
+	"embed"
+	"net/http"
+	"text/template"
+
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/sultaniman/kpow/config"
 )
 
-// go:embed public/kpow.min.css
-var css string
+//go:embed public/*
+//go:embed templates/*
+var resources embed.FS
 
-// go:embed form.html
-var formTemplate string
-
-func CreateServer(config *config.Config) *echo.Echo {
+func CreateServer(config *config.Config) (*echo.Echo, error) {
 	app := echo.New()
 	app.HideBanner = true
-	return app
+	templates, err := template.ParseFS(resources, "templates/*.html")
+	if err != nil {
+		return nil, err
+	}
+
+	app.Renderer = &Template{
+		templates: templates,
+	}
+
+	app.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:       "public",
+		HTML5:      true,
+		Filesystem: http.FS(resources),
+	}))
+
+	app.GET("/", RenderForm)
+	return app, nil
 }
