@@ -1,8 +1,7 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v3"
-	"github.com/rs/zerolog/log"
+	"github.com/labstack/echo/v4"
 	"github.com/sultaniman/kpow/config"
 )
 
@@ -12,8 +11,8 @@ var css string
 // go:embed form.html
 var formTemplate string
 
-func CreateServer(config *config.Config) *fiber.App {
-	app := fiber.New(fiber.Config{})
-	log.Debug().Msg("Server instance")
+func CreateServer(config *config.Config) *echo.Echo {
+	app := echo.New()
+	app.HideBanner = true
 	return app
 }

@@ -17,7 +17,7 @@ const envPrefix = "KPOW_"
 
 var (
 	port         int
-	host         string
+	host         string = "0.0.0.0"
 	configFile   string
 	password     string
 	pubKeyPath   string
@@ -70,7 +70,7 @@ var (
 			}
 
 			app := server.CreateServer(config)
-			err = app.Listen(fmt.Sprintf(":%d", config.Server.Port))
+			err = app.Start(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port))
 			log.Fatal().Err(err)
 
 			return nil
