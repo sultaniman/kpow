@@ -1,4 +1,4 @@
-package server
+package config
 
 import (
 	"errors"
@@ -59,49 +59,56 @@ type Config struct {
 	BacklogCron string
 }
 
-func (c *Config) Validate() error {
+func (c *Config) Validate() []error {
+	var errorList = []error{}
 	if c.Key.Kind != Age && c.Key.Kind != PGP {
-		return fmt.Errorf("unsupported key kind %s", c.Key.Kind)
+		errorList = append(
+			errorList,
+			newConfigError("KEY_KIND", fmt.Sprintf("unsupported key kind %s", c.Key.Kind)),
+		)
 	}
 
 	if c.Key.Path == "" && c.Key.Password == "" {
-		return errors.New("key path or password is required")
+		errorList = append(
+			errorList,
+			newConfigError("KEY_PATH", "key path or password is required"),
+		)
 	}
 
 	if _, err := os.Stat(c.Key.Path); errors.Is(err, os.ErrNotExist) {
-		return errors.New("public key file does not exist")
+		errorList = append(errorList, errors.New("public key file does not exist"))
 	}
 
 	if c.Mailer.From == "" {
-		return errors.New("mailer from is required")
+		errorList = append(errorList, errors.New("mailer from is required"))
 	}
 
 	if _, err := mail.ParseAddress(c.Mailer.From); err != nil {
-		return errors.New("invalid sender address")
+		errorList = append(errorList, errors.New("invalid sender address"))
 	}
 
 	if c.Mailer.To == "" {
-		return errors.New("recipient email is required")
+		errorList = append(errorList, errors.New("recipient email is required"))
 	}
 
 	if _, err := mail.ParseAddress(c.Mailer.To); err != nil {
-		return errors.New("invalid recipient address")
+		errorList = append(errorList, errors.New("invalid recipient address"))
 	}
 
 	if c.Mailer.DSN == "" {
-		return errors.New("mailer dsn is required")
+		errorList = append(errorList, errors.New("mailer dsn is required"))
 	}
 
 	parts, err := url.Parse(c.Mailer.DSN)
 	if err != nil {
-		return errors.New("invalid mailer dsn")
+		errorList = append(errorList, errors.New("invalid mailer dsn"))
 	}
 
 	if parts.Scheme != "smtp" {
-		return errors.New("only smpt servers supported")
+		errorList = append(errorList, errors.New("only smpt servers supported"))
 	}
 
-	return nil
+	return errorList
 }
 
 func (c *Config) ParseLogLevel(level string) (zerolog.Level, error) {

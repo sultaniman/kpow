@@ -1,4 +1,4 @@
-package server
+package config
 
 import (
 	"testing"
@@ -16,6 +16,8 @@ func TestConfigInit(t *testing.T) {
 	t.Setenv("MAILER_DSN", "smtp://user:secret@mustermann.de:587")
 	t.Setenv("KEY_KIND", "age")
 	t.Setenv("KEY_PATH", "/opt/kpow/pub.pgp")
+	t.Setenv("BACKLOG_PATH", "/opt/kpow/backlog")
+	t.Setenv("BACKLOG_CRON", "5 * * * *")
 
 	config, err := GetConfig("")
 	assert.NoError(t, err)
@@ -26,4 +28,10 @@ func TestConfigInit(t *testing.T) {
 	assert.Equal(t, "smtp://user:secret@mustermann.de:587", config.Mailer.DSN)
 	assert.Equal(t, "age", string(config.Key.Kind))
 	assert.Equal(t, "/opt/kpow/pub.pgp", config.Key.Path)
+	assert.Equal(t, "/opt/kpow/backlog", config.BacklogPath)
+	assert.Equal(t, "5 * * * *", config.BacklogCron)
+}
+
+func TestConfigValidate(t *testing.T) {
+
 }

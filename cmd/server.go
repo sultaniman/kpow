@@ -1,14 +1,17 @@
 package cmd
 
 import (
+	"errors"
+
 	"github.com/kortschak/utter"
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"github.com/sultaniman/env"
+	"github.com/sultaniman/kpow/config"
 	"github.com/sultaniman/kpow/server"
 )
 
-const envPrefix = "kpow"
+const envPrefix = "KPOW_"
 
 var (
 	port         int
@@ -25,7 +28,7 @@ var (
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			config, err := server.GetConfig(configFile)
+			config, err := config.GetConfig(configFile)
 			if err != nil {
 				return err
 			}
@@ -55,11 +58,12 @@ var (
 				zerolog.SetGlobalLevel(level)
 			}
 
-			if err := config.Validate(); err != nil {
-				return err
+			if errorList := config.Validate(); len(errorList) > 0 {
+				server.LogErrors(errorList)
+				return errors.New("configuration error")
 			}
 
-			if env.GetBool("debug") {
+			if env.GetBool("DEBUG") {
 				utter.Dump(config)
 			}
 
@@ -70,7 +74,8 @@ var (
 
 func init() {
 	rootCmd.AddCommand(startCmd)
-	port := env.GetInt("KPOW_PORT")
+	env.SetEnvPrefix(envPrefix)
+	port := env.GetInt("PORT")
 
 	// viper.SetEnvPrefix(envPrefix)
 	startCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Path to config file")

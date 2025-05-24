@@ -6,27 +6,27 @@ import (
 	"filippo.io/age"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 	"github.com/rs/zerolog/log"
-	"github.com/sultaniman/kpow/server"
+	"github.com/sultaniman/kpow/config"
 )
 
 type KeyLike interface {
 	Encrypt(message string) (string, error)
 }
 
-func LoadKey(info *server.KeyInfo) (KeyLike, error) {
+func LoadKey(info *config.KeyInfo) (KeyLike, error) {
 	content, err := os.ReadFile(info.Path)
 	if err != nil {
 		log.Fatal().Err(err)
 	}
 
 	switch info.Kind {
-	case server.Age:
+	case config.Age:
 		recipient, err := age.ParseX25519Recipient(string(content))
 		if err != nil {
 			log.Fatal().Err(err)
 		}
 		return NewAgeKey(recipient, info.Password)
-	case server.PGP:
+	case config.PGP:
 		pubkey, err := os.ReadFile(info.Path)
 		if err != nil {
 			log.Fatal().Err(err)

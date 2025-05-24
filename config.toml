@@ -5,8 +5,8 @@ host = "0.0.0.0"
 log_level = "DEBUG"
 
 [key]
-kind = "pgp"
-path = "/path/to/pubkey"
+kind = "age"
+path = "key.age"
 password = ""
 advertise = true
 
