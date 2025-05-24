@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/kortschak/utter"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/sultaniman/env"
 	"github.com/sultaniman/kpow/config"
@@ -66,6 +68,10 @@ var (
 			if env.GetBool("DEBUG") {
 				utter.Dump(config)
 			}
+
+			app := server.CreateServer(config)
+			err = app.Listen(fmt.Sprintf(":%d", config.Server.Port))
+			log.Fatal().Err(err)
 
 			return nil
 		},
