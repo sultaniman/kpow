@@ -32,6 +32,8 @@ func CreateServer(config *config.Config) (*echo.Echo, error) {
 		Filesystem: http.FS(resources),
 	}))
 
-	app.GET("/", RenderForm)
+	allowedFormMethods := []string{"GET", "POST"}
+	app.Match(allowedFormMethods, "/", RenderForm)
+
 	return app, nil
 }
