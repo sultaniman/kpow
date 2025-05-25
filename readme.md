@@ -45,3 +45,11 @@ $ kpow start --config=path-to-config.toml
 | KPOW_PORT        | Port                   | 8080          |
 | KPOW_HOST        | Host                   | localhost     |
 | KPOW_LOG_LEVEL   | Log Level              | info          |
+
+## Development
+
+### Custom form
+
+Bun and Tailwindcss is used to build the styles.
+
+TODO
