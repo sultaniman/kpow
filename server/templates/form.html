@@ -21,32 +21,82 @@
       href="/favicon/favicon-16x16.png"
     />
     <link rel="manifest" href="/favicon/site.webmanifest" />
+    <script type="text/javascript">
+      const mQuery = matchMedia("(prefers-color-scheme: dark)");
+
+      // Track color theme change
+      mQuery.onchange = ({ matches }) => {
+        if (matches) {
+          localStorage.setItem("theme", "dark");
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          localStorage.setItem("theme", "light");
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      };
+
+      const getColorScheme = () => {
+        // If media query doesn't match then light is default
+        let colorScheme = "light";
+        if ("theme" in localStorage) {
+          return localStorage.getItem("theme");
+        } else {
+          if (mQuery.matches) {
+            colorScheme = "dark";
+          }
+
+          localStorage.setItem("theme", colorScheme);
+        }
+
+        return colorScheme;
+      };
+
+      // Detect color theme and set the relevant value
+      window.onload = () => {
+        document.documentElement.setAttribute("data-theme", getColorScheme());
+      };
+    </script>
 
     <title>Kpow | {{.Title}}</title>
   </head>
   <body>
-    <form method="post">
-      {{if .AdvertiseKey}}
-      <span class="note note-info">{{.PubKey}}</span>
-      {{end}} {{if .Note}}
-      <span class="note note-{{if .IsError}}error{{else}}info{{end}}">
-        {{.Note}}
-      </span>
-      {{end}}
-      <label for="subject">Subject</label>
-      <input
-        type="text"
-        name="subject"
-        id="subject"
-        value="{{.Message.Subject}}"
-      />
+    <main>
+      <form method="post">
+        {{if .Note}}
+        <span class="note note-{{if .IsError}}error{{else}}info{{end}}">
+          {{.Note}}
+        </span>
+        {{end}}
+        <label for="subject">Subject</label>
+        <input
+          type="text"
+          name="subject"
+          id="subject"
+          value="{{.Message.Subject}}"
+        />
 
-      <label for="body">Your message</label>
-      <textarea name="body" id="body" rows="8">{{.Message.Body}}</textarea>
-      <button type="submit" class="button button-black float-right">
-        Send
-      </button>
-    </form>
+        <label for="body">Your message</label>
+        <textarea name="body" id="body" rows="8">{{.Message.Body}}</textarea>
+        <input type="submit" value="Send" />
+      </form>
+      {{if .AdvertiseKey}}
+      <div class="pubkey-container">
+        <h2>PubKey</h2>
+        <pre class="pubkey">
+        {{.PubKey}}
+
+-----BEGIN AGE ENCRYPTED FILE-----
+YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3WnpnL0h6OHp6bDEySHFq
+azlWWW9EUmxNUXk4a29NOElUWERFSXJaNXhVClV4d3pocXNGL2ZNZnRwV0RvY3NT
+STUzRHBmRzFJcEhhdmtFTGZabkcyZmcKLS0tIFhvNnJReVBnOXc4Zm1FOFdZdHhB
+SzlEblMralZqcmloSXRucHNSV2Fqc1EK3KFfOX1Ln968kq1tX1iaI+9RoSqekVOF
+na03n83y9DttvF2XOw==
+-----END AGE ENCRYPTED FILE-----
+      </pre
+        >
+      </div>
+      {{end}}
+    </main>
   </body>
-  <link type="text/css" rel="stylesheet" href="/kpow.min.css" />
+  <link rel="stylesheet" href="/kpow.min.css" />
 </html>
