@@ -14,4 +14,4 @@ test:
 	go test -v ./...
 
 styles:
-	bunx @tailwindcss/cli -i ./styles/kpow.css -o ./server/public/kpow.min.css --watch
+	bunx @tailwindcss/cli -m -i ./styles/kpow.css -o ./server/public/kpow.min.css --watch
