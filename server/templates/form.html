@@ -67,16 +67,22 @@
           {{.Note}}
         </span>
         {{end}}
-        <label for="subject">Subject</label>
         <input
           type="text"
           name="subject"
           id="subject"
-          value="{{.Message.Subject}}"
+          placeholder="Subject"
+          value="{{if .Message.Subject}}{{.Message.Subject}}{{end}}"
         />
 
-        <label for="body">Your message</label>
-        <textarea name="body" id="body" rows="8">{{.Message.Body}}</textarea>
+        <textarea
+          name="body"
+          id="body"
+          rows="8"
+          placeholder="What's on your mind?"
+        >
+{{if .Message.Body}}{{.Message.Body}}{{end}}</textarea
+        >
         <input type="submit" value="Send" />
       </form>
       {{if .AdvertiseKey}}

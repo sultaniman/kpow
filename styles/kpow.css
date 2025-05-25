@@ -3,10 +3,10 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 body {
-  @apply bg-slate-200;
+  @apply bg-slate-50;
 
   @variant dark {
-    @apply bg-slate-800;
+    @apply bg-black/98;
   }
 }
 
@@ -15,23 +15,61 @@ main {
 }
 
 form {
-  @apply my-2;
+  @apply mt-32 flex flex-col gap-6;
 }
 
 textarea {
-  @apply w-12/12 bg-slate-50 border-slate-300/85 border-1 p-2 rounded-md;
+  @apply w-12/12 bg-white border-slate-400 border-1 p-2 rounded-md;
+  @apply placeholder-slate-800;
+  @apply text-lg;
+  @variant focus {
+    @apply ring-2 outline-none ring-blue-300;
+  }
+  @variant dark {
+    @apply bg-black border-slate-700 placeholder-slate-300 text-slate-200;
+
+    @variant focus {
+      @apply ring-slate-600;
+    }
+  }
 }
 
-input[type="submit"] {
-  @apply px-4 py-1.5 rounded-md border-1 bg-slate-950;
-  @apply text-slate-100 cursor-pointer;
-
-  @variant hover {
-    @apply bg-slate-700;
+input[type="text"] {
+  @apply w-12/12 bg-white border-slate-400 border-1 p-2 rounded-md;
+  @apply placeholder-slate-800;
+  @variant focus {
+    @apply ring-2 outline-none ring-blue-300 border-blue-400;
   }
 
   @variant dark {
-    @apply dark:text-slate-200;
+    @apply bg-black border-slate-700 placeholder-slate-300 text-slate-200;
+
+    @variant focus {
+      @apply ring-slate-600 border-slate-800;
+    }
+  }
+}
+
+input[type="submit"] {
+  @apply self-end cursor-pointer;
+  @apply text-white text-lg text-center font-mono;
+  @apply min-w-24 px-3 py-2 rounded-sm;
+  @apply bg-gradient-to-r from-gray-700 to-gray-900;
+
+  @variant hover {
+    @apply opacity-90;
+  }
+
+  @variant focus {
+    @apply ring-4 outline-none ring-blue-300 border-blue-400;
+  }
+
+  @variant dark {
+    @apply from-gray-700 to-gray-800;
+
+    @variant focus {
+      @apply ring-slate-400;
+    }
   }
 }
 
