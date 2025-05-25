@@ -46,10 +46,17 @@ type Mailer struct {
 	DSN  string
 }
 
+type RateLimiter struct {
+	RequestsPerMinute int
+	NumBurstRequests  int
+	CooldownSeconds   int
+}
+
 type Config struct {
-	Server ServerConfig
-	Key    KeyInfo
-	Mailer Mailer
+	Server      ServerConfig
+	Key         KeyInfo
+	Mailer      Mailer
+	RateLimiter *RateLimiter
 
 	// Use webhook instead of mailer
 	WebhookUrl string
