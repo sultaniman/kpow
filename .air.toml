@@ -1,0 +1,17 @@
+root = "."
+
+[build]
+  bin = "./kpow"
+  args_bin = ["start", "--config", "config.toml"]
+  cmd = "just build"
+  include_ext = ["go", "mod", "css", "html"]
+  exclude_dir = ["art", "styles/node_modules"]
+  delay = 0
+  kill_delay = 0
+  rerun_delay = 0
+
+[color]
+  main = "yellow"
+  watcher = "cyan"
+  build = "green"
+  log = "white"
