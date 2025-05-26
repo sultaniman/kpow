@@ -12,7 +12,7 @@ body {
 
 
 header {
-  @apply relative mx-auto mt-2 w-8/12 overflow-visible;
+  @apply relative mx-auto top-4 w-8/12 lg:w-6/12 overflow-visible;
 }
 
 .theme-switcher {
@@ -20,7 +20,7 @@ header {
 }
 
 main {
-  @apply mx-auto mt-10 w-8/12;
+  @apply mx-auto mt-10 w-8/12 lg:w-6/12;
 }
 
 form {
