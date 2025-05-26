@@ -18,21 +18,24 @@
     // If media query doesn't match then light is default
     if (themeKey in localStorage) {
       return localStorage.getItem(themeKey);
-    } else {
-      if (mQuery.matches) {
-        return dark;
-      }
+    }
+
+    if (mQuery.matches) {
+      return dark;
     }
 
     return light;
   };
 
   const setColorTheme = (colorMode) => {
+    if (typeof colorMode === "undefined") {
+      colorMode = getColorScheme();
+    }
+
     localStorage.setItem(themeKey, colorMode);
     document.documentElement.setAttribute(themeAttr, colorMode);
     document.querySelectorAll(".mode-icon").forEach((el) => {
-      const colorTheme = el.dataset.colorTheme;
-      if (colorTheme !== colorMode) {
+      if (el.dataset.colorTheme !== colorMode) {
         el.removeAttribute("data-checked");
       } else {
         el.setAttribute("data-checked", "true");
@@ -42,7 +45,7 @@
 
   // Detect color theme and set the relevant value
   window.onload = () => {
-    setColorTheme(getColorScheme());
+    setColorTheme();
 
     document.querySelectorAll(".mode-icon").forEach((el) => {
       el.addEventListener("click", (evt) => {
