@@ -21,46 +21,13 @@
       href="/favicon/favicon-16x16.png"
     />
     <link rel="manifest" href="/favicon/site.webmanifest" />
-    <script type="text/javascript">
-      const mQuery = matchMedia("(prefers-color-scheme: dark)");
+    <script src="/kpow.js"></script>
 
-      // Track color theme change
-      mQuery.onchange = ({ matches }) => {
-        if (matches) {
-          localStorage.setItem("theme", "dark");
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          localStorage.setItem("theme", "light");
-          document.documentElement.setAttribute("data-theme", "light");
-        }
-      };
-
-      const getColorScheme = () => {
-        // If media query doesn't match then light is default
-        let colorScheme = "light";
-        if ("theme" in localStorage) {
-          return localStorage.getItem("theme");
-        } else {
-          if (mQuery.matches) {
-            colorScheme = "dark";
-          }
-
-          localStorage.setItem("theme", colorScheme);
-        }
-
-        return colorScheme;
-      };
-
-      // Detect color theme and set the relevant value
-      window.onload = () => {
-        document.documentElement.setAttribute("data-theme", getColorScheme());
-      };
-    </script>
-
-    <title>Kpow | {{.Title}}</title>
+    <title>Kpow {{if .Title }}| {{.Title}}{{end}}</title>
   </head>
   <body>
     <main>
+      <img class="logo" src="/kpow.png" />
       <form method="post">
         {{if .Note}}
         <span class="note note-{{if .IsError}}error{{else}}info{{end}}">
@@ -103,9 +70,7 @@ na03n83y9DttvF2XOw==
       </div>
       {{end}}
     </main>
-    <footer>
-      {{template "color-mode.html" .}}
-    </footer>
+    <footer>{{template "color-mode.html" .}}</footer>
   </body>
   <link rel="stylesheet" href="/kpow.min.css" />
 </html>
