@@ -72,6 +72,41 @@ input[type="submit"] {
     }
   }
 }
+.color-mode {
+  @apply w-24;
+  @apply relative z-0;
+  @apply rounded-full p-0.75;
+  @apply inline-grid grid-cols-3 gap-0.5;
+  @apply bg-gray-950/5 text-gray-950;
+
+  @variant dark {
+    @apply bg-white/10 text-white;
+  }
+}
+.mode-icon {
+  @apply rounded-full;
+  @apply p-1.5 *:size-7 sm:p-0;
+  @apply cursor-pointer;
+  @apply transition ease-in duration-200;
+
+  @variant hover {
+    @apply bg-white;
+  }
+
+  @variant data-[checked] {
+    @apply bg-white ring inset-ring ring-gray-950/10 inset-ring-white/10;
+  }
+
+  @variant dark {
+    @variant hover {
+      @apply bg-black;
+    }
+
+    @variant data-[checked] {
+      @apply bg-gray-700 text-white ring-transparent;
+    }
+  }
+}
 
 .pubkey {
   @apply font-mono text-xs text-transparent;

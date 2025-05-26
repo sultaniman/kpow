@@ -28,10 +28,9 @@ func CreateServer(config *config.Config) (*echo.Echo, error) {
 
 	app.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:       "public",
-		HTML5:      true,
+		HTML5:      false,
 		Filesystem: http.FS(resources),
 	}))
-
 	allowedFormMethods := []string{"GET", "POST"}
 	app.Match(allowedFormMethods, "/", RenderForm)
 
