@@ -18,6 +18,7 @@ kpow
 *.DS_Store
 Thumbs.db
 .vscode/
+tmp/
 
 ### Node ###
 
