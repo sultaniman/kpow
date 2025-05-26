@@ -26,8 +26,11 @@
     <title>Kpow {{if .Title }}| {{.Title}}{{end}}</title>
   </head>
   <body>
-    <main>
+    <header>
       <img class="logo" src="/kpow.png" />
+      <div class="theme-switcher">{{template "color-mode.html" .}}</div>
+    </header>
+    <main>
       <form method="post">
         {{if .Note}}
         <span class="note note-{{if .IsError}}error{{else}}info{{end}}">
@@ -70,7 +73,6 @@ na03n83y9DttvF2XOw==
       </div>
       {{end}}
     </main>
-    <footer>{{template "color-mode.html" .}}</footer>
   </body>
   <link rel="stylesheet" href="/kpow.min.css" />
 </html>

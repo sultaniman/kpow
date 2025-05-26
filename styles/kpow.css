@@ -3,11 +3,20 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 body {
-  @apply bg-slate-50;
+  @apply bg-slate-50 h-screen;
 
   @variant dark {
     @apply bg-black/98;
   }
+}
+
+
+header {
+  @apply relative mx-auto mt-2 w-8/12 overflow-visible;
+}
+
+.theme-switcher {
+  @apply absolute top-0 right-0;
 }
 
 main {
@@ -15,7 +24,7 @@ main {
 }
 
 form {
-  @apply mt-32 flex flex-col gap-6;
+  @apply flex flex-col gap-6;
 }
 
 textarea {
@@ -72,11 +81,12 @@ input[type="submit"] {
     }
   }
 }
-.color-mode {
-  @apply w-24;
+
+.modes {
+  @apply w-14;
   @apply relative z-0;
   @apply rounded-full p-0.75;
-  @apply inline-grid grid-cols-3 gap-0.5;
+  @apply inline-grid grid-cols-2 gap-0.5;
   @apply bg-gray-950/5 text-gray-950;
 
   @variant dark {
@@ -85,7 +95,7 @@ input[type="submit"] {
 }
 .mode-icon {
   @apply rounded-full;
-  @apply p-1.5 *:size-7 sm:p-0;
+  @apply p-1.5 *:size-6 sm:p-0;
   @apply cursor-pointer;
   @apply transition ease-in duration-200;
 
@@ -99,13 +109,17 @@ input[type="submit"] {
 
   @variant dark {
     @variant hover {
-      @apply bg-black;
+      @apply bg-gray-500;
     }
 
     @variant data-[checked] {
       @apply bg-gray-700 text-white ring-transparent;
     }
   }
+}
+
+.logo {
+  @apply mx-auto w-44;
 }
 
 .pubkey {
