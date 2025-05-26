@@ -13,5 +13,8 @@ fmt:
 test:
 	go test -v ./...
 
+dev:
+	air
+
 styles:
 	bunx @tailwindcss/cli -m -i ./styles/kpow.css -o ./server/public/kpow.min.css --watch
