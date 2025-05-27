@@ -18,7 +18,8 @@ $ kpow start --pubkey=public_key_path \
 
 ### Using configuration file
 
-> [!NOTE] CLI arguments always override environment variables and configuration files.
+> [!NOTE]
+> CLI arguments always override environment variables and configuration files.
 
 Configuration resolution order:
 
