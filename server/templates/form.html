@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- Version: {{.Version}} -->
   <head>
     <meta charset="UTF-8" />
     <link
@@ -23,7 +22,7 @@
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <script src="/kpow.js"></script>
 
-    <title>Kpow {{if .Title }}| {{.Title}}{{end}}</title>
+    <title>{{if .Title }}{{.Title}}{{else}}Kpow{{end}}</title>
   </head>
   <body>
     <header>
@@ -51,27 +50,11 @@
           rows="8"
           placeholder="What's on your mind?"
         >
-{{if .Message.Body}}{{.Message.Body}}{{end}}</textarea
+{{if .Message.Content}}{{.Message.Content}}{{end}}</textarea
         >
         <input type="submit" value="Send" />
       </form>
-      {{if .AdvertiseKey}}
-      <div class="pubkey-container">
-        <h2>PubKey</h2>
-        <pre class="pubkey">
-        {{.PubKey}}
-
------BEGIN AGE ENCRYPTED FILE-----
-YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3WnpnL0h6OHp6bDEySHFq
-azlWWW9EUmxNUXk4a29NOElUWERFSXJaNXhVClV4d3pocXNGL2ZNZnRwV0RvY3NT
-STUzRHBmRzFJcEhhdmtFTGZabkcyZmcKLS0tIFhvNnJReVBnOXc4Zm1FOFdZdHhB
-SzlEblMralZqcmloSXRucHNSV2Fqc1EK3KFfOX1Ln968kq1tX1iaI+9RoSqekVOF
-na03n83y9DttvF2XOw==
------END AGE ENCRYPTED FILE-----
-      </pre
-        >
-      </div>
-      {{end}}
+      {{if .PubKey}}{{template "pubkey.html" .}}{{end}}
     </main>
   </body>
   <link rel="stylesheet" href="/kpow.min.css" />
