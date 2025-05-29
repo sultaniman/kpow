@@ -56,10 +56,15 @@
     })
 
     const showKeyBtn = document.getElementById("copyKey");
+    const pubkey = document.getElementById("pubkey");
     if (showKeyBtn) {
       showKeyBtn.addEventListener("click", function (evt) {
         evt.preventDefault();
-        console.log({ evt });
+        navigator.
+          clipboard.
+          writeText(pubkey.value).
+          then(() => { alert("pubkey has been copied to clipboard") }).
+          catch(() => alert("unable to copy pubkey to clipboard"))
       })
     }
   };
