@@ -54,5 +54,13 @@
         setColorTheme(targetEl.dataset.colorTheme);
       })
     })
+
+    const showKeyBtn = document.getElementById("copyKey");
+    if (showKeyBtn) {
+      showKeyBtn.addEventListener("click", function (evt) {
+        evt.preventDefault();
+        console.log({ evt });
+      })
+    }
   };
 }());

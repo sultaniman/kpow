@@ -1,9 +1,5 @@
-<div class="pubkey-container">
-  <div id="showKey" class="show-key">
-    {{template "icons/key.svg" .}}
-    <button>PubKey</button>
-  </div>
-  <pre class="pubkey">
-  {{.PubKey}}
-  </pre>
-</div>
+<button id="copyKey" class="copy-key" role="button" aria-label="copy public key">
+  {{template "icons/key.svg" .}}
+  <span>copy pubkey</span>
+</button>
+<textarea hidden>{{.PubKey}}</textarea>

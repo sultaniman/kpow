@@ -10,19 +10,15 @@ body {
   }
 }
 
-
 header {
   @apply relative mx-auto top-4 w-8/12 lg:w-6/12 overflow-visible;
-}
-
-.theme-switcher {
-  @apply absolute top-0 right-0;
 }
 
 main {
   @apply mx-auto mt-10 w-8/12 lg:w-6/12;
 }
 
+/* Contact form */
 form {
   @apply flex flex-col gap-6;
 }
@@ -59,8 +55,37 @@ input[type="text"] {
   }
 }
 
+.controls {
+  @apply flex justify-between items-center;
+}
+
+/* Copy key */
+.copy-key {
+  @apply flex items-center gap-2;
+  @apply h-8 px-2 cursor-pointer rounded-4xl;
+  @apply bg-gray-200 text-gray-700;
+  @apply font-mono text-xs;
+
+  @variant hover {
+    @apply opacity-90;
+    @apply bg-gray-300 text-gray-900;
+  }
+
+  @variant focus {
+    @apply ring-4 outline-none ring-blue-300 border-blue-400;
+  }
+
+  @variant dark {
+    @apply from-gray-700 to-gray-800;
+
+    @variant focus {
+      @apply ring-slate-400;
+    }
+  }
+}
+
 input[type="submit"] {
-  @apply self-end cursor-pointer;
+  @apply cursor-pointer;
   @apply text-white text-lg text-center font-mono;
   @apply min-w-24 px-3 py-2 rounded-sm;
   @apply bg-gradient-to-r from-gray-700 to-gray-900;
@@ -80,6 +105,11 @@ input[type="submit"] {
       @apply ring-slate-400;
     }
   }
+}
+
+/* Color theme switcher */
+.theme-switcher {
+  @apply absolute top-0 right-0;
 }
 
 .modes {
@@ -120,10 +150,4 @@ input[type="submit"] {
 
 .logo {
   @apply mx-auto w-44;
-}
-
-.pubkey {
-  @apply font-mono text-xs text-transparent;
-  @apply bg-gradient-to-br from-slate-700 to-slate-900 bg-clip-text;
-  @apply p-2 rounded-md whitespace-pre-wrap break-all;
 }
