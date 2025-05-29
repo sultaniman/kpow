@@ -11,13 +11,14 @@ import (
 )
 
 //go:embed public/*
-//go:embed templates/*
+//go:embed templates/* templates/icons/*
 var resources embed.FS
 
 func CreateServer(config *config.Config) (*echo.Echo, error) {
 	app := echo.New()
 	app.HideBanner = true
-	templates, err := template.ParseFS(resources, "templates/*.html")
+	handler := NewHandler(config)
+	templates, err := template.ParseFS(resources, "templates/*.html", "templates/icons/*.svg")
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +33,7 @@ func CreateServer(config *config.Config) (*echo.Echo, error) {
 		Filesystem: http.FS(resources),
 	}))
 	allowedFormMethods := []string{"GET", "POST"}
-	app.Match(allowedFormMethods, "/", RenderForm)
+	app.Match(allowedFormMethods, "/", handler.RenderForm)
 
 	return app, nil
 }
