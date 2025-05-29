@@ -27,6 +27,19 @@ Configuration resolution order:
 2. Environment variables - Environment variables override values from configuration file,
 3. CLI arguments - CLI arguments override environment variables and configuration file values
 
+```mermaid
+flowchart TD
+    A[Start] --> B{Config File Provided?}
+    B -- Yes --> C[Load Config File]
+    B -- No --> D[Use Config Defaults]
+
+    C --> E[Load Environment Variables]
+    C --> D
+    D --> E
+
+    E --> F[Apply CLI Arguments]
+```
+
 ```sh
 $ kpow start --config=path-to-config.toml
 ```
