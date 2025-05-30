@@ -13,7 +13,8 @@ type Message struct {
 }
 
 type FormData struct {
-	Title string
+	CSRFToken string
+	Title     string
 
 	Message Message
 	PubKey  string
@@ -32,7 +33,8 @@ na03n83y9DttvF2XOw==
 
 func (h *Handler) RenderForm(ctx echo.Context) error {
 	err := ctx.Render(http.StatusOK, "form.html", FormData{
-		Title: h.Config.Server.Title,
+		CSRFToken: ctx.Get("csrfToken").(string),
+		Title:     h.Config.Server.Title,
 		Message: Message{
 			Subject: "Subject",
 			Content: "Content...",

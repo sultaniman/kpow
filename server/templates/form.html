@@ -43,7 +43,7 @@
           placeholder="Subject"
           value="{{if .Message.Subject}}{{.Message.Subject}}{{end}}"
         />
-
+        <input type="hidden" name="csrf" value="{{.CSRFToken}}" />
         <textarea
           name="body"
           id="body"

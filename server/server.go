@@ -33,7 +33,15 @@ func CreateServer(config *config.Config) (*echo.Echo, error) {
 		Filesystem: http.FS(resources),
 	}))
 	allowedFormMethods := []string{"GET", "POST"}
-	app.Match(allowedFormMethods, "/", handler.RenderForm)
+	app.Match(
+		allowedFormMethods,
+		"/",
+		handler.RenderForm,
+		middleware.CSRFWithConfig(middleware.CSRFConfig{
+			TokenLookup: "form:csrf",
+			ContextKey:  "csrfToken",
+		}),
+	)
 
 	return app, nil
 }
