@@ -18,3 +18,6 @@ dev:
 
 styles:
 	bunx @tailwindcss/cli -m -i ./styles/kpow.css -o ./server/public/kpow.min.css --watch
+
+error-styles:
+	bunx @tailwindcss/cli -m -i ./styles/errors.css -o ./server/public/errors.min.css --watch
