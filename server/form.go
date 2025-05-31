@@ -35,11 +35,8 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 	err := ctx.Render(http.StatusOK, "form.html", FormData{
 		CSRFToken: ctx.Get("csrfToken").(string),
 		Title:     h.Config.Server.Title,
-		Message: Message{
-			Subject: "Subject",
-			Content: "Content...",
-		},
-		PubKey: PubKeySample,
+		Message:   Message{},
+		PubKey:    PubKeySample,
 	})
 
 	if err != nil {
