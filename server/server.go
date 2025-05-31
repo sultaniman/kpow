@@ -43,5 +43,7 @@ func CreateServer(config *config.Config) (*echo.Echo, error) {
 		}),
 	)
 
+	app.HTTPErrorHandler = errorHandler
+
 	return app, nil
 }
