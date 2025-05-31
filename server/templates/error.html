@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{template "meta.html" .}}
+  </head>
+  <body>
+    <header>
+      <img class="logo" src="/kpow.png" />
+      <div class="theme-switcher">{{template "color-mode.html" .}}</div>
+    </header>
+    <section>
+      <h1>{{.Reason}}</h1>
+      <p>HTTP {{.Code}}</p>
+      <button onclick="history.back()">&larr; Back</button>
+    </section>
+  </body>
+  <link rel="stylesheet" href="/errors.min.css" />
+</html>
