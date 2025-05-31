@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "./shared/common.css";
+
+section {
+  @apply flex flex-col gap-4 justify-center;
+}
+
+h1 {
+  @apply text-4xl text-amber-600 font-mono font-medium text-center;
+}
+
+p {
+  @apply text-center font-mono text-gray-900;
+
+  @variant dark {
+    @apply text-gray-200;
+  }
+}
+
+button {
+  @apply cursor-pointer text-sky-600 text-sm;
+
+  @variant hover {
+    @apply underline decoration-dotted;
+  }
+}

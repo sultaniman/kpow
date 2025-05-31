@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "./theme-switcher.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+.logo {
+  @apply mx-auto w-44;
+}
+
+body {
+  @apply bg-slate-50 h-screen;
+
+  @variant dark {
+    @apply bg-black/98;
+  }
+}
+
+header {
+  @apply relative mx-auto top-4 w-8/12 lg:w-6/12 overflow-visible;
+}
+
+main,
+section {
+  @apply mx-auto mt-10 w-8/12 lg:w-6/12;
+}
+

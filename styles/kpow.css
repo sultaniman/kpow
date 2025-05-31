@@ -1,22 +1,5 @@
 @import "tailwindcss";
-
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-body {
-  @apply bg-slate-50 h-screen;
-
-  @variant dark {
-    @apply bg-black/98;
-  }
-}
-
-header {
-  @apply relative mx-auto top-4 w-8/12 lg:w-6/12 overflow-visible;
-}
-
-main {
-  @apply mx-auto mt-10 w-8/12 lg:w-6/12;
-}
+@import "./shared/common.css";
 
 /* Contact form */
 form {
@@ -105,49 +88,4 @@ input[type="submit"] {
       @apply ring-slate-400;
     }
   }
-}
-
-/* Color theme switcher */
-.theme-switcher {
-  @apply absolute top-0 right-0;
-}
-
-.modes {
-  @apply w-14;
-  @apply relative z-0;
-  @apply rounded-full p-0.75;
-  @apply inline-grid grid-cols-2 gap-0.5;
-  @apply bg-gray-950/5 text-gray-950;
-
-  @variant dark {
-    @apply bg-white/10 text-white;
-  }
-}
-.mode-icon {
-  @apply rounded-full;
-  @apply p-1.5 *:size-6 sm:p-0;
-  @apply cursor-pointer;
-  @apply transition ease-in duration-200;
-
-  @variant hover {
-    @apply bg-white;
-  }
-
-  @variant data-[checked] {
-    @apply bg-white ring inset-ring ring-gray-950/10 inset-ring-white/10;
-  }
-
-  @variant dark {
-    @variant hover {
-      @apply bg-gray-500;
-    }
-
-    @variant data-[checked] {
-      @apply bg-gray-700 text-white ring-transparent;
-    }
-  }
-}
-
-.logo {
-  @apply mx-auto w-44;
 }
