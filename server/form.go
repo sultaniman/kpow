@@ -3,11 +3,9 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
-	"github.com/sultaniman/kpow/config"
 )
 
 type Message struct {
@@ -62,13 +60,8 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 		formData.Message = *message
 	}
 
-	if h.Config.Key.Advertise && h.Config.Key.Kind == config.PGP {
-		pubkey, err := os.ReadFile(h.Config.Key.Path)
-		if err != nil {
-			log.Fatal().Err(err).Msgf("Unable to read public key: %s", h.Config.Key.Path)
-		}
-
-		formData.PubKey = string(pubkey)
+	if h.Config.Key.Advertise && len(h.Config.Key.KeyBytes) > 0 {
+		formData.PubKey = string(h.Config.Key.KeyBytes)
 	}
 
 	err := ctx.Render(http.StatusOK, "form.html", formData)
