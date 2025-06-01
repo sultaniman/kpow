@@ -1,0 +1,13 @@
+
+Todo:
+  ☐ Load keys when loading configuration
+  ☐ Implement senders
+    ☐ Webhook
+    ☐ SMTP
+  ☐ Scheduler to re-send failed messages
+    ☐ Failed messages each should be in separate files
+    ☐ Scheduler scans a folder with messages and tries to send them out
+  ☐ Configuration verification command
+  ☐ Introduce and configure rate limiting
+  ☐ Update user & dev docs
+  ☐ Create github releaser
