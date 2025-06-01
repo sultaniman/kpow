@@ -184,6 +184,12 @@ func GetConfig(path string) (*Config, error) {
 
 	if keyPath := env.GetString("KEY_PATH"); keyPath != "" {
 		config.Key.Path = keyPath
+		if keyBytes, err := os.ReadFile(keyPath); err == nil {
+			config.Key.KeyBytes = keyBytes
+		} else {
+			return nil, err
+		}
+
 	}
 
 	if backlogPath := env.GetString("BACKLOG_PATH"); backlogPath != "" {
