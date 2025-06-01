@@ -28,6 +28,7 @@ const (
 // password pgp encryption is used.
 type KeyInfo struct {
 	Path      string
+	KeyBytes  []byte
 	Kind      KeyKind
 	Password  string
 	Advertise bool
