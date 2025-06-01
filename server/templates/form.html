@@ -20,6 +20,7 @@
           name="subject"
           id="subject"
           placeholder="Subject"
+          autocomplete="off"
           value="{{if .Message.Subject}}{{.Message.Subject}}{{end}}"
         />
         <input type="hidden" name="csrf" value="{{.CSRFToken}}" />

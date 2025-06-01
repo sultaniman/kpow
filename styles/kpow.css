@@ -25,6 +25,7 @@ textarea {
 input[type="text"] {
   @apply w-12/12 bg-white border-slate-400 border-1 p-2 rounded-md;
   @apply placeholder-slate-800;
+
   @variant focus {
     @apply ring-2 outline-none ring-blue-300 border-blue-400;
   }
