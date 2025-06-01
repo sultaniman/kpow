@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -8,8 +9,10 @@ import (
 )
 
 type Message struct {
-	Subject string
-	Content string
+	Subject      string
+	SubjectError string
+	Content      string
+	ContentError string
 }
 
 type FormData struct {
@@ -32,13 +35,32 @@ na03n83y9DttvF2XOw==
 -----END AGE ENCRYPTED FILE-----`
 
 func (h *Handler) RenderForm(ctx echo.Context) error {
-	err := ctx.Render(http.StatusOK, "form.html", FormData{
+	formData := FormData{
 		CSRFToken: ctx.Get("csrfToken").(string),
 		Title:     h.Config.Server.Title,
-		Message:   Message{},
 		PubKey:    PubKeySample,
-	})
+		Message:   Message{},
+	}
 
+	if ctx.Request().Method == "POST" {
+		message := new(Message)
+		if err := ctx.Bind(message); err != nil {
+			formData.Note = fmt.Sprintf("invalid form data: %v, ", err)
+			formData.IsError = true
+		}
+
+		if message.Subject == "" {
+			message.SubjectError = "Subject is required"
+		}
+
+		if message.Content == "" {
+			message.ContentError = "Message is required"
+		}
+
+		formData.Message = *message
+	}
+
+	err := ctx.Render(http.StatusOK, "form.html", formData)
 	if err != nil {
 		log.Err(err).Msg("Template rendering error")
 	}

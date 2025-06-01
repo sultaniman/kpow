@@ -7,7 +7,7 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/ProtonMail/gopenpgp/v3 v3.2.0
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/kortschak/utter v1.7.0
+	github.com/goforj/godump v1.0.5
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/cobra v1.9.1

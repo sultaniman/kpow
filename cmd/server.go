@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/kortschak/utter"
+	"github.com/goforj/godump"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -66,7 +66,7 @@ var (
 			}
 
 			if env.GetBool("DEBUG") {
-				utter.Dump(config)
+				godump.Dump(config)
 			}
 
 			app, err := server.CreateServer(config)

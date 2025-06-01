@@ -39,6 +39,14 @@ input[type="text"] {
   }
 }
 
+.error {
+  @apply text-red-500 text-sm -mt-5;
+
+  @variant dark {
+    @apply text-red-400;
+  }
+}
+
 .controls {
   @apply flex justify-between items-center;
 }
@@ -60,7 +68,12 @@ input[type="text"] {
   }
 
   @variant dark {
-    @apply from-gray-700 to-gray-800;
+    @apply bg-gradient-to-l from-gray-700 to-gray-800;
+    @apply text-white;
+
+    @variant hover {
+      @apply text-slate-400;
+    }
 
     @variant focus {
       @apply ring-slate-400;
@@ -84,6 +97,10 @@ input[type="submit"] {
 
   @variant dark {
     @apply from-gray-700 to-gray-800;
+
+    @variant hover {
+      @apply text-slate-400;
+    }
 
     @variant focus {
       @apply ring-slate-400;

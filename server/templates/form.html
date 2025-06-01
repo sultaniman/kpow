@@ -23,15 +23,17 @@
           autocomplete="off"
           value="{{if .Message.Subject}}{{.Message.Subject}}{{end}}"
         />
+        {{if .Message.SubjectError}}<p class="error">{{.Message.SubjectError}}</p>{{end}}
         <input type="hidden" name="csrf" value="{{.CSRFToken}}" />
         <textarea
-          name="body"
+          name="content"
           id="body"
           rows="8"
           placeholder="What's on your mind?"
         >
 {{if .Message.Content}}{{.Message.Content}}{{end}}</textarea
         >
+        {{if .Message.ContentError}}<p class="error">{{.Message.ContentError}}</p>{{end}}
         <div class="controls">
           {{if .PubKey}}{{template "pubkey.html" .}}{{end}}
           <input type="submit" value="Send" />
