@@ -3,16 +3,28 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
+	"github.com/sultaniman/kpow/config"
 )
 
 type Message struct {
-	Subject      string
+	Subject      string `form:"subject" validate:"required"`
 	SubjectError string
-	Content      string
+	Content      string `form:"content" validate:"required"`
 	ContentError string
+}
+
+func (m *Message) CheckForm() {
+	if m.Subject == "" {
+		m.SubjectError = "Subject is required"
+	}
+
+	if m.Content == "" {
+		m.ContentError = "Message is required"
+	}
 }
 
 type FormData struct {
@@ -26,38 +38,37 @@ type FormData struct {
 	IsError bool
 }
 
-const PubKeySample = `-----BEGIN AGE ENCRYPTED FILE-----
-YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3WnpnL0h6OHp6bDEySHFq
-azlWWW9EUmxNUXk4a29NOElUWERFSXJaNXhVClV4d3pocXNGL2ZNZnRwV0RvY3NT
-STUzRHBmRzFJcEhhdmtFTGZabkcyZmcKLS0tIFhvNnJReVBnOXc4Zm1FOFdZdHhB
-SzlEblMralZqcmloSXRucHNSV2Fqc1EK3KFfOX1Ln968kq1tX1iaI+9RoSqekVOF
-na03n83y9DttvF2XOw==
------END AGE ENCRYPTED FILE-----`
+const CSRFTokenKey = "csrfToken"
 
 func (h *Handler) RenderForm(ctx echo.Context) error {
+	csrfToken := ctx.Get(CSRFTokenKey).(string)
 	formData := FormData{
-		CSRFToken: ctx.Get("csrfToken").(string),
+		CSRFToken: csrfToken,
 		Title:     h.Config.Server.Title,
-		PubKey:    PubKeySample,
+		PubKey:    "",
 		Message:   Message{},
 	}
 
 	if ctx.Request().Method == "POST" {
 		message := new(Message)
 		if err := ctx.Bind(message); err != nil {
-			formData.Note = fmt.Sprintf("invalid form data: %v, ", err)
+			log.Warn().Err(err).Msg("Failed to bind form data")
+
+			formData.Note = fmt.Sprintf("Invalid form data: %v", err)
 			formData.IsError = true
 		}
 
-		if message.Subject == "" {
-			message.SubjectError = "Subject is required"
-		}
-
-		if message.Content == "" {
-			message.ContentError = "Message is required"
-		}
-
+		message.CheckForm()
 		formData.Message = *message
+	}
+
+	if h.Config.Key.Advertise && h.Config.Key.Kind == config.PGP {
+		pubkey, err := os.ReadFile(h.Config.Key.Path)
+		if err != nil {
+			log.Fatal().Err(err).Msgf("Unable to read public key: %s", h.Config.Key.Path)
+		}
+
+		formData.PubKey = string(pubkey)
 	}
 
 	err := ctx.Render(http.StatusOK, "form.html", formData)
