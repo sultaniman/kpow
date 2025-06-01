@@ -184,12 +184,6 @@ func GetConfig(path string) (*Config, error) {
 
 	if keyPath := env.GetString("KEY_PATH"); keyPath != "" {
 		config.Key.Path = keyPath
-		if keyBytes, err := os.ReadFile(keyPath); err == nil {
-			config.Key.KeyBytes = keyBytes
-		} else {
-			return nil, err
-		}
-
 	}
 
 	if backlogPath := env.GetString("BACKLOG_PATH"); backlogPath != "" {
@@ -198,6 +192,12 @@ func GetConfig(path string) (*Config, error) {
 
 	if backlogCron := env.GetString("BACKLOG_CRON"); backlogCron != "" {
 		config.BacklogCron = backlogCron
+	}
+
+	if keyBytes, err := os.ReadFile(config.Key.Path); err == nil {
+		config.Key.KeyBytes = keyBytes
+	} else {
+		return nil, err
 	}
 
 	return config, nil
