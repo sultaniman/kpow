@@ -17,7 +17,7 @@ type Message struct {
 	ContentError string
 }
 
-func (m *Message) CheckForm() {
+func (m *Message) Check() {
 	if m.Subject == "" {
 		m.SubjectError = "Subject is required"
 	}
@@ -58,7 +58,7 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 			formData.IsError = true
 		}
 
-		message.CheckForm()
+		message.Check()
 		formData.Message = *message
 	}
 
