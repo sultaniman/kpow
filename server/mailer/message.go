@@ -10,7 +10,7 @@ import (
 
 type Message struct {
 	Subject          string `json:"subject"`
-	EncryptedContent string `json:"content"`
+	EncryptedMessage string `json:"content"`
 	Hash             string `json:"hash"`
 }
 
@@ -26,4 +26,12 @@ func (m *Message) Save(basepath string) error {
 	}
 
 	return nil
+}
+
+func NewMessage(subject string, encryptedMessage string, hash string) Message {
+	return Message{
+		Subject:          subject,
+		EncryptedMessage: encryptedMessage,
+		Hash:             hash,
+	}
 }
