@@ -17,7 +17,11 @@ var resources embed.FS
 func CreateServer(config *config.Config) (*echo.Echo, error) {
 	app := echo.New()
 	app.HideBanner = true
-	handler := NewHandler(config)
+	handler, err := NewHandler(config)
+	if err != nil {
+		return nil, err
+	}
+
 	templates, err := template.ParseFS(resources, "templates/*.html", "templates/icons/*.svg")
 	if err != nil {
 		return nil, err
