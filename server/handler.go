@@ -6,10 +6,21 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/sultaniman/kpow/config"
+	"github.com/sultaniman/kpow/server/enc"
+	"github.com/sultaniman/kpow/server/mailer"
 )
 
 type Handler struct {
-	Config *config.Config
+	Config             *config.Config
+	EncryptionProvider enc.KeyLike
+	Mailer             mailer.Mailer
+}
+
+func (h *Handler) internalError(message string) *echo.HTTPError {
+	return echo.NewHTTPError(
+		http.StatusInternalServerError,
+		message,
+	)
 }
 
 type ServerError struct {
@@ -54,8 +65,13 @@ func errorHandler(err error, ctx echo.Context) {
 	ctx.Render(code, "error.html", serverError)
 }
 
-func NewHandler(config *config.Config) Handler {
-	return Handler{
-		Config: config,
+func NewHandler(config *config.Config) (*Handler, error) {
+	if crypt, err := enc.LoadKey(&config.Key); err == nil {
+		return &Handler{
+			Config:             config,
+			EncryptionProvider: crypt,
+		}, nil
+	} else {
+		return nil, err
 	}
 }
