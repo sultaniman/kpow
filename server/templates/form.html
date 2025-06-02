@@ -11,7 +11,7 @@
     <main>
       <form method="post">
         {{if .Note}}
-        <span class="note note-{{if .IsError}}error{{else}}info{{end}}">
+        <span class="note note-{{.NoteKind}}">
           {{.Note}}
         </span>
         {{end}}

@@ -22,7 +22,7 @@ func (m *Message) Save(basepath string) error {
 	}
 
 	if _, err := os.Stat(filepath); errors.Is(err, os.ErrNotExist) {
-		return os.WriteFile(fmt.Sprintf("%s.json", filepath), messageBytes, 0644)
+		return os.WriteFile(fmt.Sprintf("kpow-%s.json", filepath), messageBytes, 0644)
 	}
 
 	return nil

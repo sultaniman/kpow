@@ -1,67 +1,33 @@
 package server
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
+	"github.com/sultaniman/kpow/server/form"
 )
-
-type Message struct {
-	Subject      string `form:"subject" validate:"required"`
-	SubjectError string
-	Content      string `form:"content" validate:"required"`
-	ContentError string
-}
-
-func (m *Message) Check() {
-	if m.Subject == "" {
-		m.SubjectError = "Subject is required"
-	}
-
-	if m.Content == "" {
-		m.ContentError = "Message is required"
-	}
-}
-
-type FormData struct {
-	CSRFToken string
-	Title     string
-
-	Message Message
-	PubKey  string
-
-	Note    string
-	IsError bool
-}
 
 const CSRFTokenKey = "csrfToken"
 
 func (h *Handler) RenderForm(ctx echo.Context) error {
 	csrfToken := ctx.Get(CSRFTokenKey).(string)
-	formData := FormData{
-		CSRFToken: csrfToken,
-		Title:     h.Config.Server.Title,
-		PubKey:    "",
-		Message:   Message{},
+	formData := form.GetFormData(csrfToken, h.Config)
+	if messageForm, err := form.BindFormMessage(ctx); err == nil {
+		formData.Message = *messageForm
+	} else {
+		formData.NoteKind = form.ErrorNote
+		formData.Note = err.Error()
 	}
 
-	if ctx.Request().Method == "POST" {
-		message := new(Message)
-		if err := ctx.Bind(message); err != nil {
-			log.Warn().Err(err).Msg("Failed to bind form data")
-
-			formData.Note = fmt.Sprintf("Invalid form data: %v", err)
-			formData.IsError = true
+	if formData.Message.IsValid {
+		err := formData.EncryptAndSave(h.EncryptionProvider, h.Config.BacklogPath)
+		if err != nil {
+			return h.internalError(err.Error())
 		}
 
-		message.Check()
-		formData.Message = *message
-	}
-
-	if h.Config.Key.Advertise && len(h.Config.Key.KeyBytes) > 0 {
-		formData.PubKey = string(h.Config.Key.KeyBytes)
+		formData.Note = "Wonderful! Your message is scheduled for delivery."
+		formData.NoteKind = form.SuccessNote
 	}
 
 	err := ctx.Render(http.StatusOK, "form.html", formData)

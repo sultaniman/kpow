@@ -19,6 +19,7 @@ kpow
 Thumbs.db
 .vscode/
 tmp/
+kpow-*.json
 
 ### Node ###
 

@@ -2,11 +2,14 @@ package form
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/sultaniman/kpow/config"
+	"github.com/sultaniman/kpow/server/enc"
+	"github.com/sultaniman/kpow/server/mailer"
 )
 
 type MessageForm struct {
@@ -56,6 +59,25 @@ type FormData struct {
 	NoteKind NoteKind
 }
 
+func (f *FormData) EncryptAndSave(encryptionProvider enc.KeyLike, backlogPath string) error {
+	encrypted, err := encryptionProvider.Encrypt(f.Message.Content)
+	if err != nil {
+		log.Err(err).Msg("Encryption failed")
+		return errors.New("unable encrypt the message")
+	}
+
+	message := mailer.NewMessage(f.Message.Subject, encrypted, f.Message.Hash())
+	err = message.Save(backlogPath)
+	if err != nil {
+		log.Err(err).Msg("Unable to save message")
+		return errors.New("unable to save message")
+	}
+
+	// when done reset the form
+	f.Message = MessageForm{}
+	return nil
+}
+
 func GetFormData(csrfToken string, config *config.Config) *FormData {
 	form := &FormData{
 		CSRFToken: csrfToken,
@@ -71,6 +93,8 @@ func GetFormData(csrfToken string, config *config.Config) *FormData {
 	return form
 }
 
+// BindFormMessage
+// Binds and validates subject and message in the submitted form
 func BindFormMessage(ctx echo.Context) (*MessageForm, error) {
 	if ctx.Request().Method != "POST" {
 		return nil, nil

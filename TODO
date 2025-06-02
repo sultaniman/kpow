@@ -1,5 +1,7 @@
 Todo:
-  ☐ Load keys when loading configuration
+  ✔ Load keys when loading configuration @done(25-06-01 21:59)
+  ✔ Encrypt form data if valid @done(25-06-02 12:01)
+  ☐ Custom errors
   ☐ Implement senders
     ☐ Webhook
     ☐ SMTP
@@ -9,4 +11,5 @@ Todo:
   ☐ Configuration verification command
   ☐ Introduce and configure rate limiting
   ☐ Update user & dev docs
+    ☐ How to generate PGP and AGE keys
   ☐ Create github releaser
