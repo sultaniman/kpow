@@ -14,3 +14,10 @@ advertise = true
 dsn = "smtp://user:password@smtp.example.com:587"
 from = "sender@example.com"
 to = "recipient@example.com"
+
+[inbox]
+path = "inbox"
+cron = "* * * * *"
+
+[webhook]
+url = "http://localhost:8000/webhook"

@@ -59,7 +59,7 @@ type FormData struct {
 	NoteKind NoteKind
 }
 
-func (f *FormData) EncryptAndSave(encryptionProvider enc.KeyLike, backlogPath string) error {
+func (f *FormData) EncryptAndSave(encryptionProvider enc.KeyLike, inboxPath string) error {
 	encrypted, err := encryptionProvider.Encrypt(f.Message.Content)
 	if err != nil {
 		log.Err(err).Msg("Encryption failed")
@@ -67,7 +67,7 @@ func (f *FormData) EncryptAndSave(encryptionProvider enc.KeyLike, backlogPath st
 	}
 
 	message := mailer.NewMessage(f.Message.Subject, encrypted, f.Message.Hash())
-	err = message.Save(backlogPath)
+	err = message.Save(inboxPath)
 	if err != nil {
 		log.Err(err).Msg("Unable to save message")
 		return errors.New("unable to save message")

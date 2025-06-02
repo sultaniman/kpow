@@ -21,7 +21,7 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 	}
 
 	if formData.Message.IsValid {
-		err := formData.EncryptAndSave(h.EncryptionProvider, h.Config.BacklogPath)
+		err := formData.EncryptAndSave(h.EncryptionProvider, h.Config.Inbox.Path)
 		if err != nil {
 			return h.internalError(err.Error())
 		}

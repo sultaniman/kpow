@@ -47,6 +47,15 @@ type Mailer struct {
 	DSN  string
 }
 
+type Webhook struct {
+	Url string
+}
+
+type Inbox struct {
+	Path string
+	Cron string
+}
+
 type RateLimiter struct {
 	RequestsPerMinute int
 	NumBurstRequests  int
@@ -60,11 +69,10 @@ type Config struct {
 	RateLimiter *RateLimiter
 
 	// Use webhook instead of mailer
-	WebhookUrl string
+	Webhook Webhook
 
-	// Resend config
-	BacklogPath string
-	BacklogCron string
+	// Inbox config
+	Inbox Inbox
 }
 
 func (c *Config) Validate() []error {
@@ -186,12 +194,12 @@ func GetConfig(path string) (*Config, error) {
 		config.Key.Path = keyPath
 	}
 
-	if backlogPath := env.GetString("BACKLOG_PATH"); backlogPath != "" {
-		config.BacklogPath = backlogPath
+	if inboxPath := env.GetString("INBOX_PATH"); inboxPath != "" {
+		config.Inbox.Path = inboxPath
 	}
 
-	if backlogCron := env.GetString("BACKLOG_CRON"); backlogCron != "" {
-		config.BacklogCron = backlogCron
+	if inboxCron := env.GetString("INBOX_CRON"); inboxCron != "" {
+		config.Inbox.Cron = inboxCron
 	}
 
 	if keyBytes, err := os.ReadFile(config.Key.Path); err == nil {
