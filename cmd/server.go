@@ -11,6 +11,7 @@ import (
 	"github.com/sultaniman/env"
 	"github.com/sultaniman/kpow/config"
 	"github.com/sultaniman/kpow/server"
+	"github.com/sultaniman/kpow/server/cron"
 )
 
 const envPrefix = "KPOW_"
@@ -72,11 +73,16 @@ var (
 
 			app, err := server.CreateServer(appConfig)
 			if err != nil {
-				log.Fatal().Err(err)
 				return err
 			}
 
+			scheduler := cron.NewScheduler(appConfig.Inbox.Cron)
+			scheduler.AddFunc(appConfig.Inbox.Cron, cron.InboxCleaner(appConfig.Inbox.Path))
+			scheduler.Start()
+			defer scheduler.Stop()
+
 			err = app.Start(fmt.Sprintf("%s:%d", appConfig.Server.Host, appConfig.Server.Port))
+
 			log.Fatal().Err(err)
 
 			return nil
