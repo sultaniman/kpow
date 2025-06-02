@@ -27,8 +27,8 @@ Your encryption key is generated from a passphrase.
 💥  Weak or reused passwords can be brute-forced if
     someone gets your encrypted data.
 
-🔑  For stronger protection, use a real private key.
-✅  Use a long, unique passphrase (preferably generated).`
+🔑  For stronger protection, use a real public key.
+✅  Use a long and unique passphrase (preferably generated).`
 
 func WarnAboutPassphrase() {
 	border := lipgloss.NewStyle().
