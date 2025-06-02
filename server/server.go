@@ -14,10 +14,10 @@ import (
 //go:embed templates/* templates/icons/*
 var resources embed.FS
 
-func CreateServer(config *config.Config) (*echo.Echo, error) {
+func CreateServer(conf *config.Config) (*echo.Echo, error) {
 	app := echo.New()
 	app.HideBanner = true
-	handler, err := NewHandler(config)
+	handler, err := NewHandler(conf)
 	if err != nil {
 		return nil, err
 	}

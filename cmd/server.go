@@ -30,29 +30,30 @@ var (
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			config, err := config.GetConfig(configFile)
+			config.WarnAboutPassphrase()
+			appConfig, err := config.GetConfig(configFile)
 			if err != nil {
 				return err
 			}
 
 			if port > 0 {
-				config.Server.Port = port
+				appConfig.Server.Port = port
 			}
 
 			if host != "" {
-				config.Server.Host = host
+				appConfig.Server.Host = host
 			}
 
 			if mailerDsn != "" {
-				config.Mailer.DSN = mailerDsn
+				appConfig.Mailer.DSN = mailerDsn
 			}
 
 			if advertiseKey {
-				config.Key.Advertise = advertiseKey
+				appConfig.Key.Advertise = advertiseKey
 			}
 
 			if logLevel != "" {
-				level, err := config.ParseLogLevel(logLevel)
+				level, err := appConfig.ParseLogLevel(logLevel)
 				if err != nil {
 					return err
 				}
@@ -60,22 +61,22 @@ var (
 				zerolog.SetGlobalLevel(level)
 			}
 
-			if errorList := config.Validate(); len(errorList) > 0 {
+			if errorList := appConfig.Validate(); len(errorList) > 0 {
 				server.LogErrors(errorList)
 				return errors.New("configuration error")
 			}
 
 			if env.GetBool("DEBUG") {
-				godump.Dump(config)
+				godump.Dump(appConfig)
 			}
 
-			app, err := server.CreateServer(config)
+			app, err := server.CreateServer(appConfig)
 			if err != nil {
 				log.Fatal().Err(err)
 				return err
 			}
 
-			err = app.Start(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port))
+			err = app.Start(fmt.Sprintf("%s:%d", appConfig.Server.Host, appConfig.Server.Port))
 			log.Fatal().Err(err)
 
 			return nil

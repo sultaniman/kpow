@@ -1,6 +1,7 @@
 Todo:
   ✔ Load keys when loading configuration @done(25-06-01 21:59)
   ✔ Encrypt form data if valid @done(25-06-02 12:01)
+  ☐ Warn users when using keys derived from password/passphrase
   ☐ Custom errors
   ☐ Implement senders
     ☐ Webhook
