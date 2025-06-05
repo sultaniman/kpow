@@ -36,9 +36,13 @@ func CreateServer(conf *config.Config) (*echo.Echo, error) {
 		HTML5:      false,
 		Filesystem: http.FS(resources),
 	}))
-	allowedFormMethods := []string{"GET", "POST"}
+
+	app.Use(middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{
+		Limit: "0.5KI", // 512 bytes
+	}))
+
 	app.Match(
-		allowedFormMethods,
+		[]string{"GET", "POST"},
 		"/",
 		handler.RenderForm,
 		middleware.CSRFWithConfig(middleware.CSRFConfig{
