@@ -51,6 +51,8 @@ func errorHandler(err error, ctx echo.Context) {
 		serverError.Reason = "Invalid CSRF token"
 	case http.StatusNotFound:
 		serverError.Title = "Not Found"
+	case http.StatusRequestEntityTooLarge:
+		serverError.Title = "Your message is too big..."
 	default:
 		serverError.Title = "Unknown Error"
 		serverError.Reason = "Oopsie! Unknown Error"
