@@ -15,14 +15,14 @@ type Message struct {
 }
 
 func (m *Message) Save(basepath string) error {
-	filepath := path.Join(basepath, m.Hash)
+	filepath := path.Join(basepath, fmt.Sprintf("kpow-%s.json", m.Hash))
 	messageBytes, err := json.Marshal(m)
 	if err != nil {
 		return err
 	}
 
 	if _, err := os.Stat(filepath); errors.Is(err, os.ErrNotExist) {
-		return os.WriteFile(fmt.Sprintf("kpow-%s.json", filepath), messageBytes, 0644)
+		return os.WriteFile(filepath, messageBytes, 0644)
 	}
 
 	return nil
