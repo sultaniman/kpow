@@ -39,7 +39,7 @@ func CreateServer(conf *config.Config) (*echo.Echo, error) {
 	}))
 
 	app.Use(middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{
-		Limit: fmt.Sprintf("%fKI", float32(conf.Server.MessageSize)/1024),
+		Limit: fmt.Sprintf("%dB", conf.Server.MessageSize),
 	}))
 
 	app.Match(
