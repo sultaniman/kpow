@@ -14,7 +14,10 @@ import (
 	"github.com/sultaniman/kpow/server/cron"
 )
 
-const envPrefix = "KPOW_"
+const (
+	envPrefix               = "KPOW_"
+	defaultMessageSizeBytes = 240
+)
 
 var (
 	port         int
@@ -26,6 +29,9 @@ var (
 	fromEmail    string
 	toEmail      string
 	logLevel     string
+	customBanner string
+	messageSize  int
+	hideLogo     bool
 	advertiseKey bool
 	startCmd     = &cobra.Command{
 		Use:   "start",
@@ -123,4 +129,7 @@ func init() {
 	startCmd.PersistentFlags().StringVarP(&pubKeyPath, "pubkey", "k", "", "Path to public key file")
 	startCmd.PersistentFlags().BoolVarP(&advertiseKey, "advertise-key", "s", false, "Advertise public key")
 	startCmd.PersistentFlags().StringVarP(&logLevel, "log-level", "l", "WARN", "Log level")
+	startCmd.PersistentFlags().StringVarP(&customBanner, "banner", "b", "", "Custom banner above the form (should be a path to html file)")
+	startCmd.PersistentFlags().BoolVarP(&hideLogo, "hide-logo", "n", false, "Hide logo above the form")
+	startCmd.PersistentFlags().IntVarP(&messageSize, "size", "s", defaultMessageSizeBytes, "Size of the message in bytes")
 }
