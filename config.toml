@@ -3,6 +3,9 @@ title = "KPow"
 port = 6543
 host = "0.0.0.0"
 log_level = "DEBUG"
+message_size = 240
+hide_logo = false
+custom_banner = "path/to/banner.html"
 
 [key]
 kind = "pgp"
