@@ -16,6 +16,13 @@ require (
 )
 
 require (
+	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/gorilla/css v1.0.1 // indirect
+	github.com/microcosm-cc/bluemonday v1.0.27 // indirect
+)
+
+require (
 	github.com/ProtonMail/go-crypto v1.2.0 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
@@ -26,6 +33,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
