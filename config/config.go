@@ -35,10 +35,13 @@ type KeyInfo struct {
 }
 
 type ServerConfig struct {
-	Title    string
-	Port     int
-	Host     string
-	LogLevel string `toml:"log_level"`
+	Title        string
+	Port         int
+	Host         string
+	MessageSize  int    `toml:"message_size"`
+	HideLogo     bool   `toml:"hide_logo"`
+	CustomBanner string `toml:"custom_banner"`
+	LogLevel     string `toml:"log_level"`
 }
 
 type Mailer struct {
