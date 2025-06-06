@@ -2,6 +2,7 @@ package server
 
 import (
 	"embed"
+	"fmt"
 	"net/http"
 	"text/template"
 
@@ -38,7 +39,7 @@ func CreateServer(conf *config.Config) (*echo.Echo, error) {
 	}))
 
 	app.Use(middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{
-		Limit: "0.5KI", // 512 bytes
+		Limit: fmt.Sprintf("%fKI", float32(conf.Server.MessageSize)/1024),
 	}))
 
 	app.Match(
