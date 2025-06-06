@@ -57,6 +57,10 @@ type Webhook struct {
 type Inbox struct {
 	Path string
 	Cron string
+	// We want to send messages in batches
+	// because otherwise we might ddos the
+	// receiving side/server.
+	BatchSize int `toml:"batch_size"`
 }
 
 type RateLimiter struct {
