@@ -58,6 +58,20 @@ $ kpow start --config=path-to-config.toml
 | KPOW_HOST        | Host                   | localhost     |
 | KPOW_LOG_LEVEL   | Log Level              | info          |
 
+## Mailer logic
+
+```mermaid
+flowchart TD
+    A[New Message Submitted] --> B{Try to Send Immediately?}
+    B -- Success --> C[Message Sent]
+    B -- Error --> D[Save to Inbox Folder]
+    D --> E[Scheduler Run]
+    E --> F[Read Messages in Batches]
+    F --> G{Try to Re-Send}
+    G -- Success --> H[Message Sent]
+    G -- Error --> E
+```
+
 ## Development
 
 ### Custom form
