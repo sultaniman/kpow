@@ -26,39 +26,23 @@ na03n83y9DttvF2XOw==
 
 // Sanity check for key encryption
 func TestAgeDecryptWithKey(t *testing.T) {
-	_, identity := getAgeCredentials(true)
+	_, identity := getAgeCredentials()
 	decryptedMessage := decrypAgeMessage(preEncryptedAgeMessage, identity)
 	assert.Equal(t, decryptedMessage, "hello")
 }
 
 func TestAgeEncryptDecryptWithKey(t *testing.T) {
-	recipient, identity := getAgeCredentials(true)
-	ageKey, _ := NewAgeKey(recipient, "")
+	recipient, identity := getAgeCredentials()
+	ageKey, _ := NewAgeKey(recipient)
 	encryptedMessage, _ := ageKey.Encrypt("message")
 	assert.Contains(t, encryptedMessage, "BEGIN AGE ENCRYPTED")
 	decryptedMessage := decrypAgeMessage(encryptedMessage, identity)
 	assert.Equal(t, decryptedMessage, "message")
 }
 
-// Sanity check for passphrase encryption
-func TestAgeEncryptDecryptWithPassphrase(t *testing.T) {
-	ageKey, _ := NewAgeKey(nil, "password")
-	recipient, identity := getAgeCredentials(false)
-	ageKey.Recipient = recipient
-	encryptedMessage, _ := ageKey.Encrypt("message")
-	decryptedMessage := decrypAgeMessage(encryptedMessage, identity)
-	assert.Equal(t, decryptedMessage, "message")
-}
-
-func getAgeCredentials(key bool) (age.Recipient, age.Identity) {
-	if key {
-		recipient, _ := age.ParseX25519Recipient(agePublicKey)
-		identity, _ := age.ParseX25519Identity(agePrivateKey)
-		return recipient, identity
-	}
-
-	recipient, _ := age.NewScryptRecipient("password")
-	identity, _ := age.NewScryptIdentity("password")
+func getAgeCredentials() (age.Recipient, age.Identity) {
+	recipient, _ := age.ParseX25519Recipient(agePublicKey)
+	identity, _ := age.ParseX25519Identity(agePrivateKey)
 	return recipient, identity
 }
 

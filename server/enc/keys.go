@@ -25,7 +25,7 @@ func LoadKey(info *config.KeyInfo) (KeyLike, error) {
 		if err != nil {
 			log.Fatal().Err(err)
 		}
-		return NewAgeKey(recipient, info.Password)
+		return NewAgeKey(recipient)
 	case config.PGP:
 		pubkey, err := os.ReadFile(info.Path)
 		if err != nil {
@@ -37,7 +37,7 @@ func LoadKey(info *config.KeyInfo) (KeyLike, error) {
 			log.Fatal().Err(err)
 		}
 
-		return NewPGPKey(publicKey, info.Password)
+		return NewPGPKey(publicKey)
 	default:
 		log.Fatal().Msgf("Uknown key kind %v", info.Kind)
 		return nil, nil

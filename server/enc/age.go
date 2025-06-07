@@ -12,27 +12,9 @@ import (
 
 type AgeKey struct {
 	Recipient age.Recipient
-	Password  string
 }
 
 func (k *AgeKey) Encrypt(message string) (string, error) {
-	// try with recipient if set
-	if k.Recipient != nil {
-		return k.withRecipient(message)
-	}
-
-	// else try with password
-	recipient, err := age.NewScryptRecipient(k.Password)
-	if err != nil {
-		log.Error().Err(err)
-		return "", err
-	}
-
-	k.Recipient = recipient
-	return k.withRecipient(message)
-}
-
-func (k *AgeKey) withRecipient(message string) (string, error) {
 	buf := &bytes.Buffer{}
 	armorWriter := armor.NewWriter(buf)
 	writer, err := age.Encrypt(armorWriter, k.Recipient)
@@ -59,13 +41,10 @@ func (k *AgeKey) withRecipient(message string) (string, error) {
 	return buf.String(), nil
 }
 
-func NewAgeKey(recipient age.Recipient, password string) (*AgeKey, error) {
-	if recipient == nil && password == "" {
-		return nil, errors.New("path or password expected")
+func NewAgeKey(recipient age.Recipient) (*AgeKey, error) {
+	if recipient == nil {
+		return nil, errors.New("expected recipient expected got nil")
 	}
 
-	return &AgeKey{
-		recipient,
-		password,
-	}, nil
+	return &AgeKey{recipient}, nil
 }

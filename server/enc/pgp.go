@@ -7,19 +7,10 @@ import (
 )
 
 type PGPKey struct {
-	Key      *crypto.Key
-	Password string
+	Key *crypto.Key
 }
 
 func (k *PGPKey) Encrypt(message string) (string, error) {
-	if k.Key != nil {
-		return k.withPubKey(message)
-	}
-
-	return k.withPassword(message)
-}
-
-func (k *PGPKey) withPubKey(message string) (string, error) {
 	pgp := crypto.PGP()
 	encHandle, err := pgp.Encryption().Recipient(k.Key).New()
 	if err != nil {
@@ -39,33 +30,10 @@ func (k *PGPKey) withPubKey(message string) (string, error) {
 	return string(armored), nil
 }
 
-func (k *PGPKey) withPassword(message string) (string, error) {
-	pgp := crypto.PGP()
-	encHandle, err := pgp.Encryption().Password([]byte(k.Password)).New()
-	if err != nil {
-		return "", err
+func NewPGPKey(key *crypto.Key) (*PGPKey, error) {
+	if key == nil {
+		return nil, errors.New("expected pgp key expected got nil")
 	}
 
-	pgpMessage, err := encHandle.Encrypt([]byte(message))
-	if err != nil {
-		return "", err
-	}
-
-	armored, err := pgpMessage.ArmorBytes()
-	if err != nil {
-		return "", err
-	}
-
-	return string(armored), nil
-}
-
-func NewPGPKey(key *crypto.Key, password string) (*PGPKey, error) {
-	if key == nil && password == "" {
-		return nil, errors.New("path or password expected")
-	}
-
-	return &PGPKey{
-		key,
-		password,
-	}, nil
+	return &PGPKey{key}, nil
 }

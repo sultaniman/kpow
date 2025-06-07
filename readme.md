@@ -8,7 +8,6 @@ Simple loopback form.
 
 ```sh
 $ kpow start --pubkey=public_key_path \
-             --password=password \
              --port=8080 \
              --host=localhost \
              --mailer=smtp://user:password@smtp.example.com:587 \
@@ -50,7 +49,6 @@ $ kpow start --config=path-to-config.toml
 | ---------------- | ---------------------- | ------------- |
 | KPOW_KEY_KIND    | Key Kind               | null          |
 | KPOW_KEY_PATH    | Path to public key     | null          |
-| KPOW_PASSWORD    | Password               | ""            |
 | KPOW_ADVERTISE   | Show pubkey on website | false         |
 | KPOW_MAILER_DSN  | Mailer DSN             | null          |
 | KPOW_MAILER_FROM | Mailer From            | null          |

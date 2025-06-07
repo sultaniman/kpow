@@ -10,7 +10,6 @@ import (
 
 const (
 	secretMessage       = "secret message"
-	gpgPassword         = "secret"
 	gpgPubkey           = "testkeys/pubkey.asc"
 	gpgPrivkey          = "testkeys/priv.gpg"
 	pgpEncryptedMessage = `
@@ -70,21 +69,13 @@ func TestPGPDecryptWithKey(t *testing.T) {
 }
 
 func TestPGPEncryptAndDecryptWithKey(t *testing.T) {
-	pgpKey, _ := NewPGPKey(gpgPublicKey, "")
+	pgpKey, _ := NewPGPKey(gpgPublicKey)
 	encryptedMessage, _ := pgpKey.Encrypt(secretMessage)
 	decHandle, _ := pgp.
 		Decryption().
 		DecryptionKey(gpgPrivateKey).
 		New()
 
-	decResult, _ := decHandle.Decrypt([]byte(encryptedMessage), crypto.Armor)
-	assert.Equal(t, secretMessage, string(decResult.Bytes()))
-}
-
-func TestPGPEncryptAndDecryptWithPassword(t *testing.T) {
-	pgpKey, _ := NewPGPKey(nil, gpgPassword)
-	encryptedMessage, _ := pgpKey.Encrypt(secretMessage)
-	decHandle, _ := pgp.Decryption().Password([]byte(gpgPassword)).New()
 	decResult, _ := decHandle.Decrypt([]byte(encryptedMessage), crypto.Armor)
 	assert.Equal(t, secretMessage, string(decResult.Bytes()))
 }
