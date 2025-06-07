@@ -2,10 +2,11 @@ Todo:
   ✔ Load keys when loading configuration @done(25-06-01 21:59)
   ✔ Encrypt form data if valid @done(25-06-02 12:01)
   ☐ Warn users when using keys derived from password/passphrase
-  ☐ Custom errors
-  ☐ Implement senders
-    ☐ Webhook
-    ☐ SMTP
+  ☐ Allow custom banner on top of the form
+  ✔ Custom errors @done(25-06-05 19:27)
+  ✔ Implement senders @done(25-06-07 13:53)
+    ✔ Webhook @done(25-06-07 13:53)
+    ✔ SMTP @done(25-06-07 13:53)
   ☐ Scheduler to re-send failed messages
     ☐ Failed messages each should be in separate files
     ☐ Scheduler scans a folder with messages and tries to send them out
