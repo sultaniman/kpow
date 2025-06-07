@@ -7,6 +7,8 @@ Todo:
   ✔ Implement senders @done(25-06-07 13:53)
     ✔ Webhook @done(25-06-07 13:53)
     ✔ SMTP @done(25-06-07 13:53)
+  ☐ Remove password encryption
+  ☐ Add RSA and SSH encryption
   ☐ Scheduler to re-send failed messages
     ☐ Failed messages each should be in separate files
     ☐ Scheduler scans a folder with messages and tries to send them out
