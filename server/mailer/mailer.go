@@ -10,5 +10,5 @@ type MailerConfig struct {
 }
 
 type Mailer interface {
-	Send(message string) error
+	Send(message Message) error
 }
