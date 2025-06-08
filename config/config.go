@@ -64,16 +64,16 @@ type Inbox struct {
 }
 
 type RateLimiter struct {
-	RequestsPerMinute int
-	NumBurstRequests  int
-	CooldownSeconds   int
+	RPM             int `toml:"rpm"`
+	Burst           int `toml:"burst"`
+	CooldownSeconds int `toml:"cooldown"`
 }
 
 type Config struct {
 	Server      ServerConfig
 	Key         KeyInfo
 	Mailer      Mailer
-	RateLimiter *RateLimiter
+	RateLimiter *RateLimiter `toml:"rate_limiter"`
 
 	// Use webhook instead of mailer
 	Webhook Webhook
@@ -187,11 +187,11 @@ func GetConfig(path string) (*Config, error) {
 
 	// rate limiter
 	if rpm := env.GetInt("REQUESTS_PER_MINUTE"); rpm > 0 {
-		config.RateLimiter.RequestsPerMinute = rpm
+		config.RateLimiter.RPM = rpm
 	}
 
 	if numBurstRequests := env.GetInt("BURST_REQUESTS"); numBurstRequests > 0 {
-		config.RateLimiter.RequestsPerMinute = numBurstRequests
+		config.RateLimiter.RPM = numBurstRequests
 	}
 
 	if rateLimitCooldownSeconds := env.GetInt("RATE_LIMIT_COOLDOWN"); rateLimitCooldownSeconds > 0 {

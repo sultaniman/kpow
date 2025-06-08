@@ -7,6 +7,11 @@ message_size = 240
 hide_logo = false
 custom_banner = "path/to/banner.html"
 
+[rate_limiter]
+rpm = 20
+burst = 5
+cooldown = 120
+
 [key]
 kind = "pgp"
 path = "server/enc/testkeys/pubkey.asc"

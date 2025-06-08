@@ -20,19 +20,22 @@ const (
 )
 
 var (
-	port         int
-	host         string = "0.0.0.0"
-	configFile   string
-	pubKeyPath   string
-	mailerDsn    string
-	fromEmail    string
-	toEmail      string
-	logLevel     string
-	customBanner string
-	messageSize  int
-	hideLogo     bool
-	advertiseKey bool
-	startCmd     = &cobra.Command{
+	port                     int
+	host                     string = "0.0.0.0"
+	rpm                      int
+	numBurst                 int
+	rateLimitCooldownSeconds int
+	configFile               string
+	pubKeyPath               string
+	mailerDsn                string
+	fromEmail                string
+	toEmail                  string
+	logLevel                 string
+	customBanner             string
+	messageSize              int
+	hideLogo                 bool
+	advertiseKey             bool
+	startCmd                 = &cobra.Command{
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -57,12 +60,9 @@ var (
 				appConfig.Key.Advertise = advertiseKey
 			}
 
-			if logLevel != "" {
-				level, err := appConfig.ParseLogLevel(logLevel)
-				if err != nil {
-					return err
-				}
-
+			if level, err := appConfig.ParseLogLevel(logLevel); err != nil {
+				return err
+			} else {
 				zerolog.SetGlobalLevel(level)
 			}
 
@@ -115,6 +115,7 @@ func init() {
 	// Server options
 	startCmd.PersistentFlags().IntVar(&port, "port", -1, "Server port")
 	startCmd.PersistentFlags().StringVar(&host, "host", "", "Server host")
+	startCmd.PersistentFlags().IntVar(&rpm, "rpm", 0, "")
 
 	// Mailer options
 	startCmd.PersistentFlags().StringVarP(
@@ -143,7 +144,7 @@ func init() {
 	)
 
 	startCmd.PersistentFlags().StringVarP(
-		&logLevel, "log-level", "l", "WARN",
+		&logLevel, "log-level", "l", "INFO",
 		"Log level",
 	)
 
