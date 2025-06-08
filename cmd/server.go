@@ -31,9 +31,9 @@ var (
 	hideLogo     bool
 	messageSize  int
 	// rate limiter
-	rpm                      int
-	numBurst                 int
-	rateLimitCooldownSeconds int
+	limiterRPM             int
+	limiterBurst           int
+	limiterCooldownSeconds int
 	// pubkey
 	pubKeyPath   string
 	keyKind      string
@@ -42,6 +42,8 @@ var (
 	mailerDsn string
 	fromEmail string
 	toEmail   string
+	// webhook
+	webhookUrl string
 	// inbox
 	inboxPath      string
 	inboxCron      string
@@ -55,6 +57,7 @@ var (
 				return err
 			}
 
+			// server
 			if port > 0 {
 				appConfig.Server.Port = port
 			}
@@ -63,18 +66,83 @@ var (
 				appConfig.Server.Host = host
 			}
 
-			if mailerDsn != "" {
-				appConfig.Mailer.DSN = mailerDsn
+			if messageSize > 0 {
+				appConfig.Server.MessageSize = messageSize
 			}
 
-			if advertiseKey {
-				appConfig.Key.Advertise = advertiseKey
+			if hideLogo {
+				appConfig.Server.HideLogo = hideLogo
+			}
+
+			if customBanner != "" {
+				appConfig.Server.CustomBanner = customBanner
 			}
 
 			if level, err := appConfig.ParseLogLevel(logLevel); err != nil {
 				return err
 			} else {
 				zerolog.SetGlobalLevel(level)
+			}
+
+			// key
+			if keyKind != "" {
+				appConfig.Key.Kind = config.KeyKind(keyKind)
+			}
+
+			if pubKeyPath != "" {
+				appConfig.Key.Path = pubKeyPath
+			}
+
+			if advertiseKey {
+				appConfig.Key.Advertise = advertiseKey
+			}
+
+			// mailer
+			if mailerDsn != "" {
+				appConfig.Mailer.DSN = mailerDsn
+			}
+
+			if toEmail != "" {
+				appConfig.Mailer.To = toEmail
+			}
+
+			if fromEmail != "" {
+				appConfig.Mailer.From = fromEmail
+			}
+
+			// webhook
+			if webhookUrl != "" {
+				appConfig.Webhook.Url = webhookUrl
+			}
+
+			// inbox
+			if inboxPath != "" {
+				appConfig.Inbox.Path = inboxPath
+			}
+
+			if inboxCron != "" {
+				appConfig.Inbox.Cron = inboxCron
+			}
+
+			if inboxBatchSize > 1 {
+				appConfig.Inbox.BatchSize = inboxBatchSize
+			}
+
+			// rate limiter
+			if limiterRPM > 0 {
+				if appConfig.RateLimiter == nil {
+					appConfig.RateLimiter = &config.RateLimiter{
+						RPM: limiterRPM,
+					}
+				}
+			}
+
+			if limiterBurst > 0 {
+				appConfig.RateLimiter.Burst = limiterBurst
+			}
+
+			if limiterCooldownSeconds > 0 {
+				appConfig.RateLimiter.CooldownSeconds = limiterCooldownSeconds
 			}
 
 			if errorList := appConfig.Validate(); len(errorList) > 0 {
@@ -135,17 +203,17 @@ func init() {
 	)
 
 	startCmd.PersistentFlags().IntVar(
-		&rpm, "limiter-rpm", 0,
+		&limiterRPM, "limiter-rpm", 0,
 		"Rate limiter, requests per minute",
 	)
 
 	startCmd.PersistentFlags().IntVar(
-		&numBurst, "limiter-burst", -1,
+		&limiterBurst, "limiter-burst", -1,
 		"Rate limiter burst requests",
 	)
 
 	startCmd.PersistentFlags().IntVar(
-		&rateLimitCooldownSeconds, "limiter-cooldown", -1,
+		&limiterCooldownSeconds, "limiter-cooldown", -1,
 		"Rate limiter cooldown time",
 	)
 
@@ -163,6 +231,12 @@ func init() {
 	startCmd.PersistentFlags().StringVar(
 		&mailerDsn, "mailer", "",
 		"Mailer DSN, example: smtp://user:password@smtp.example.com:587",
+	)
+
+	// Webhook URL
+	startCmd.PersistentFlags().StringVar(
+		&webhookUrl, "webhook-url", "",
+		"Webhook URL (must be a https url)",
 	)
 
 	// Key options
@@ -188,7 +262,7 @@ func init() {
 	)
 
 	startCmd.PersistentFlags().StringVar(
-		&inboxCron, "inbox-cron", defaultCronSpec,
+		&inboxCron, "inbox-cron", "",
 		"Schedule of inbox cleaner",
 	)
 
