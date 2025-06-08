@@ -243,15 +243,15 @@ func GetConfig(path string) (*Config, error) {
 	}
 
 	// rate limiter
-	if rpm := env.GetInt("RPM"); rpm > 0 {
+	if rpm := env.GetInt("LIMITER_RPM"); rpm > 0 {
 		config.RateLimiter.RPM = rpm
 	}
 
-	if numBurstRequests := env.GetInt("BURST"); numBurstRequests > 0 {
+	if numBurstRequests := env.GetInt("LIMITER_BURST"); numBurstRequests > 0 {
 		config.RateLimiter.RPM = numBurstRequests
 	}
 
-	if rateLimitCooldownSeconds := env.GetInt("COOLDOWN"); rateLimitCooldownSeconds > 0 {
+	if rateLimitCooldownSeconds := env.GetInt("LIMITER_COOLDOWN"); rateLimitCooldownSeconds > 0 {
 		config.RateLimiter.CooldownSeconds = rateLimitCooldownSeconds
 	}
 
