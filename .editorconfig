@@ -11,8 +11,12 @@ indent_size = 2
 end_of_line = lf
 tab_width = 2
 
-[{Justfile,*.go}]
+[*.go]
 indent_style = tab
+indent_size = 4
+
+[Justfile]
+indent_style = space
 indent_size = 4
 
 [go.{mod,sum}]

@@ -1,23 +1,25 @@
 default: build
 
+export TEST_KEYS_DIR := invocation_directory() + "/server/enc/testkeys"
+
 clean:
-	go mod tidy
-	rm -f kpow
+    go mod tidy
+    rm -f kpow
 
 build:
-	go build -o kpow
+    go build -o kpow
 
 fmt:
-	gofmt -w .
+    gofmt -w .
 
 test:
-	go test -v ./...
+    go test -v ./...
 
 dev:
-	air
+    air
 
 styles:
-	bunx @tailwindcss/cli -m -i ./styles/kpow.css -o ./server/public/kpow.min.css --watch
+    bunx @tailwindcss/cli -m -i ./styles/kpow.css -o ./server/public/kpow.min.css --watch
 
 error-styles:
-	bunx @tailwindcss/cli -m -i ./styles/errors.css -o ./server/public/errors.min.css --watch
+    bunx @tailwindcss/cli -m -i ./styles/errors.css -o ./server/public/errors.min.css --watch
