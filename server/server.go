@@ -41,10 +41,15 @@ func CreateServer(conf *config.Config) (*echo.Echo, error) {
 		Filesystem: http.FS(resources),
 	}))
 
-	app.Use(middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{
-		Limit: fmt.Sprintf("%dB", conf.Server.MessageSize),
-	}))
-
+	var formMiddlewares = []echo.MiddlewareFunc{
+		middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{
+			Limit: fmt.Sprintf("%dB", conf.Server.MessageSize),
+		}),
+		middleware.CSRFWithConfig(middleware.CSRFConfig{
+			TokenLookup: "form:csrf",
+			ContextKey:  "csrfToken",
+		}),
+	}
 	// If it is set to 0 or less then we don't enable rate limiting
 	if conf.RateLimiter != nil && conf.RateLimiter.RPM > 0 {
 		log.
@@ -54,7 +59,7 @@ func CreateServer(conf *config.Config) (*echo.Echo, error) {
 			Int("cooldown", conf.RateLimiter.CooldownSeconds).
 			Msg("Rate limiting enabled")
 
-		app.Use(middleware.RateLimiterWithConfig(middleware.RateLimiterConfig{
+		formMiddlewares = append(formMiddlewares, middleware.RateLimiterWithConfig(middleware.RateLimiterConfig{
 			Skipper: middleware.DefaultSkipper,
 			Store: middleware.NewRateLimiterMemoryStoreWithConfig(
 				middleware.RateLimiterMemoryStoreConfig{
@@ -87,10 +92,7 @@ func CreateServer(conf *config.Config) (*echo.Echo, error) {
 		[]string{"GET", "POST"},
 		"/",
 		handler.RenderForm,
-		middleware.CSRFWithConfig(middleware.CSRFConfig{
-			TokenLookup: "form:csrf",
-			ContextKey:  "csrfToken",
-		}),
+		formMiddlewares...,
 	)
 
 	app.HTTPErrorHandler = errorHandler
