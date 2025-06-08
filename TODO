@@ -8,11 +8,12 @@ Todo:
     ✔ SMTP @done(25-06-07 13:53)
   ✔ Remove password encryption @done(25-06-07 22:34)
   ☐ Scheduler to re-send failed messages
-    ☐ Failed messages each should be in separate files
+    ✔ Failed messages each should be in separate files @done(25-06-08 19:40)
     ☐ Scheduler scans a folder with messages and tries to send them out
   ☐ Configuration verification command
   ✔ Introduce and configure rate limiting @done(25-06-07 22:34)
   ☐ Update user & dev docs
-    ☐ How to generate PGP and AGE keys
+    ☐ How to generate RSA, PGP, AGE keys
   ☐ Create github releaser
-  ☐ Add RSA and SSH encryption
+  ☐ Add RSA support
+    ✔ Validate rsa key bits >= message size @done(25-06-08 19:47)

@@ -96,6 +96,7 @@ func (c *Config) Validate() []error {
 		)
 	}
 
+	// Validate if rsa key bits > selected message size
 	if c.Key.Kind == RSA {
 		keyIsValid := true
 		parsedKey, err := x509.ParsePKIXPublicKey(c.Key.KeyBytes)
@@ -117,14 +118,14 @@ func (c *Config) Validate() []error {
 		}
 
 		keyBits := rsaKey.N.BitLen()
-		if keyIsValid && keyBits < c.Server.MessageSize {
+		if keyIsValid && keyBits>>3 < c.Server.MessageSize {
 			errorList = append(
 				errorList,
 				newConfigError(
 					"KEY_KIND",
 					fmt.Sprintf(
-						"public key size %d can not be less than message size %d",
-						keyBits, c.Server.MessageSize,
+						"public key bytes %d can not be less than message bytes %d",
+						keyBits>>3, c.Server.MessageSize,
 					),
 				),
 			)
