@@ -1,6 +1,8 @@
 package config
 
 import (
+	"crypto/rsa"
+	"crypto/x509"
 	"errors"
 	"fmt"
 	"net/mail"
@@ -10,6 +12,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/sultaniman/env"
 )
 
@@ -18,11 +21,13 @@ type KeyKind string
 const (
 	PGP KeyKind = "pgp"
 	Age KeyKind = "age"
+	RSA KeyKind = "rsa"
 )
 
 const (
-	Port = 8080
-	Host = "localhost"
+	Port               = 8080
+	Host               = "localhost"
+	DefaultMessageSize = 120
 )
 
 // For kind=PGP and unset path
@@ -91,17 +96,56 @@ func (c *Config) Validate() []error {
 		)
 	}
 
-	if c.Key.Path == "" {
-		errorList = append(
-			errorList,
-			newConfigError("KEY_PATH", "key path is required"),
-		)
+	if c.Key.Kind == RSA {
+		keyIsValid := true
+		parsedKey, err := x509.ParsePKIXPublicKey(c.Key.KeyBytes)
+		if err != nil {
+			keyIsValid = false
+			errorList = append(
+				errorList,
+				newConfigError("KEY_KIND", "unable to parse rsa public key"),
+			)
+		}
+
+		rsaKey, ok := parsedKey.(*rsa.PublicKey)
+		if !ok {
+			keyIsValid = false
+			errorList = append(
+				errorList,
+				newConfigError("KEY_KIND", "unable to parse rsa public key"),
+			)
+		}
+
+		keyBits := rsaKey.N.BitLen()
+		if keyIsValid && keyBits < c.Server.MessageSize {
+			errorList = append(
+				errorList,
+				newConfigError(
+					"KEY_KIND",
+					fmt.Sprintf(
+						"public key size %d can not be less than message size %d",
+						keyBits, c.Server.MessageSize,
+					),
+				),
+			)
+		}
 	}
 
-	if _, err := os.Stat(c.Key.Path); errors.Is(err, os.ErrNotExist) {
-		errorList = append(errorList, errors.New("public key file does not exist"))
+	if c.Server.MessageSize > 0 && c.Server.MessageSize < DefaultMessageSize {
+		log.
+			Warn().
+			Int("message_size", c.Server.MessageSize).
+			Msg("Message size is too small")
+	} else if c.Server.MessageSize <= 0 {
+		log.
+			Warn().
+			Int("message_size", c.Server.MessageSize).
+			Msgf("Incorrect message size, using default %d bytes", DefaultMessageSize)
+
+		c.Server.MessageSize = DefaultMessageSize
 	}
 
+	// validate mailer options
 	if c.Mailer.From == "" {
 		errorList = append(errorList, errors.New("mailer from is required"))
 	}
@@ -129,6 +173,18 @@ func (c *Config) Validate() []error {
 
 	if parts.Scheme != "smtp" {
 		errorList = append(errorList, errors.New("only smpt servers supported"))
+	}
+
+	// validate webhook url
+	if c.Webhook.Url != "" {
+		parts, err := url.Parse(c.Webhook.Url)
+		if err != nil {
+			errorList = append(errorList, errors.New("invalid webhook url"))
+		}
+
+		if parts.Scheme != "https" {
+			errorList = append(errorList, errors.New("webhook url should use https"))
+		}
 	}
 
 	return errorList
@@ -226,6 +282,21 @@ func GetConfig(path string) (*Config, error) {
 		config.Key.Path = keyPath
 	}
 
+	absPath, err := filepath.Abs(config.Key.Path)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := os.Stat(absPath); errors.Is(err, os.ErrNotExist) {
+		return nil, errors.New("public key file does not exist")
+	}
+
+	if keyBytes, err := os.ReadFile(absPath); err == nil {
+		config.Key.KeyBytes = keyBytes
+	} else {
+		return nil, err
+	}
+
 	if inboxPath := env.GetString("INBOX_PATH"); inboxPath != "" {
 		config.Inbox.Path = inboxPath
 	}
@@ -236,17 +307,6 @@ func GetConfig(path string) (*Config, error) {
 
 	if inboxBatchSize := env.GetInt("INBOX_BATCH_SIZE"); inboxBatchSize > 0 {
 		config.Inbox.BatchSize = inboxBatchSize
-	}
-
-	absPath, err := filepath.Abs(config.Key.Path)
-	if err != nil {
-		return nil, err
-	}
-
-	if keyBytes, err := os.ReadFile(absPath); err == nil {
-		config.Key.KeyBytes = keyBytes
-	} else {
-		return nil, err
 	}
 
 	return config, nil
