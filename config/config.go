@@ -29,7 +29,7 @@ const (
 // password pgp encryption is used.
 type KeyInfo struct {
 	Path      string
-	KeyBytes  []byte
+	KeyBytes  []byte `toml:"-"`
 	Kind      KeyKind
 	Advertise bool
 }
@@ -181,20 +181,20 @@ func GetConfig(path string) (*Config, error) {
 		config.Server.HideLogo = hideLogo
 	}
 
-	if customBanner := env.GetString("HIDE_LOGO"); customBanner != "" {
+	if customBanner := env.GetString("CUSTOM_BANNER"); customBanner != "" {
 		config.Server.CustomBanner = customBanner
 	}
 
 	// rate limiter
-	if rpm := env.GetInt("REQUESTS_PER_MINUTE"); rpm > 0 {
+	if rpm := env.GetInt("RPM"); rpm > 0 {
 		config.RateLimiter.RPM = rpm
 	}
 
-	if numBurstRequests := env.GetInt("BURST_REQUESTS"); numBurstRequests > 0 {
+	if numBurstRequests := env.GetInt("BURST"); numBurstRequests > 0 {
 		config.RateLimiter.RPM = numBurstRequests
 	}
 
-	if rateLimitCooldownSeconds := env.GetInt("RATE_LIMIT_COOLDOWN"); rateLimitCooldownSeconds > 0 {
+	if rateLimitCooldownSeconds := env.GetInt("COOLDOWN"); rateLimitCooldownSeconds > 0 {
 		config.RateLimiter.CooldownSeconds = rateLimitCooldownSeconds
 	}
 
@@ -209,6 +209,10 @@ func GetConfig(path string) (*Config, error) {
 
 	if mailerDSN := env.GetString("MAILER_DSN"); mailerDSN != "" {
 		config.Mailer.DSN = mailerDSN
+	}
+
+	if webhookUrl := env.GetString("WEBHOOK_URL"); webhookUrl != "" {
+		config.Webhook.Url = webhookUrl
 	}
 
 	// key
