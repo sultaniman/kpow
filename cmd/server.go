@@ -17,25 +17,36 @@ import (
 const (
 	envPrefix               = "KPOW_"
 	defaultMessageSizeBytes = 240
+	defaultCronSpec         = "*/5 * * * *"
+	defaultBatchSize        = 5
 )
 
 var (
-	port                     int
-	host                     string = "0.0.0.0"
+	// server config
+	port         int
+	host         string = "0.0.0.0"
+	configFile   string
+	logLevel     string
+	customBanner string
+	hideLogo     bool
+	messageSize  int
+	// rate limiter
 	rpm                      int
 	numBurst                 int
 	rateLimitCooldownSeconds int
-	configFile               string
-	pubKeyPath               string
-	mailerDsn                string
-	fromEmail                string
-	toEmail                  string
-	logLevel                 string
-	customBanner             string
-	messageSize              int
-	hideLogo                 bool
-	advertiseKey             bool
-	startCmd                 = &cobra.Command{
+	// pubkey
+	pubKeyPath   string
+	keyKind      string
+	advertiseKey bool
+	// mailer
+	mailerDsn string
+	fromEmail string
+	toEmail   string
+	// inbox
+	inboxPath      string
+	inboxCron      string
+	inboxBatchSize int
+	startCmd       = &cobra.Command{
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -113,53 +124,97 @@ func init() {
 	)
 
 	// Server options
-	startCmd.PersistentFlags().IntVar(&port, "port", -1, "Server port")
-	startCmd.PersistentFlags().StringVar(&host, "host", "", "Server host")
-	startCmd.PersistentFlags().IntVar(&rpm, "rpm", 0, "")
+	startCmd.PersistentFlags().IntVar(
+		&port, "port", -1,
+		"Server port",
+	)
+
+	startCmd.PersistentFlags().StringVar(
+		&host, "host", "",
+		"Server host",
+	)
+
+	startCmd.PersistentFlags().IntVar(
+		&rpm, "limiter-rpm", 0,
+		"Rate limiter, requests per minute",
+	)
+
+	startCmd.PersistentFlags().IntVar(
+		&numBurst, "limiter-burst", -1,
+		"Rate limiter burst requests",
+	)
+
+	startCmd.PersistentFlags().IntVar(
+		&rateLimitCooldownSeconds, "limiter-cooldown", -1,
+		"Rate limiter cooldown time",
+	)
 
 	// Mailer options
-	startCmd.PersistentFlags().StringVarP(
-		&fromEmail, "mailer-from", "f", "",
+	startCmd.PersistentFlags().StringVar(
+		&fromEmail, "mailer-from", "",
 		"From email address",
 	)
 
-	startCmd.PersistentFlags().StringVarP(
-		&toEmail, "mailer-to", "t", "",
+	startCmd.PersistentFlags().StringVar(
+		&toEmail, "mailer-to", "",
 		"Recipient email (usually your email)",
 	)
 
-	startCmd.PersistentFlags().StringVarP(
-		&mailerDsn, "mailer", "m", "",
+	startCmd.PersistentFlags().StringVar(
+		&mailerDsn, "mailer", "",
 		"Mailer DSN, example: smtp://user:password@smtp.example.com:587",
 	)
 
-	startCmd.PersistentFlags().StringVarP(
-		&pubKeyPath, "pubkey", "k", "",
+	// Key options
+	startCmd.PersistentFlags().StringVar(
+		&pubKeyPath, "pubkey", "",
 		"Path to public key file",
 	)
 
-	startCmd.PersistentFlags().BoolVarP(
-		&advertiseKey, "advertise-key", "a", false,
+	startCmd.PersistentFlags().StringVar(
+		&keyKind, "key-kind", "",
+		"Type of public key one of RSA, AGE, PGP",
+	)
+
+	startCmd.PersistentFlags().BoolVar(
+		&advertiseKey, "advertise-key", false,
 		"Advertise public key",
 	)
 
-	startCmd.PersistentFlags().StringVarP(
-		&logLevel, "log-level", "l", "INFO",
+	// Inbox options
+	startCmd.PersistentFlags().StringVar(
+		&inboxPath, "inbox-path", "",
+		"Path to message inbox",
+	)
+
+	startCmd.PersistentFlags().StringVar(
+		&inboxCron, "inbox-cron", defaultCronSpec,
+		"Schedule of inbox cleaner",
+	)
+
+	startCmd.PersistentFlags().IntVar(
+		&inboxBatchSize, "batch-size", defaultBatchSize,
+		"Schedule of inbox cleaner",
+	)
+
+	// Server options
+	startCmd.PersistentFlags().StringVar(
+		&logLevel, "log-level", "INFO",
 		"Log level",
 	)
 
-	startCmd.PersistentFlags().StringVarP(
-		&customBanner, "banner", "b", "",
-		"Custom banner above the form (should be a path to html file)",
+	startCmd.PersistentFlags().StringVar(
+		&customBanner, "banner", "",
+		"Custom banner above the form (path to html file)",
 	)
 
-	startCmd.PersistentFlags().BoolVarP(
-		&hideLogo, "hide-logo", "x", false,
+	startCmd.PersistentFlags().BoolVar(
+		&hideLogo, "hide-logo", false,
 		"Hide logo above the form",
 	)
 
-	startCmd.PersistentFlags().IntVarP(
-		&messageSize, "size", "s", defaultMessageSizeBytes,
+	startCmd.PersistentFlags().IntVar(
+		&messageSize, "size", defaultMessageSizeBytes,
 		"Size of the message in bytes",
 	)
 }
