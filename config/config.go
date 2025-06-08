@@ -173,6 +173,31 @@ func GetConfig(path string) (*Config, error) {
 		config.Server.LogLevel = logLevel
 	}
 
+	if messageSize := env.GetInt("MESSAGE_SIZE"); messageSize > 0 {
+		config.Server.MessageSize = messageSize
+	}
+
+	if hideLogo := env.GetBool("HIDE_LOGO"); hideLogo {
+		config.Server.HideLogo = hideLogo
+	}
+
+	if customBanner := env.GetString("HIDE_LOGO"); customBanner != "" {
+		config.Server.CustomBanner = customBanner
+	}
+
+	// rate limiter
+	if rpm := env.GetInt("REQUESTS_PER_MINUTE"); rpm > 0 {
+		config.RateLimiter.RequestsPerMinute = rpm
+	}
+
+	if numBurstRequests := env.GetInt("BURST_REQUESTS"); numBurstRequests > 0 {
+		config.RateLimiter.RequestsPerMinute = numBurstRequests
+	}
+
+	if rateLimitCooldownSeconds := env.GetInt("RATE_LIMIT_COOLDOWN"); rateLimitCooldownSeconds > 0 {
+		config.RateLimiter.CooldownSeconds = rateLimitCooldownSeconds
+	}
+
 	// mailer
 	if fromEmail := env.GetString("MAILER_FROM"); fromEmail != "" {
 		config.Mailer.From = fromEmail
@@ -203,6 +228,10 @@ func GetConfig(path string) (*Config, error) {
 
 	if inboxCron := env.GetString("INBOX_CRON"); inboxCron != "" {
 		config.Inbox.Cron = inboxCron
+	}
+
+	if inboxBatchSize := env.GetInt("INBOX_BATCH_SIZE"); inboxBatchSize > 0 {
+		config.Inbox.BatchSize = inboxBatchSize
 	}
 
 	absPath, err := filepath.Abs(config.Key.Path)
