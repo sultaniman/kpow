@@ -96,8 +96,15 @@ var (
 
 func init() {
 	rootCmd.AddCommand(startCmd)
+	// Read system $PORT env value and
+	// use it below if KPOW_PORT is not set
+	systemPort := env.GetInt("PORT")
 	env.SetEnvPrefix(envPrefix)
+
 	port := env.GetInt("PORT")
+	if port == 0 {
+		port = systemPort
+	}
 
 	// viper.SetEnvPrefix(envPrefix)
 	startCmd.PersistentFlags().StringVarP(
