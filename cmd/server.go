@@ -23,7 +23,6 @@ var (
 	port         int
 	host         string = "0.0.0.0"
 	configFile   string
-	password     string
 	pubKeyPath   string
 	mailerDsn    string
 	fromEmail    string
@@ -37,7 +36,6 @@ var (
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			config.WarnAboutPassphrase()
 			appConfig, err := config.GetConfig(configFile)
 			if err != nil {
 				return err
@@ -102,7 +100,10 @@ func init() {
 	port := env.GetInt("PORT")
 
 	// viper.SetEnvPrefix(envPrefix)
-	startCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "Path to config file")
+	startCmd.PersistentFlags().StringVarP(
+		&configFile, "config", "c", "",
+		"Path to config file",
+	)
 
 	// Server options
 	startCmd.PersistentFlags().IntVar(&port, "port", -1, "Server port")
@@ -124,12 +125,33 @@ func init() {
 		"Mailer DSN, example: smtp://user:password@smtp.example.com:587",
 	)
 
-	// Encryption and key options
-	startCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Password for message encryption")
-	startCmd.PersistentFlags().StringVarP(&pubKeyPath, "pubkey", "k", "", "Path to public key file")
-	startCmd.PersistentFlags().BoolVarP(&advertiseKey, "advertise-key", "s", false, "Advertise public key")
-	startCmd.PersistentFlags().StringVarP(&logLevel, "log-level", "l", "WARN", "Log level")
-	startCmd.PersistentFlags().StringVarP(&customBanner, "banner", "b", "", "Custom banner above the form (should be a path to html file)")
-	startCmd.PersistentFlags().BoolVarP(&hideLogo, "hide-logo", "n", false, "Hide logo above the form")
-	startCmd.PersistentFlags().IntVarP(&messageSize, "size", "s", defaultMessageSizeBytes, "Size of the message in bytes")
+	startCmd.PersistentFlags().StringVarP(
+		&pubKeyPath, "pubkey", "k", "",
+		"Path to public key file",
+	)
+
+	startCmd.PersistentFlags().BoolVarP(
+		&advertiseKey, "advertise-key", "a", false,
+		"Advertise public key",
+	)
+
+	startCmd.PersistentFlags().StringVarP(
+		&logLevel, "log-level", "l", "WARN",
+		"Log level",
+	)
+
+	startCmd.PersistentFlags().StringVarP(
+		&customBanner, "banner", "b", "",
+		"Custom banner above the form (should be a path to html file)",
+	)
+
+	startCmd.PersistentFlags().BoolVarP(
+		&hideLogo, "hide-logo", "x", false,
+		"Hide logo above the form",
+	)
+
+	startCmd.PersistentFlags().IntVarP(
+		&messageSize, "size", "s", defaultMessageSizeBytes,
+		"Size of the message in bytes",
+	)
 }

@@ -30,7 +30,6 @@ type KeyInfo struct {
 	Path      string
 	KeyBytes  []byte
 	Kind      KeyKind
-	Password  string
 	Advertise bool
 }
 
@@ -189,10 +188,6 @@ func GetConfig(path string) (*Config, error) {
 	// key
 	if keyKind := env.GetString("KEY_KIND"); keyKind != "" {
 		config.Key.Kind = KeyKind(env.GetString("KEY_KIND"))
-	}
-
-	if password := env.GetString("KEY_PASSWORD"); password != "" {
-		config.Key.Password = password
 	}
 
 	config.Key.Advertise = config.Key.Advertise || env.GetBool("ADVERTISE")
