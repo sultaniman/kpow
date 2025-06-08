@@ -6,6 +6,7 @@ import (
 	"net/mail"
 	"net/url"
 	"os"
+	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 	"github.com/rs/zerolog"
@@ -90,10 +91,10 @@ func (c *Config) Validate() []error {
 		)
 	}
 
-	if c.Key.Path == "" && c.Key.Password == "" {
+	if c.Key.Path == "" {
 		errorList = append(
 			errorList,
-			newConfigError("KEY_PATH", "key path or password is required"),
+			newConfigError("KEY_PATH", "key path is required"),
 		)
 	}
 
@@ -204,7 +205,12 @@ func GetConfig(path string) (*Config, error) {
 		config.Inbox.Cron = inboxCron
 	}
 
-	if keyBytes, err := os.ReadFile(config.Key.Path); err == nil {
+	absPath, err := filepath.Abs(config.Key.Path)
+	if err != nil {
+		return nil, err
+	}
+
+	if keyBytes, err := os.ReadFile(absPath); err == nil {
 		config.Key.KeyBytes = keyBytes
 	} else {
 		return nil, err
