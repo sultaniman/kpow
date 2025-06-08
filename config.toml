@@ -14,8 +14,7 @@ cooldown = 120
 
 [key]
 kind = "pgp"
-path = "server/enc/testkeys/pubkey.asc"
-password = ""
+path = "server/enc/testkeys/pubkey.pub"
 advertise = true
 
 [mailer]

@@ -10,7 +10,7 @@ import (
 
 const (
 	secretMessage       = "secret message"
-	gpgPubkey           = "testkeys/pubkey.asc"
+	gpgPubkey           = "testkeys/pubkey.pub"
 	gpgPrivkey          = "testkeys/priv.gpg"
 	pgpEncryptedMessage = `
 -----BEGIN PGP MESSAGE-----

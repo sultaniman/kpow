@@ -11,7 +11,7 @@ import (
 // Check if environment variables
 // picked up and set in config
 func TestConfigInit(t *testing.T) {
-	keyPath := path.Join(os.Getenv("TEST_KEYS_DIR"), "pubkey.asc")
+	keyPath := path.Join(os.Getenv("TEST_KEYS_DIR"), "pubkey.pub")
 	t.Setenv("PORT", "10001")
 	t.Setenv("LOG_LEVEL", "ERROR")
 	t.Setenv("MAILER_FROM", "max@mustermann.de")
