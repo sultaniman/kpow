@@ -213,7 +213,7 @@ func GetConfig(path string) (*Config, error) {
 
 	// key
 	if keyKind := env.GetString("KEY_KIND"); keyKind != "" {
-		config.Key.Kind = KeyKind(env.GetString("KEY_KIND"))
+		config.Key.Kind = KeyKind(keyKind)
 	}
 
 	config.Key.Advertise = config.Key.Advertise || env.GetBool("ADVERTISE")
