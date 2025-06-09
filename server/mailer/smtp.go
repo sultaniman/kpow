@@ -22,7 +22,7 @@ func (m *SMTPMailer) Send(message Message) error {
 	return nil
 }
 
-func NewSMTPMailer(config MailerConfig) (*SMTPMailer, error) {
+func NewSMTPMailer(config *MailerConfig) (*SMTPMailer, error) {
 	client, err := mail.NewClient(
 		config.Host,
 		mail.WithTLSPortPolicy(mail.TLSMandatory),
