@@ -52,102 +52,9 @@ var (
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			appConfig, err := config.GetConfig(configFile)
+			appConfig, err := getConfig()
 			if err != nil {
 				return err
-			}
-
-			// server
-			if port > 0 {
-				appConfig.Server.Port = port
-			}
-
-			if host != "" {
-				appConfig.Server.Host = host
-			}
-
-			if messageSize > 0 {
-				appConfig.Server.MessageSize = messageSize
-			}
-
-			if hideLogo {
-				appConfig.Server.HideLogo = hideLogo
-			}
-
-			if customBanner != "" {
-				appConfig.Server.CustomBanner = customBanner
-			}
-
-			if level, err := appConfig.ParseLogLevel(logLevel); err != nil {
-				return err
-			} else {
-				zerolog.SetGlobalLevel(level)
-			}
-
-			// key
-			if keyKind != "" {
-				appConfig.Key.Kind = config.KeyKind(keyKind)
-			}
-
-			if pubKeyPath != "" {
-				appConfig.Key.Path = pubKeyPath
-			}
-
-			if advertiseKey {
-				appConfig.Key.Advertise = advertiseKey
-			}
-
-			// mailer
-			if mailerDsn != "" {
-				appConfig.Mailer.DSN = mailerDsn
-			}
-
-			if toEmail != "" {
-				appConfig.Mailer.To = toEmail
-			}
-
-			if fromEmail != "" {
-				appConfig.Mailer.From = fromEmail
-			}
-
-			// webhook
-			if webhookUrl != "" {
-				appConfig.Webhook.Url = webhookUrl
-			}
-
-			// inbox
-			if inboxPath != "" {
-				appConfig.Inbox.Path = inboxPath
-			}
-
-			if inboxCron != "" {
-				appConfig.Inbox.Cron = inboxCron
-			}
-
-			if inboxBatchSize > 1 {
-				appConfig.Inbox.BatchSize = inboxBatchSize
-			}
-
-			// rate limiter
-			if limiterRPM > 0 {
-				if appConfig.RateLimiter == nil {
-					appConfig.RateLimiter = &config.RateLimiter{
-						RPM: limiterRPM,
-					}
-				}
-			}
-
-			if limiterBurst > 0 {
-				appConfig.RateLimiter.Burst = limiterBurst
-			}
-
-			if limiterCooldownSeconds > 0 {
-				appConfig.RateLimiter.CooldownSeconds = limiterCooldownSeconds
-			}
-
-			if errorList := appConfig.Validate(); len(errorList) > 0 {
-				server.LogErrors(errorList)
-				return errors.New("configuration error")
 			}
 
 			if env.GetBool("DEBUG") {
@@ -173,16 +80,116 @@ var (
 	}
 )
 
+func getConfig() (*config.Config, error) {
+	appConfig, err := config.GetConfig(configFile)
+	if err != nil {
+		return nil, err
+	}
+
+	// server
+	if port > 0 {
+		appConfig.Server.Port = port
+	}
+
+	if host != "" {
+		appConfig.Server.Host = host
+	}
+
+	if messageSize > 0 {
+		appConfig.Server.MessageSize = messageSize
+	}
+
+	if hideLogo {
+		appConfig.Server.HideLogo = hideLogo
+	}
+
+	if customBanner != "" {
+		appConfig.Server.CustomBanner = customBanner
+	}
+
+	if level, err := appConfig.ParseLogLevel(logLevel); err != nil {
+		return nil, err
+	} else {
+		zerolog.SetGlobalLevel(level)
+	}
+
+	// key
+	if keyKind != "" {
+		appConfig.Key.Kind = config.KeyKind(keyKind)
+	}
+
+	if pubKeyPath != "" {
+		appConfig.Key.Path = pubKeyPath
+	}
+
+	if advertiseKey {
+		appConfig.Key.Advertise = advertiseKey
+	}
+
+	// mailer
+	if mailerDsn != "" {
+		appConfig.Mailer.DSN = mailerDsn
+	}
+
+	if toEmail != "" {
+		appConfig.Mailer.To = toEmail
+	}
+
+	if fromEmail != "" {
+		appConfig.Mailer.From = fromEmail
+	}
+
+	// webhook
+	if webhookUrl != "" {
+		appConfig.Webhook.Url = webhookUrl
+	}
+
+	// inbox
+	if inboxPath != "" {
+		appConfig.Inbox.Path = inboxPath
+	}
+
+	if inboxCron != "" {
+		appConfig.Inbox.Cron = inboxCron
+	}
+
+	if inboxBatchSize > 1 {
+		appConfig.Inbox.BatchSize = inboxBatchSize
+	}
+
+	if appConfig.RateLimiter == nil {
+		appConfig.RateLimiter = &config.RateLimiter{}
+	}
+
+	// rate limiter
+	if limiterRPM > 0 {
+		appConfig.RateLimiter.RPM = limiterRPM
+	}
+
+	if limiterBurst > 0 {
+		appConfig.RateLimiter.Burst = limiterBurst
+	}
+
+	if limiterCooldownSeconds > 0 {
+		appConfig.RateLimiter.CooldownSeconds = limiterCooldownSeconds
+	}
+
+	if errorList := appConfig.Validate(); len(errorList) > 0 {
+		server.LogErrors(errorList)
+		return nil, errors.New("configuration error")
+	}
+
+	return appConfig, nil
+}
+
 func init() {
 	rootCmd.AddCommand(startCmd)
 	// Read system $PORT env value and
 	// use it below if KPOW_PORT is not set
-	systemPort := env.GetInt("PORT")
+	port = env.GetInt("PORT")
 	env.SetEnvPrefix(envPrefix)
-
-	port := env.GetInt("PORT")
-	if port == 0 {
-		port = systemPort
+	if serverPort := env.GetInt("PORT"); serverPort > 0 {
+		port = serverPort
 	}
 
 	// viper.SetEnvPrefix(envPrefix)
@@ -214,7 +221,7 @@ func init() {
 
 	startCmd.PersistentFlags().IntVar(
 		&limiterCooldownSeconds, "limiter-cooldown", -1,
-		"Rate limiter cooldown time",
+		"Rate limiter cooldown seconds",
 	)
 
 	// Mailer options
@@ -229,7 +236,7 @@ func init() {
 	)
 
 	startCmd.PersistentFlags().StringVar(
-		&mailerDsn, "mailer", "",
+		&mailerDsn, "mailer-dsn", "",
 		"Mailer DSN, example: smtp://user:password@smtp.example.com:587",
 	)
 
@@ -288,7 +295,7 @@ func init() {
 	)
 
 	startCmd.PersistentFlags().IntVar(
-		&messageSize, "size", defaultMessageSizeBytes,
+		&messageSize, "message-size", defaultMessageSizeBytes,
 		"Size of the message in bytes",
 	)
 }

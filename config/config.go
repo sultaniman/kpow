@@ -89,6 +89,37 @@ type Config struct {
 
 func (c *Config) Validate() []error {
 	var errorList = []error{}
+
+	absPath, err := filepath.Abs(c.Key.Path)
+	if err != nil {
+		errorList = append(
+			errorList,
+			newConfigError(
+				"KEY_PATH",
+				fmt.Sprintf("invalid key path %s", c.Key.Path),
+			),
+		)
+	}
+
+	if _, err := os.Stat(absPath); errors.Is(err, os.ErrNotExist) {
+		errorList = append(
+			errorList,
+			newConfigError(
+				"KEY_PATH",
+				fmt.Sprintf("public key file does not exist %s", c.Key.Path),
+			),
+		)
+	}
+
+	if keyBytes, err := os.ReadFile(absPath); err == nil {
+		c.Key.KeyBytes = keyBytes
+	} else {
+		errorList = append(
+			errorList,
+			newConfigError("KEY_PATH", fmt.Sprintf("unable to read pubkey %s", c.Key.Path)),
+		)
+	}
+
 	if c.Key.Kind != Age && c.Key.Kind != PGP {
 		errorList = append(
 			errorList,
@@ -281,21 +312,6 @@ func GetConfig(path string) (*Config, error) {
 
 	if keyPath := env.GetString("KEY_PATH"); keyPath != "" {
 		config.Key.Path = keyPath
-	}
-
-	absPath, err := filepath.Abs(config.Key.Path)
-	if err != nil {
-		return nil, err
-	}
-
-	if _, err := os.Stat(absPath); errors.Is(err, os.ErrNotExist) {
-		return nil, errors.New("public key file does not exist")
-	}
-
-	if keyBytes, err := os.ReadFile(absPath); err == nil {
-		config.Key.KeyBytes = keyBytes
-	} else {
-		return nil, err
 	}
 
 	if inboxPath := env.GetString("INBOX_PATH"); inboxPath != "" {
