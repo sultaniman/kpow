@@ -67,7 +67,11 @@ var (
 			}
 
 			scheduler := cron.NewScheduler(appConfig.Inbox.Cron)
-			scheduler.AddFunc(appConfig.Inbox.Cron, cron.InboxCleaner(appConfig.Inbox.Path))
+			_, err = scheduler.AddFunc(appConfig.Inbox.Cron, cron.InboxCleaner(appConfig.Inbox.Path))
+			if err != nil {
+				return err
+			}
+
 			scheduler.Start()
 			defer scheduler.Stop()
 
