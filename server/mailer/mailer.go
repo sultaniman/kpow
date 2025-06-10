@@ -1,8 +1,10 @@
 package mailer
 
 import (
+	"errors"
 	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/sultaniman/kpow/config"
 )
@@ -21,6 +23,14 @@ type Mailer interface {
 }
 
 func GetMailer(mailerConfig *config.Mailer) (Mailer, error) {
+	if strings.HasPrefix(mailerConfig.DSN, "dummy://") {
+		return NewDummyMailer()
+	}
+
+	if !strings.HasPrefix(mailerConfig.DSN, "smtp://") {
+		return nil, errors.New("unsupported mailer option")
+	}
+
 	parts, err := url.Parse(mailerConfig.DSN)
 	if err != nil {
 		return nil, err
@@ -31,19 +41,12 @@ func GetMailer(mailerConfig *config.Mailer) (Mailer, error) {
 	}
 
 	password, _ := parts.User.Password()
-	switch parts.Scheme {
-	case "smtp":
-		return NewSMTPMailer(&MailerConfig{
-			Host:      parts.Host,
-			Port:      int(port),
-			Username:  parts.User.Username(),
-			Password:  password,
-			FromEmail: mailerConfig.From,
-			ToEmail:   mailerConfig.To,
-		})
-	case "dummy":
-		return NewDummyMailer()
-	default:
-		return nil, nil
-	}
+	return NewSMTPMailer(&MailerConfig{
+		Host:      parts.Host,
+		Port:      int(port),
+		Username:  parts.User.Username(),
+		Password:  password,
+		FromEmail: mailerConfig.From,
+		ToEmail:   mailerConfig.To,
+	})
 }
