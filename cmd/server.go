@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/goforj/godump"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -91,6 +92,19 @@ func getConfig() (*config.Config, error) {
 		return nil, err
 	}
 
+	p := bluemonday.
+		NewPolicy().
+		AllowAttrs("href").
+		OnElements("a").
+		AllowElements(
+			"p", "a", "span",
+			"img", "div",
+			"h1", "h2", "h3",
+			"h4", "h5", "h6",
+		)
+
+	p.AllowStandardURLs()
+
 	// server
 	if port > 0 {
 		appConfig.Server.Port = port
@@ -114,7 +128,7 @@ func getConfig() (*config.Config, error) {
 			return nil, err
 		}
 
-		appConfig.Server.CustomBanner = string(bannerBytes)
+		appConfig.Server.CustomBanner = p.Sanitize(string(bannerBytes))
 	}
 
 	if level, err := appConfig.ParseLogLevel(logLevel); err != nil {
