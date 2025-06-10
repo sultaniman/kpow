@@ -66,27 +66,39 @@ func (f *FormData) EncryptAndSend(sender mailer.Mailer, wehbhooHandler mailer.Ma
 		return errors.New("unable encrypt the message")
 	}
 
+	// FIXME: find a better way to do this
 	go (func() {
 		message := mailer.NewMessage(f.Message.Subject, encrypted, f.Message.Hash())
 		failed := false
 		if err = sender.Send(message); err != nil {
-			log.Err(err).Str("method", "mailer").Msg("Unable to send the message")
+			log.
+				Err(err).
+				Str("method", "mailer").
+				Msg("Unable to send the message")
+
 			message.Method = "mailer"
 			failed = true
 			err = message.Save(inboxPath)
 			if err != nil {
-				log.Err(err).Str("message", message.EncryptedMessage).Msg("Unable to save message")
+				log.
+					Err(err).
+					Msg("Unable to save message")
 			}
 		}
 
 		if !failed && wehbhooHandler != nil {
 			if err = wehbhooHandler.Send(message); err != nil {
-				log.Err(err).Str("method", "webhook").Msg("Unable to send the message")
+				log.
+					Err(err).
+					Str("method", "webhook").
+					Msg("Unable to send the message")
+
 				message.Method = "webhook"
 				err = message.Save(inboxPath)
 				if err != nil {
-					log.Err(err).Str("message", message.EncryptedMessage).Msg("Unable to save message")
-
+					log.
+						Err(err).
+						Msg("Unable to save message")
 				}
 			}
 		}
