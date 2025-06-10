@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/goforj/godump"
 	"github.com/rs/zerolog"
@@ -108,7 +109,12 @@ func getConfig() (*config.Config, error) {
 	}
 
 	if customBanner != "" {
-		appConfig.Server.CustomBanner = customBanner
+		bannerBytes, err := os.ReadFile(customBanner)
+		if err != nil {
+			return nil, err
+		}
+
+		appConfig.Server.CustomBanner = string(bannerBytes)
 	}
 
 	if level, err := appConfig.ParseLogLevel(logLevel); err != nil {

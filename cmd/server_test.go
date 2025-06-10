@@ -48,8 +48,7 @@ func TestConfigurationOverrides(t *testing.T) {
 	assert.Equal(t, "ERROR", appConfig.Server.LogLevel)
 	assert.Equal(t, true, appConfig.Server.HideLogo)
 	assert.Equal(t, 512, appConfig.Server.MessageSize)
-	assert.Equal(t, projectRoot+"/banner.html", appConfig.Server.CustomBanner)
-
+	assert.Contains(t, appConfig.Server.CustomBanner, "This a banner")
 	// Key
 	assert.Equal(t, keyPath, appConfig.Key.Path)
 	assert.Equal(t, "pgp", string(appConfig.Key.Kind))

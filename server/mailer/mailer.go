@@ -35,6 +35,7 @@ func GetMailer(mailerConfig *config.Mailer) (Mailer, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	port, err := strconv.ParseInt(parts.Port(), 10, 0)
 	if err != nil {
 		return nil, err
