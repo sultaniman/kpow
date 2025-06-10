@@ -22,7 +22,7 @@ func (m *SMTPMailer) Send(message Message) error {
 	return nil
 }
 
-func NewSMTPMailer(config *MailerConfig) (*SMTPMailer, error) {
+func NewSMTPMailer(config *MailerConfig) (Mailer, error) {
 	client, err := mail.NewClient(
 		config.Host,
 		mail.WithTLSPortPolicy(mail.TLSMandatory),
@@ -30,6 +30,7 @@ func NewSMTPMailer(config *MailerConfig) (*SMTPMailer, error) {
 		mail.WithUsername(config.Username),
 		mail.WithPassword(config.Password),
 	)
+
 	if err != nil {
 		return nil, err
 	}

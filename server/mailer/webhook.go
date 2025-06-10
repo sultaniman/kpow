@@ -3,8 +3,10 @@ package mailer
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 )
 
 type WebhookMailer struct {
@@ -28,8 +30,21 @@ func (m *WebhookMailer) Send(message Message) error {
 	return nil
 }
 
-func NewWebhookMailer(endpoint string) *WebhookMailer {
-	return &WebhookMailer{
-		endpoint: endpoint,
+func NewWebhookMailer(webhookUrl string) (Mailer, error) {
+	if webhookUrl == "" {
+		return nil, nil
 	}
+
+	parts, err := url.Parse(webhookUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	if parts.Scheme != "https" {
+		return nil, errors.New("webhook url should be https only")
+	}
+
+	return &WebhookMailer{
+		endpoint: webhookUrl,
+	}, nil
 }

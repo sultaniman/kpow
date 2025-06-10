@@ -34,6 +34,6 @@ func (m *DummyMailer) Send(message Message) error {
 	return nil
 }
 
-func NewDummyMailer() (*DummyMailer, error) {
+func NewDummyMailer() (Mailer, error) {
 	return &DummyMailer{}, nil
 }
