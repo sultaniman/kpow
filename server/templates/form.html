@@ -5,8 +5,13 @@
   </head>
   <body>
     <header>
-      <img class="logo" src="/kpow.png" />
+      {{if not .HideLogo }}<img class="logo" src="/kpow.png" />{{end}}
       <div class="theme-switcher">{{template "color-mode.html" .}}</div>
+      {{if .Banner}}
+      <div class="banner">
+        {{.Banner}}
+      </div>
+      {{end}}
     </header>
     <main>
       <form method="post">

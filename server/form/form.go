@@ -50,9 +50,10 @@ const (
 type FormData struct {
 	CSRFToken string
 	Title     string
-
-	Message MessageForm
-	PubKey  string
+	Banner    string
+	HideLogo  bool
+	Message   MessageForm
+	PubKey    string
 
 	Note     string
 	NoteKind NoteKind
@@ -114,6 +115,8 @@ func GetFormData(csrfToken string, config *config.Config) *FormData {
 	form := &FormData{
 		CSRFToken: csrfToken,
 		Title:     config.Server.Title,
+		Banner:    config.Server.CustomBanner,
+		HideLogo:  config.Server.HideLogo,
 		PubKey:    "",
 		Message:   MessageForm{},
 	}

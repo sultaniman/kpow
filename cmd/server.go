@@ -126,6 +126,10 @@ func getConfig() (*config.Config, error) {
 		appConfig.Server.HideLogo = hideLogo
 	}
 
+	if customBanner == "" && appConfig.Server.CustomBanner != "" {
+		customBanner = appConfig.Server.CustomBanner
+	}
+
 	if customBanner != "" {
 		bannerBytes, err := os.ReadFile(customBanner)
 		if err != nil {
