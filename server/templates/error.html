@@ -9,7 +9,8 @@
       <div class="theme-switcher">{{template "color-mode.html" .}}</div>
     </header>
     <section>
-      <h1>{{.Reason}}</h1>
+      <h1>{{.Title}}</h1>
+      {{if .Reason}}<h3>{{.Title}}</h3>{{end}}
       <p>HTTP {{.Code}}</p>
       <button onclick="history.back()">&larr; Back</button>
     </section>
