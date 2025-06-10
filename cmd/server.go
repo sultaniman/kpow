@@ -118,6 +118,10 @@ func getConfig() (*config.Config, error) {
 		appConfig.Server.MessageSize = messageSize
 	}
 
+	if appConfig.Server.MessageSize == 0 {
+		appConfig.Server.MessageSize = defaultMessageSizeBytes
+	}
+
 	if hideLogo {
 		appConfig.Server.HideLogo = hideLogo
 	}
@@ -319,7 +323,7 @@ func init() {
 	)
 
 	startCmd.PersistentFlags().IntVar(
-		&messageSize, "message-size", defaultMessageSizeBytes,
+		&messageSize, "message-size", 0,
 		"Size of the message in bytes",
 	)
 }
