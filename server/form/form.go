@@ -2,7 +2,6 @@ package form
 
 import (
 	"crypto/sha256"
-	"errors"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
@@ -59,16 +58,18 @@ type FormData struct {
 	NoteKind NoteKind
 }
 
-func (f *FormData) EncryptAndSend(sender mailer.Mailer, wehbhooHandler mailer.Mailer, encryptionProvider enc.KeyLike, inboxPath string) error {
-	encrypted, err := encryptionProvider.Encrypt(f.Message.Content)
-	if err != nil {
-		log.Err(err).Msg("Encryption failed")
-		return errors.New("unable encrypt the message")
-	}
-
+func (f *FormData) EncryptAndSend(sender mailer.Mailer, wehbhooHandler mailer.Mailer, encryptionProvider enc.KeyLike, inboxPath string) {
 	// FIXME: find a better way to do this
+	subject := f.Message.Subject
+	content := f.Message.Content
+	hash := f.Message.Hash()
 	go (func() {
-		message := mailer.NewMessage(f.Message.Subject, encrypted, f.Message.Hash())
+		encrypted, err := encryptionProvider.Encrypt(content)
+		if err != nil {
+			log.Err(err).Msg("Encryption failed")
+		}
+
+		message := mailer.NewMessage(subject, encrypted, hash)
 		failed := false
 		if err = sender.Send(message); err != nil {
 			log.
@@ -79,6 +80,7 @@ func (f *FormData) EncryptAndSend(sender mailer.Mailer, wehbhooHandler mailer.Ma
 			message.Method = "mailer"
 			failed = true
 			err = message.Save(inboxPath)
+
 			if err != nil {
 				log.
 					Err(err).
@@ -106,7 +108,6 @@ func (f *FormData) EncryptAndSend(sender mailer.Mailer, wehbhooHandler mailer.Ma
 
 	// when done reset the form
 	f.Message = MessageForm{}
-	return nil
 }
 
 func GetFormData(csrfToken string, config *config.Config) *FormData {
