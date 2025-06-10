@@ -1,6 +1,35 @@
 @import "tailwindcss";
 @import "./shared/common.css";
 
+/* Notes */
+.note-plain {
+  @apply text-slate-800;
+
+  @variant dark {
+    @apply text-slate-200;
+  }
+}
+
+.note-error {
+  @apply text-rose-700;
+
+  @variant dark {
+    @apply text-rose-500;
+  }
+}
+
+.note-success {
+  @apply text-green-700;
+
+  @variant dark {
+    @apply text-green-600;
+  }
+}
+
+.banner {
+  @apply mt-20 mb-8;
+}
+
 /* Contact form */
 form {
   @apply flex flex-col gap-6;
