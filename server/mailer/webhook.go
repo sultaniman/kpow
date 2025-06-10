@@ -40,7 +40,9 @@ func NewWebhookMailer(webhookUrl string) (Mailer, error) {
 		return nil, err
 	}
 
-	if parts.Scheme != "https" {
+	hostname := parts.Hostname()
+	isLoopback := hostname == "localhost" || hostname == "127.0.0.1"
+	if parts.Scheme != "https" && !isLoopback {
 		return nil, errors.New("webhook url should be https only")
 	}
 

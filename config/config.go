@@ -214,7 +214,9 @@ func (c *Config) Validate() []error {
 			errorList = append(errorList, errors.New("invalid webhook url"))
 		}
 
-		if parts.Scheme != "https" {
+		hostname := parts.Hostname()
+		isLoopback := hostname == "localhost" || hostname == "127.0.0.1"
+		if parts.Scheme != "https" && !isLoopback {
 			errorList = append(errorList, errors.New("webhook url should use https"))
 		}
 	}
