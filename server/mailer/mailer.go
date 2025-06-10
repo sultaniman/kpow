@@ -43,7 +43,7 @@ func GetMailer(mailerConfig *config.Mailer) (Mailer, error) {
 
 	password, _ := parts.User.Password()
 	return NewSMTPMailer(&MailerConfig{
-		Host:      parts.Host,
+		Host:      parts.Hostname(),
 		Port:      int(port),
 		Username:  parts.User.Username(),
 		Password:  password,

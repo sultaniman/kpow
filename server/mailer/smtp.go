@@ -25,6 +25,7 @@ func (m *SMTPMailer) Send(message Message) error {
 func NewSMTPMailer(config *MailerConfig) (Mailer, error) {
 	client, err := mail.NewClient(
 		config.Host,
+		mail.WithPort(config.Port),
 		mail.WithTLSPortPolicy(mail.TLSMandatory),
 		mail.WithSMTPAuth(mail.SMTPAuthPlain),
 		mail.WithUsername(config.Username),

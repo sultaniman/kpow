@@ -2,6 +2,7 @@ Todo:
   ✔ Load keys when loading configuration @done(25-06-01 21:59)
   ✔ Encrypt form data if valid @done(25-06-02 12:01)
   ☐ Allow custom banner on top of the form
+    ✔ Sanitize html of the banner @done(25-06-10 19:39)
   ✔ Custom errors @done(25-06-05 19:27)
   ✔ Implement senders @done(25-06-07 13:53)
     ✔ Webhook @done(25-06-07 13:53)

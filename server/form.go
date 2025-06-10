@@ -14,7 +14,9 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 	csrfToken := ctx.Get(CSRFTokenKey).(string)
 	formData := form.GetFormData(csrfToken, h.Config)
 	if messageForm, err := form.BindFormMessage(ctx); err == nil {
-		formData.Message = *messageForm
+		if messageForm != nil {
+			formData.Message = *messageForm
+		}
 	} else {
 		formData.NoteKind = form.ErrorNote
 		formData.Note = err.Error()
@@ -23,6 +25,7 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 	if formData.Message.IsValid {
 		err := formData.EncryptAndSend(
 			h.Mailer,
+			h.WebhookHandler,
 			h.EncryptionProvider,
 			h.Config.Inbox.Path,
 		)
