@@ -13,6 +13,7 @@ type Message struct {
 	EncryptedMessage string `json:"content"`
 	Hash             string `json:"hash"`
 	Method           string `json:"method"` // webhook/smtp/dummy
+	Retries          int    `json:"retries"`
 }
 
 func (m *Message) Save(basepath string) error {
