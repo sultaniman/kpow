@@ -59,7 +59,12 @@ type FormData struct {
 	NoteKind NoteKind
 }
 
-func (f *FormData) EncryptAndSend(sender mailer.Mailer, wehbhooHandler mailer.Mailer, encryptionProvider enc.KeyLike, inboxPath string) {
+func (f *FormData) EncryptAndSend(
+	sender mailer.Mailer,
+	wehbhooHandler mailer.Mailer,
+	encryptionProvider enc.KeyLike,
+	inboxPath string,
+) {
 	// FIXME: find a better way to do this
 	subject := f.Message.Subject
 	content := f.Message.Content

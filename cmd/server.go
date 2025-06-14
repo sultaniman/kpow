@@ -207,7 +207,7 @@ func getConfig() (*config.Config, error) {
 	}
 
 	if errorList := appConfig.Validate(); len(errorList) > 0 {
-		server.LogErrors(errorList)
+		config.LogErrors(errorList)
 		return nil, errors.New("configuration error")
 	}
 
