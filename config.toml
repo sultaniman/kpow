@@ -18,7 +18,7 @@ path = "server/enc/testkeys/pubkey.pub"
 advertise = true
 
 [mailer]
-dsn = "smtp://user:password@smtp.example.com:587"
+dsn = "smtp://user:secret@localhost:1025"
 from = "sender@example.com"
 to = "recipient@example.com"
 
@@ -27,4 +27,4 @@ path = "inbox"
 cron = "* * * * *"
 
 [webhook]
-url = "http://localhost:8000/webhook"
+url = "http://localhost:10080/webhook"
