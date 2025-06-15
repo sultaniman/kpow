@@ -65,13 +65,26 @@ var (
 				godump.Dump(appConfig)
 			}
 
-			app, err := server.CreateServer(appConfig)
+			handler, err := server.NewHandler(appConfig)
+			if err != nil {
+				return err
+			}
+
+			app, err := server.CreateServer(appConfig, handler)
 			if err != nil {
 				return err
 			}
 
 			scheduler := cron.NewScheduler(appConfig.Inbox.Cron)
-			_, err = scheduler.AddFunc(appConfig.Inbox.Cron, cron.InboxCleaner(appConfig.Inbox.Path))
+			_, err = scheduler.AddFunc(
+				appConfig.Inbox.Cron,
+				cron.InboxCleaner(
+					appConfig.Inbox.Path,
+					handler.Mailer,
+					handler.WebhookHandler,
+				),
+			)
+
 			if err != nil {
 				return err
 			}
@@ -276,7 +289,7 @@ func init() {
 
 	startCmd.PersistentFlags().IntVar(
 		&maxRetries, "max-retries", defaultMaxRetries,
-		fmt.Sprintf("Maximum retries default %s", defaultMaxRetries),
+		fmt.Sprintf("Maximum retries default %d", defaultMaxRetries),
 	)
 
 	// Webhook URL
