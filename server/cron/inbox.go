@@ -34,6 +34,7 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				log.Println(err)
 				return nil
 			}
+
 			if item.IsDir() {
 				return filepath.SkipDir
 			}

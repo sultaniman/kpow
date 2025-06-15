@@ -8,11 +8,11 @@ Todo:
     ✔ Webhook @done(25-06-07 13:53)
     ✔ SMTP @done(25-06-07 13:53)
   ✔ Remove password encryption @done(25-06-07 22:34)
-  ☐ Scheduler to re-send failed messages
-    ☐ If mailer failed then send using mailer and if webhook is set then try webhook as well
-    ☐ If webhook failed then retry only webhook
+  ✔ Scheduler to re-send failed messages @done(25-06-15 17:18)
+    ✔ If mailer failed then send using mailer and if webhook is set then try webhook as well @done(25-06-15 17:18)
+    ✔ If webhook failed then retry only webhook @done(25-06-15 17:18)
     ✔ Failed messages each should be in separate files @done(25-06-08 19:40)
-    ☐ Scheduler scans a folder with messages and tries to send them out
+    ✔ Scheduler scans a folder with messages and tries to send them out @done(25-06-15 17:18)
   ☐ Configuration verification command
   ✔ Introduce and configure rate limiting @done(25-06-07 22:34)
   ☐ Update user & dev docs
