@@ -2,6 +2,7 @@ package enc
 
 import (
 	"os"
+	"strings"
 
 	"filippo.io/age"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -21,7 +22,7 @@ func LoadKey(info *config.KeyInfo) (KeyLike, error) {
 
 	switch info.Kind {
 	case config.Age:
-		recipient, err := age.ParseX25519Recipient(string(content))
+		recipient, err := age.ParseX25519Recipient(strings.TrimSpace(string(content)))
 		if err != nil {
 			log.Fatal().Err(err)
 		}
