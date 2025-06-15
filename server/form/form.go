@@ -69,6 +69,7 @@ func (f *FormData) EncryptAndSend(
 	subject := f.Message.Subject
 	content := f.Message.Content
 	hash := f.Message.Hash()
+
 	go (func() {
 		encrypted, err := encryptionProvider.Encrypt(content)
 		if err != nil {
@@ -76,42 +77,7 @@ func (f *FormData) EncryptAndSend(
 		}
 
 		message := mailer.NewMessage(subject, encrypted, hash)
-		failed := false
-		if err = sender.Send(message); err != nil {
-			log.
-				Err(err).
-				Str("method", "mailer").
-				Msg("Unable to send the message")
-
-			message.Method = "mailer"
-			message.Retries = 0
-			failed = true
-			err = message.Save(inboxPath)
-
-			if err != nil {
-				log.
-					Err(err).
-					Msg("Unable to save message")
-			}
-		}
-
-		if !failed && wehbhooHandler != nil {
-			if err = wehbhooHandler.Send(message); err != nil {
-				log.
-					Err(err).
-					Str("method", "webhook").
-					Msg("Unable to send the message")
-
-				message.Method = "webhook"
-				message.Retries = 0
-				err = message.Save(inboxPath)
-				if err != nil {
-					log.
-						Err(err).
-						Msg("Unable to save message")
-				}
-			}
-		}
+		mailer.SendMessage(message, sender, wehbhooHandler, inboxPath)
 	})()
 
 	// when done reset the form
