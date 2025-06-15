@@ -6,11 +6,26 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/goforj/godump"
 	"github.com/sultaniman/kpow/server/mailer"
 )
 
 type InboxHander func()
+
+func sendWebhook(message mailer.Message, webhookHandler mailer.Mailer, inboxPath string) error {
+	if webhookHandler == nil {
+		return nil
+	}
+
+	err := webhookHandler.Send(message)
+	if err != nil {
+		message.Retries += 1
+		log.Println("err", err)
+		message.Save(inboxPath)
+		return err
+	}
+
+	return nil
+}
 
 func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.Mailer) InboxHander {
 	return func() {
@@ -19,23 +34,43 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				log.Println(err)
 				return nil
 			}
-			if !item.IsDir() {
-				contents, err := os.ReadFile(path)
+			if item.IsDir() {
+				return filepath.SkipDir
+			}
+
+			contents, err := os.ReadFile(path)
+			if err != nil {
+				log.Println("err", err)
+				return nil
+			}
+
+			var message mailer.Message
+			err = json.Unmarshal(contents, &message)
+			if err != nil {
+				log.Println("err", err)
+			}
+
+			// If it is mailer then we try both
+			// Else we try only webhook sender.
+			if message.Method == "mailer" {
+				message.Retries += 1
+				err := sender.Send(message)
 				if err != nil {
 					log.Println("err", err)
-				} else {
-					var message mailer.Message
-					err = json.Unmarshal(contents, &message)
-					if err != nil {
-						log.Println("err", err)
-					}
-					if message.Method == "mailer" {
-						sender.Send(message)
-					}
-					godump.Dump(message)
+					message.Save(inboxPath)
 				}
-				log.Println(path, contents)
+
+				// Reduce counter because webhook counter should be separate
+				message.Retries -= 1
+				sendWebhook(message, webhookHandler, inboxPath)
+			} else {
+				message.Retries += 1
+				err := sendWebhook(message, webhookHandler, inboxPath)
+				if err != nil {
+					log.Println("err", err)
+				}
 			}
+
 			return nil
 		})
 	}
