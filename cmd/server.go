@@ -21,6 +21,7 @@ const (
 	defaultMessageSizeBytes = 240
 	defaultCronSpec         = "*/5 * * * *"
 	defaultBatchSize        = 5
+	defaultMaxRetries       = 2
 )
 
 var (
@@ -41,9 +42,10 @@ var (
 	keyKind      string
 	advertiseKey bool
 	// mailer
-	mailerDsn string
-	fromEmail string
-	toEmail   string
+	mailerDsn  string
+	fromEmail  string
+	toEmail    string
+	maxRetries int
 	// webhook
 	webhookUrl string
 	// inbox
@@ -270,6 +272,11 @@ func init() {
 	startCmd.PersistentFlags().StringVar(
 		&mailerDsn, "mailer-dsn", "",
 		"Mailer DSN, example: smtp://user:password@smtp.example.com:587",
+	)
+
+	startCmd.PersistentFlags().IntVar(
+		&maxRetries, "max-retries", defaultMaxRetries,
+		fmt.Sprintf("Maximum retries default %s", defaultMaxRetries),
 	)
 
 	// Webhook URL

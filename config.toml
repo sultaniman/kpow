@@ -21,6 +21,7 @@ advertise = true
 dsn = "smtp://user:secret@localhost:1025"
 from = "sender@example.com"
 to = "recipient@example.com"
+max_retries = 2
 
 [inbox]
 path = "inbox"

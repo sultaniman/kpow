@@ -50,9 +50,10 @@ type ServerConfig struct {
 }
 
 type Mailer struct {
-	From string
-	To   string
-	DSN  string
+	From       string
+	To         string
+	DSN        string
+	MaxRetries int `toml:"max_retries"`
 }
 
 type Webhook struct {
@@ -302,6 +303,10 @@ func GetConfig(path string) (*Config, error) {
 
 	if webhookUrl := env.GetString("WEBHOOK_URL"); webhookUrl != "" {
 		config.Webhook.Url = webhookUrl
+	}
+
+	if maxRetries := env.GetInt("MAX_RETRIES"); maxRetries > 0 {
+		config.Mailer.MaxRetries = maxRetries
 	}
 
 	// key
