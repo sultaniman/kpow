@@ -12,7 +12,7 @@ import (
 
 type InboxHander func()
 
-func InboxCleaner(inboxPath string) InboxHander {
+func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.Mailer) InboxHander {
 	return func() {
 		filepath.Walk(inboxPath, func(path string, item os.FileInfo, err error) error {
 			if err != nil {
@@ -28,6 +28,9 @@ func InboxCleaner(inboxPath string) InboxHander {
 					err = json.Unmarshal(contents, &message)
 					if err != nil {
 						log.Println("err", err)
+					}
+					if message.Method == "mailer" {
+						sender.Send(message)
 					}
 					godump.Dump(message)
 				}

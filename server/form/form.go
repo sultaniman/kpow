@@ -84,6 +84,7 @@ func (f *FormData) EncryptAndSend(
 				Msg("Unable to send the message")
 
 			message.Method = "mailer"
+			message.Retries = 0
 			failed = true
 			err = message.Save(inboxPath)
 
@@ -102,6 +103,7 @@ func (f *FormData) EncryptAndSend(
 					Msg("Unable to send the message")
 
 				message.Method = "webhook"
+				message.Retries = 0
 				err = message.Save(inboxPath)
 				if err != nil {
 					log.
