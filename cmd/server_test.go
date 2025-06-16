@@ -12,7 +12,7 @@ import (
 func TestConfigurationOverrides(t *testing.T) {
 	pwd, _ := os.Getwd()
 	projectRoot := filepath.Dir(pwd)
-	keyPath := path.Join(projectRoot, "server/enc/testkeys/pubkey.pub")
+	keyPath := path.Join(projectRoot, "server/enc/testkeys/pubkey.gpg")
 	configPath := path.Join(projectRoot, "config.toml")
 	err := startCmd.ParseFlags([]string{
 		"--port=10000",
