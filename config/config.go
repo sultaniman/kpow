@@ -3,6 +3,7 @@ package config
 import (
 	"crypto/rsa"
 	"crypto/x509"
+	"encoding/pem"
 	"errors"
 	"fmt"
 	"net/mail"
@@ -121,7 +122,7 @@ func (c *Config) Validate() []error {
 		)
 	}
 
-	if c.Key.Kind != Age && c.Key.Kind != PGP {
+	if c.Key.Kind != Age && c.Key.Kind != PGP && c.Key.Kind != RSA {
 		errorList = append(
 			errorList,
 			newConfigError("KEY_KIND", fmt.Sprintf("unsupported key kind %s", c.Key.Kind)),
@@ -131,12 +132,14 @@ func (c *Config) Validate() []error {
 	// Validate if rsa key bits > selected message size
 	if c.Key.Kind == RSA {
 		keyIsValid := true
-		parsedKey, err := x509.ParsePKIXPublicKey(c.Key.KeyBytes)
+		block, _ := pem.Decode(c.Key.KeyBytes)
+		parsedKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+
 		if err != nil {
 			keyIsValid = false
 			errorList = append(
 				errorList,
-				newConfigError("KEY_KIND", "unable to parse rsa public key"),
+				newConfigError("KEY_KIND", err.Error()),
 			)
 		}
 
@@ -145,22 +148,24 @@ func (c *Config) Validate() []error {
 			keyIsValid = false
 			errorList = append(
 				errorList,
-				newConfigError("KEY_KIND", "unable to parse rsa public key"),
+				newConfigError("KEY_KIND", "invalid rsa public key"),
 			)
 		}
 
-		keyBits := rsaKey.N.BitLen()
-		if keyIsValid && keyBits>>3 < c.Server.MessageSize {
-			errorList = append(
-				errorList,
-				newConfigError(
-					"KEY_KIND",
-					fmt.Sprintf(
-						"public key bytes %d can not be less than message bytes %d",
-						keyBits>>3, c.Server.MessageSize,
+		if rsaKey != nil {
+			keyBits := rsaKey.N.BitLen()
+			if keyIsValid && keyBits>>3 < c.Server.MessageSize {
+				errorList = append(
+					errorList,
+					newConfigError(
+						"KEY_KIND",
+						fmt.Sprintf(
+							"public key bytes %d can not be less than message bytes %d",
+							keyBits>>3, c.Server.MessageSize,
+						),
 					),
-				),
-			)
+				)
+			}
 		}
 	}
 

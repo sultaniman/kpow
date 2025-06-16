@@ -4,21 +4,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/lipgloss/list"
+	"github.com/labstack/gommon/color"
 )
 
 func LogErrors(errors []error) {
-	enumeratorStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("99")).MarginRight(1)
-	itemStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("212")).MarginRight(1)
-
-	items := list.
-		New(errors).
-		Enumerator(list.Dash).
-		EnumeratorStyle(enumeratorStyle).
-		ItemStyle(itemStyle)
-
-	fmt.Println(items)
+	listItem := color.Cyan("-")
+	for _, err := range errors {
+		fmt.Printf("%s %s\n", listItem, color.Red(err.Error()))
+	}
 }
 
 func IsLocalhost(host string) bool {
