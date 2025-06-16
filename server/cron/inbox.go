@@ -34,14 +34,18 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				log.Println("Unable to read file", path, err)
 				return nil
 			}
-
-			if item.IsDir() {
+			if item.IsDir() && path != inboxPath {
+				log.Println(path, inboxPath)
 				return filepath.SkipDir
+			}
+
+			if item.IsDir() && path == inboxPath {
+				return nil
 			}
 
 			contents, err := os.ReadFile(path)
 			if err != nil {
-				log.Println("Unable to read file with message", path, err)
+				log.Printf("Unable to read file with message under: %s, err=%s", path, err.Error())
 				return nil
 			}
 
@@ -57,8 +61,10 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				message.Retries += 1
 				err := sender.Send(message)
 				if err != nil {
-					log.Println("Unable to send a message", path, err)
+					log.Printf("Unable to send a message %s, err=%s", path, err.Error())
 					message.Save(inboxPath)
+				} else {
+					log.Printf("Message successfully sent for %s", path)
 				}
 
 				// Reduce counter because webhook counter should be separate
@@ -68,11 +74,12 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				message.Retries += 1
 				err := sendWebhook(message, webhookHandler, inboxPath)
 				if err != nil {
-					log.Println("unable to send webhook", path, err)
+					log.Printf("unable to send webhook %s, err=%s", path, err.Error())
 				} else {
+					log.Printf("Webhook successfully sent for %s", path)
 					err := os.Remove(path)
 					if err != nil {
-						log.Println("unable to remove file from inbox", path, err)
+						log.Printf("unable to remove file %s, err=%s", path, err)
 					}
 				}
 			}
