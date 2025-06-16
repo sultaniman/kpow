@@ -1,8 +1,6 @@
 package enc
 
 import (
-	"errors"
-
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
 
@@ -30,10 +28,11 @@ func (k *PGPKey) Encrypt(message string) (string, error) {
 	return string(armored), nil
 }
 
-func NewPGPKey(key *crypto.Key) (*PGPKey, error) {
-	if key == nil {
-		return nil, errors.New("expected pgp key expected got nil")
+func NewPGPKey(pubkeyBytes []byte) (KeyLike, error) {
+	publicKey, err := crypto.NewKeyFromArmored(string(pubkeyBytes))
+	if err != nil {
+		return nil, err
 	}
 
-	return &PGPKey{key}, nil
+	return &PGPKey{publicKey}, nil
 }

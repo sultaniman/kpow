@@ -40,10 +40,9 @@ func TestAgeEncryptDecryptWithKey(t *testing.T) {
 	assert.Equal(t, decryptedMessage, "message")
 }
 
-func getAgeCredentials() (age.Recipient, age.Identity) {
-	recipient, _ := age.ParseX25519Recipient(agePublicKey)
+func getAgeCredentials() ([]byte, age.Identity) {
 	identity, _ := age.ParseX25519Identity(agePrivateKey)
-	return recipient, identity
+	return []byte(agePublicKey), identity
 }
 
 func decrypAgeMessage(message string, identity age.Identity) string {

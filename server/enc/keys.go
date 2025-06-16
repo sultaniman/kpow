@@ -2,10 +2,7 @@ package enc
 
 import (
 	"os"
-	"strings"
 
-	"filippo.io/age"
-	"github.com/ProtonMail/gopenpgp/v3/crypto"
 	"github.com/rs/zerolog/log"
 	"github.com/sultaniman/kpow/config"
 )
@@ -15,30 +12,18 @@ type KeyLike interface {
 }
 
 func LoadKey(info *config.KeyInfo) (KeyLike, error) {
-	content, err := os.ReadFile(info.Path)
+	pubkeyBytes, err := os.ReadFile(info.Path)
 	if err != nil {
 		log.Fatal().Err(err)
 	}
 
 	switch info.Kind {
 	case config.Age:
-		recipient, err := age.ParseX25519Recipient(strings.TrimSpace(string(content)))
-		if err != nil {
-			log.Fatal().Err(err)
-		}
-		return NewAgeKey(recipient)
+		return NewAgeKey(pubkeyBytes)
 	case config.PGP:
-		pubkey, err := os.ReadFile(info.Path)
-		if err != nil {
-			log.Fatal().Err(err)
-		}
-
-		publicKey, err := crypto.NewKeyFromArmored(string(pubkey))
-		if err != nil {
-			log.Fatal().Err(err)
-		}
-
-		return NewPGPKey(publicKey)
+		return NewPGPKey(pubkeyBytes)
+	case config.RSA:
+		return NewRSAKey(pubkeyBytes)
 	default:
 		log.Fatal().Msgf("Uknown key kind %v", info.Kind)
 		return nil, nil

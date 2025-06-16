@@ -2,8 +2,8 @@ package enc
 
 import (
 	"bytes"
-	"errors"
 	"io"
+	"strings"
 
 	"filippo.io/age"
 	"filippo.io/age/armor"
@@ -41,9 +41,10 @@ func (k *AgeKey) Encrypt(message string) (string, error) {
 	return buf.String(), nil
 }
 
-func NewAgeKey(recipient age.Recipient) (*AgeKey, error) {
-	if recipient == nil {
-		return nil, errors.New("expected recipient expected got nil")
+func NewAgeKey(pubkeyBytes []byte) (KeyLike, error) {
+	recipient, err := age.ParseX25519Recipient(strings.TrimSpace(string(pubkeyBytes)))
+	if err != nil {
+		return nil, err
 	}
 
 	return &AgeKey{recipient}, nil

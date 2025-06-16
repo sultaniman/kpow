@@ -10,8 +10,8 @@ import (
 
 const (
 	secretMessage       = "secret message"
-	gpgPubkey           = "testkeys/pubkey.pub"
-	gpgPrivkey          = "testkeys/priv.gpg"
+	gpgPubkey           = "testkeys/pubkey.gpg"
+	gpgPrivkey          = "testkeys/private.gpg"
 	pgpEncryptedMessage = `
 -----BEGIN PGP MESSAGE-----
 
@@ -28,9 +28,9 @@ Zl914EjbJXjbUWDWwxU0g0sWnCKbCQ6IgDST/KP25eM+pfHPy7TYjTWbgPtCeiPN
 )
 
 var (
-	gpgPublicKey  *crypto.Key
-	gpgPrivateKey *crypto.Key
-	pgp           = crypto.PGP()
+	gpgPublicKeyBytes []byte
+	gpgPrivateKey     *crypto.Key
+	pgp               = crypto.PGP()
 )
 
 func init() {
@@ -39,7 +39,7 @@ func init() {
 		panic(err)
 	}
 
-	pubKeyBytes, err := os.ReadFile(gpgPubkey)
+	gpgPublicKeyBytes, err = os.ReadFile(gpgPubkey)
 	if err != nil {
 		panic(err)
 	}
@@ -49,13 +49,7 @@ func init() {
 		panic(err)
 	}
 
-	publicKeyInstance, err := crypto.NewKeyFromArmored(string(pubKeyBytes))
-	if err != nil {
-		panic(err)
-	}
-
 	gpgPrivateKey = privateKeyInstance
-	gpgPublicKey = publicKeyInstance
 }
 
 func TestPGPDecryptWithKey(t *testing.T) {
@@ -69,7 +63,7 @@ func TestPGPDecryptWithKey(t *testing.T) {
 }
 
 func TestPGPEncryptAndDecryptWithKey(t *testing.T) {
-	pgpKey, _ := NewPGPKey(gpgPublicKey)
+	pgpKey, _ := NewPGPKey(gpgPublicKeyBytes)
 	encryptedMessage, _ := pgpKey.Encrypt(secretMessage)
 	decHandle, _ := pgp.
 		Decryption().
