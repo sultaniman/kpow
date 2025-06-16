@@ -21,3 +21,4 @@ Todo:
   ☐ Add RSA support
     ✔ Validate rsa key bits >= message size @done(25-06-08 19:47)
     ☐ Test rsa encryption (sanity check)
+    ☐ Truncate message size to key.length - padding if it is larger
