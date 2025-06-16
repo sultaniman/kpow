@@ -6,6 +6,7 @@ import (
 	"crypto/sha512"
 	"crypto/x509"
 	"encoding/base64"
+	"encoding/pem"
 	"fmt"
 )
 
@@ -32,7 +33,8 @@ func (k *RSAKey) Encrypt(message string) (string, error) {
 }
 
 func NewRSAKey(pubkeyBytes []byte) (KeyLike, error) {
-	parsedKey, err := x509.ParsePKIXPublicKey(pubkeyBytes)
+	block, _ := pem.Decode(pubkeyBytes)
+	parsedKey, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
 		return nil, err
 	}
