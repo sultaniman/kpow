@@ -31,7 +31,7 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 	return func() {
 		filepath.Walk(inboxPath, func(path string, item os.FileInfo, err error) error {
 			if err != nil {
-				log.Println(err)
+				log.Println("Unable to read file", path, err)
 				return nil
 			}
 
@@ -41,14 +41,14 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 
 			contents, err := os.ReadFile(path)
 			if err != nil {
-				log.Println("err", err)
+				log.Println("Unable to read file with message", path, err)
 				return nil
 			}
 
 			var message mailer.Message
 			err = json.Unmarshal(contents, &message)
 			if err != nil {
-				log.Println("err", err)
+				log.Println("Unable to load the message", path, err)
 			}
 
 			// If it is mailer then we try both
@@ -57,7 +57,7 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				message.Retries += 1
 				err := sender.Send(message)
 				if err != nil {
-					log.Println("err", err)
+					log.Println("Unable to send a message", path, err)
 					message.Save(inboxPath)
 				}
 
@@ -68,7 +68,12 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				message.Retries += 1
 				err := sendWebhook(message, webhookHandler, inboxPath)
 				if err != nil {
-					log.Println("err", err)
+					log.Println("unable to send webhook", path, err)
+				} else {
+					err := os.Remove(path)
+					if err != nil {
+						log.Println("unable to remove file from inbox", path, err)
+					}
 				}
 			}
 
