@@ -4,15 +4,31 @@ Simple loopback form.
 
 ## Starting server
 
-### Using cli arguments
+### Using CLI arguments
 
 ```sh
-$ kpow start --pubkey=public_key_path \
-             --port=8080 \
-             --host=localhost \
-             --mailer=smtp://user:password@smtp.example.com:587 \
-             --mailer-from=sender@example.com \
-             --mailer-to=recipient@example.com
+$ kpow start \
+  --config=/etc/kpow/config.toml \
+  --port=8080 \
+  --host=0.0.0.0 \
+  --limiter-rpm=100 \
+  --limiter-burst=20 \
+  --limiter-cooldown=10 \
+  --mailer-from=sender@example.com \
+  --mailer-to=recipient@example.com \
+  --mailer-dsn=smtp://user:password@smtp.example.com:587 \
+  --max-retries=3 \
+  --webhook-url=https://hooks.example.com/notify \
+  --pubkey=/keys/key.pub \
+  --key-kind=RSA \
+  --advertise-key \
+  --inbox-path=/data/inbox \
+  --inbox-cron="*/5 * * * *" \
+  --batch-size=10 \
+  --log-level=INFO \
+  --banner=/etc/kpow/banner.html \
+  --hide-logo \
+  --message-size=512
 ```
 
 ### Using configuration file
@@ -23,8 +39,8 @@ $ kpow start --pubkey=public_key_path \
 Configuration resolution order:
 
 1. Configuration - first load from config file if provided,
-2. Environment variables - Environment variables override values from configuration file,
-3. CLI arguments - CLI arguments override environment variables and configuration file values
+2. Environment variables - override values from configuration file,
+3. CLI arguments - override environment variables and config file values
 
 ```mermaid
 flowchart TD
@@ -45,18 +61,29 @@ $ kpow start --config=path-to-config.toml
 
 ### Environment variables
 
-| Name             | Purpose                | Default Value |
-| ---------------- | ---------------------- | ------------- |
-| KPOW_KEY_KIND    | Key Kind               | null          |
-| KPOW_KEY_PATH    | Path to public key     | null          |
-| KPOW_ADVERTISE   | Show pubkey on website | false         |
-| KPOW_MAILER_DSN  | Mailer DSN             | null          |
-| KPOW_MAILER_FROM | Mailer From            | null          |
-| KPOW_MAILER_TO   | Mailer To              | null          |
-| KPOW_TITLE       | Page title             | ""            |
-| KPOW_PORT        | Port                   | 8080          |
-| KPOW_HOST        | Host                   | localhost     |
-| KPOW_LOG_LEVEL   | Log Level              | info          |
+| Environment Variable       | Description                              | Type    | Default Value |
+|---------------------------|------------------------------------------|---------|----------------|
+| `KPOW_TITLE`              | Server title                             | string  | ""             |
+| `KPOW_PORT`               | Server port                              | int     | 8080           |
+| `KPOW_HOST`               | Server host address                      | string  | localhost      |
+| `KPOW_LOG_LEVEL`          | Logging level                            | string  | INFO           |
+| `KPOW_MESSAGE_SIZE`       | Maximum server message size              | int     | 240            |
+| `KPOW_HIDE_LOGO`          | Whether to hide the logo                 | bool    | false          |
+| `KPOW_CUSTOM_BANNER`      | Custom banner text                       | string  | ""             |
+| `KPOW_LIMITER_RPM`        | Rate limiter: requests per minute        | int     | 0              |
+| `KPOW_LIMITER_BURST`      | Rate limiter: burst size                 | int     | -1             |
+| `KPOW_LIMITER_COOLDOWN`   | Rate limiter: cooldown in seconds        | int     | -1             |
+| `KPOW_MAILER_FROM`        | Mailer sender email                      | string  | ""             |
+| `KPOW_MAILER_TO`          | Mailer recipient email                   | string  | ""             |
+| `KPOW_MAILER_DSN`         | Mailer DSN (connection string)           | string  | ""             |
+| `KPOW_WEBHOOK_URL`        | Webhook URL                              | string  | ""             |
+| `KPOW_MAX_RETRIES`        | Max retry attempts for sending emails    | int     | 2              |
+| `KPOW_KEY_KIND`           | Key kind (e.g., type of key)             | string  | ""             |
+| `KPOW_ADVERTISE`          | Whether to advertise the key             | bool    | false          |
+| `KPOW_KEY_PATH`           | Path to the key file                     | string  | ""             |
+| `KPOW_INBOX_PATH`         | Path to inbox                            | string  | ""             |
+| `KPOW_INBOX_CRON`         | Cron schedule for inbox processing       | string  | "*/5 * * * *"  |
+| `KPOW_INBOX_BATCH_SIZE`   | Inbox batch size                         | int     | 5              |
 
 ## Mailer logic
 
