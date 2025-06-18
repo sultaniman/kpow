@@ -18,7 +18,7 @@ Todo:
   ☐ Update user & dev docs
     ☐ How to generate RSA, PGP, AGE keys
   ☐ Create github releaser
-  ☐ Add RSA support
+  ✔ Add RSA support @done(25-06-18 20:58)
     ✔ Validate rsa key bits >= message size @done(25-06-08 19:47)
-    ☐ Test rsa encryption (sanity check)
-    ☐ Truncate message size to key.length - padding if it is larger
+    ✔ Test rsa encryption (sanity check) @done(25-06-18 20:57)
+    ✔ Truncate message size to key.length - padding if it is larger @done(25-06-18 20:57)

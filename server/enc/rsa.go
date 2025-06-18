@@ -3,7 +3,7 @@ package enc
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"crypto/sha512"
+	"crypto/sha256"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
@@ -22,7 +22,7 @@ type RSAKey struct {
 }
 
 func (k *RSAKey) Encrypt(message string) (string, error) {
-	hash := sha512.New()
+	hash := sha256.New()
 	ciphertext, err := rsa.EncryptOAEP(hash, rand.Reader, k.pubkey, []byte(message), nil)
 	if err != nil {
 		return "", err
