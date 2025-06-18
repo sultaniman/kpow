@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"path"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -36,5 +37,30 @@ func TestConfigInit(t *testing.T) {
 }
 
 func TestConfigValidate(t *testing.T) {
+	// Use a non-existent key path in a temporary directory
+	dir := t.TempDir()
+	cfg := &Config{
+		Key: KeyInfo{
+			Path: path.Join(dir, "missing.pub"),
+			Kind: Age,
+		},
+		Mailer: Mailer{
+			From: "from@example.com",
+			To:   "to@example.com",
+		},
+	}
 
+	errs := cfg.Validate()
+	assert.Greater(t, len(errs), 0)
+
+	var messages []string
+	for _, err := range errs {
+		messages = append(messages, err.Error())
+	}
+	combined := strings.Join(messages, " ")
+
+	assert.Contains(t, combined, "public key file does not exist")
+	assert.Contains(t, combined, "unable to read pubkey")
+	assert.Contains(t, combined, "mailer dsn is required")
+	assert.Contains(t, combined, "only smpt servers supported")
 }
