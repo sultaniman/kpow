@@ -28,7 +28,7 @@ const (
 const (
 	Port               = 8080
 	Host               = "localhost"
-	DefaultMessageSize = 120
+	DefaultMessageSize = 240
 )
 
 // For kind=PGP and unset path

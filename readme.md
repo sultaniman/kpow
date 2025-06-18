@@ -20,7 +20,7 @@ $ kpow start \
   --max-retries=3 \
   --webhook-url=https://hooks.example.com/notify \
   --pubkey=/keys/key.pub \
-  --key-kind=RSA \
+  --key-kind=rsa \
   --advertise-key \
   --inbox-path=/data/inbox \
   --inbox-cron="*/5 * * * *" \
@@ -78,12 +78,52 @@ $ kpow start --config=path-to-config.toml
 | `KPOW_MAILER_DSN`       | Mailer DSN (connection string)        | string | ""            |
 | `KPOW_WEBHOOK_URL`      | Webhook URL                           | string | ""            |
 | `KPOW_MAX_RETRIES`      | Max retry attempts for sending emails | int    | 2             |
-| `KPOW_KEY_KIND`         | Key kind (e.g., type of key)          | string | ""            |
+| `KPOW_KEY_KIND`         | Key kind: `age`, `pgp`, or `rsa`      | string | ""            |
 | `KPOW_ADVERTISE`        | Whether to advertise the key          | bool   | false         |
 | `KPOW_KEY_PATH`         | Path to the key file                  | string | ""            |
 | `KPOW_INBOX_PATH`       | Path to inbox                         | string | ""            |
 | `KPOW_INBOX_CRON`       | Cron schedule for inbox processing    | string | `*/5 * * * *` |
 | `KPOW_INBOX_BATCH_SIZE` | Inbox batch size                      | int    | 5             |
+
+## Encryption
+
+KPow supports Age, PGP and RSA public keys for encrypting messages.
+Provide the key kind with `--key-kind` (or `KPOW_KEY_KIND`) and the
+path to your public key with `--pubkey` (or `KPOW_KEY_PATH`).
+Available `--key-kind` options: `age`, `pgp`, or `rsa`.
+
+### RSA Encryption Note
+
+This system uses RSA encryption with OAEP padding and the SHA-256 hashing algorithm.
+Please follow these guidelines when using RSA keys and configuring message parameters:
+
+✅ **Key and Algorithm Requirements**
+
+- **RSA Key Compatibility:** Must support OAEP padding (recommended size is 2048 bits or greater).
+- **Hashing Algorithm:** Encryption uses SHA-256 — decryption must use the same.
+
+**OAEP Padding Overhead**
+
+- Padding size = 2 × HashSize + 2 bytes
+- For SHA-256 (HashSize = 32 bytes), total padding is 66 bytes
+
+**Maximum Message Sizes**
+
+| RSA Key Size | Hash Algorithm | Hash Size | Padding Size | Max Message Size |
+| ------------ | -------------- | --------- | ------------ | ---------------- |
+| 2048 bits    | SHA-256        | 32 bytes  | 66 bytes     | 190 bytes        |
+| 4096 bits    | SHA-256        | 32 bytes  | 66 bytes     | 446 bytes        |
+
+⚠️ Messages must not exceed the maximum size, or encryption will fail with an error.
+
+**Configuration Hint**
+
+In your TOML config (`message_size`), set the value below the maximum message size based on your RSA key length. For example:
+
+```toml
+[server]
+message_size = 180  # for 2048-bit RSA with SHA-256
+```
 
 ## Mailer logic
 
