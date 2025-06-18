@@ -144,5 +144,7 @@ flowchart TD
 ### Custom form
 
 Bun and Tailwind CSS are used to build the styles.
-
-TODO
+The style sources are in the `styles` folder.
+Use `just styles` to customize and build the form styles, and
+`just error-styles` for the error pages.
+Both commands require `bun` and `bunx` to be installed.
