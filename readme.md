@@ -61,29 +61,29 @@ $ kpow start --config=path-to-config.toml
 
 ### Environment variables
 
-| Environment Variable       | Description                              | Type    | Default Value |
-|---------------------------|------------------------------------------|---------|----------------|
-| `KPOW_TITLE`              | Server title                             | string  | ""             |
-| `KPOW_PORT`               | Server port                              | int     | 8080           |
-| `KPOW_HOST`               | Server host address                      | string  | localhost      |
-| `KPOW_LOG_LEVEL`          | Logging level                            | string  | INFO           |
-| `KPOW_MESSAGE_SIZE`       | Maximum server message size              | int     | 240            |
-| `KPOW_HIDE_LOGO`          | Whether to hide the logo                 | bool    | false          |
-| `KPOW_CUSTOM_BANNER`      | Custom banner text                       | string  | ""             |
-| `KPOW_LIMITER_RPM`        | Rate limiter: requests per minute        | int     | 0              |
-| `KPOW_LIMITER_BURST`      | Rate limiter: burst size                 | int     | -1             |
-| `KPOW_LIMITER_COOLDOWN`   | Rate limiter: cooldown in seconds        | int     | -1             |
-| `KPOW_MAILER_FROM`        | Mailer sender email                      | string  | ""             |
-| `KPOW_MAILER_TO`          | Mailer recipient email                   | string  | ""             |
-| `KPOW_MAILER_DSN`         | Mailer DSN (connection string)           | string  | ""             |
-| `KPOW_WEBHOOK_URL`        | Webhook URL                              | string  | ""             |
-| `KPOW_MAX_RETRIES`        | Max retry attempts for sending emails    | int     | 2              |
-| `KPOW_KEY_KIND`           | Key kind (e.g., type of key)             | string  | ""             |
-| `KPOW_ADVERTISE`          | Whether to advertise the key             | bool    | false          |
-| `KPOW_KEY_PATH`           | Path to the key file                     | string  | ""             |
-| `KPOW_INBOX_PATH`         | Path to inbox                            | string  | ""             |
-| `KPOW_INBOX_CRON`         | Cron schedule for inbox processing       | string  | "*/5 * * * *"  |
-| `KPOW_INBOX_BATCH_SIZE`   | Inbox batch size                         | int     | 5              |
+| Variable Name           | Description                           | Type   | Default       |
+| ----------------------- | ------------------------------------- | ------ | ------------- |
+| `KPOW_TITLE`            | Server title                          | string | ""            |
+| `KPOW_PORT`             | Server port                           | int    | 8080          |
+| `KPOW_HOST`             | Server host address                   | string | localhost     |
+| `KPOW_LOG_LEVEL`        | Logging level                         | string | INFO          |
+| `KPOW_MESSAGE_SIZE`     | Maximum server message size           | int    | 240           |
+| `KPOW_HIDE_LOGO`        | Whether to hide the logo              | bool   | false         |
+| `KPOW_CUSTOM_BANNER`    | Custom banner text                    | string | ""            |
+| `KPOW_LIMITER_RPM`      | Rate limiter: requests per minute     | int    | 0             |
+| `KPOW_LIMITER_BURST`    | Rate limiter: burst size              | int    | -1            |
+| `KPOW_LIMITER_COOLDOWN` | Rate limiter: cooldown in seconds     | int    | -1            |
+| `KPOW_MAILER_FROM`      | Mailer sender email                   | string | ""            |
+| `KPOW_MAILER_TO`        | Mailer recipient email                | string | ""            |
+| `KPOW_MAILER_DSN`       | Mailer DSN (connection string)        | string | ""            |
+| `KPOW_WEBHOOK_URL`      | Webhook URL                           | string | ""            |
+| `KPOW_MAX_RETRIES`      | Max retry attempts for sending emails | int    | 2             |
+| `KPOW_KEY_KIND`         | Key kind (e.g., type of key)          | string | ""            |
+| `KPOW_ADVERTISE`        | Whether to advertise the key          | bool   | false         |
+| `KPOW_KEY_PATH`         | Path to the key file                  | string | ""            |
+| `KPOW_INBOX_PATH`       | Path to inbox                         | string | ""            |
+| `KPOW_INBOX_CRON`       | Cron schedule for inbox processing    | string | `*/5 * * * *` |
+| `KPOW_INBOX_BATCH_SIZE` | Inbox batch size                      | int    | 5             |
 
 ## Mailer logic
 
