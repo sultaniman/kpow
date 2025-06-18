@@ -1,8 +1,8 @@
 # KPow 💥
 
-Simple loopback form.
+A simple loopback form.
 
-## Starting server
+## Starting the server
 
 ### Using CLI arguments
 
@@ -31,7 +31,7 @@ $ kpow start \
   --message-size=512
 ```
 
-### Using configuration file
+### Using a configuration file
 
 > [!NOTE]
 > CLI arguments always override environment variables and configuration files.
@@ -87,7 +87,7 @@ $ kpow start --config=path-to-config.toml
 
 ## Encryption
 
-KPow supports Age, PGP and RSA public keys for encrypting messages.
+KPow supports Age, PGP, and RSA public keys for encrypting messages.
 Provide the key kind with `--key-kind` (or `KPOW_KEY_KIND`) and the
 path to your public key with `--pubkey` (or `KPOW_KEY_PATH`).
 Available `--key-kind` options: `age`, `pgp`, or `rsa`.
@@ -143,6 +143,6 @@ flowchart TD
 
 ### Custom form
 
-Bun and Tailwindcss is used to build the styles.
+Bun and Tailwind CSS are used to build the styles.
 
 TODO
