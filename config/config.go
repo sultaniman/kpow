@@ -251,6 +251,10 @@ func GetConfig(path string) (*Config, error) {
 		}
 	}
 
+	if config.RateLimiter == nil {
+		config.RateLimiter = &RateLimiter{}
+	}
+
 	// server
 	if title := env.GetString("TITLE"); title != "" {
 		config.Server.Title = title
@@ -286,7 +290,7 @@ func GetConfig(path string) (*Config, error) {
 	}
 
 	if numBurstRequests := env.GetInt("LIMITER_BURST"); numBurstRequests > 0 {
-		config.RateLimiter.RPM = numBurstRequests
+		config.RateLimiter.Burst = numBurstRequests
 	}
 
 	if rateLimitCooldownSeconds := env.GetInt("LIMITER_COOLDOWN"); rateLimitCooldownSeconds > 0 {
