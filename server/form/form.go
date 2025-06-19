@@ -61,7 +61,7 @@ type FormData struct {
 
 func (f *FormData) EncryptAndSend(
 	sender mailer.Mailer,
-	wehbhooHandler mailer.Mailer,
+	webhookHandler mailer.Mailer,
 	encryptionProvider enc.KeyLike,
 	inboxPath string,
 ) {
@@ -77,7 +77,7 @@ func (f *FormData) EncryptAndSend(
 		}
 
 		message := mailer.NewMessage(subject, encrypted, hash)
-		mailer.SendMessage(message, sender, wehbhooHandler, inboxPath)
+		mailer.SendMessage(message, sender, webhookHandler, inboxPath)
 	})()
 
 	// when done reset the form
