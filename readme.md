@@ -133,7 +133,7 @@ flowchart TD
     B -- Success --> C[Message Sent]
     B -- Error --> D[Save to Inbox Folder]
     D --> E[Scheduler Run]
-    E --> F[Read Messages in Batches]
+    E --> F[Read Messages]
     F --> G{Try to Re-Send}
     G -- Success --> H[Message Sent]
     G -- Error --> E
