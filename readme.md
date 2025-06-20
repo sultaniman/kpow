@@ -49,11 +49,8 @@ flowchart TD
     A[Start] --> B{Config File Provided?}
     B -- Yes --> C[Load Config File]
     B -- No --> D[Use Config Defaults]
-
-    C --> E[Load Environment Variables]
     C --> D
-    D --> E
-
+    D --> E[Load Environment Variables]
     E --> F[Apply CLI Arguments]
 ```
 
