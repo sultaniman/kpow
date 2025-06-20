@@ -1,3 +1,5 @@
+[![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
+
 # KPow 💥
 
 A simple loopback form.
