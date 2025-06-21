@@ -18,12 +18,19 @@ const (
 )
 
 type RSAKey struct {
-	pubkey *rsa.PublicKey
+	pubkey         *rsa.PublicKey
+	maxMessageSize int
 }
 
 func (k *RSAKey) Encrypt(message string) (string, error) {
 	hash := sha256.New()
-	ciphertext, err := rsa.EncryptOAEP(hash, rand.Reader, k.pubkey, []byte(message), nil)
+
+	msgBytes := []byte(message)
+	if k.maxMessageSize > 0 && len(msgBytes) > k.maxMessageSize {
+		msgBytes = msgBytes[:k.maxMessageSize]
+	}
+
+	ciphertext, err := rsa.EncryptOAEP(hash, rand.Reader, k.pubkey, msgBytes, nil)
 	if err != nil {
 		return "", err
 	}
@@ -44,7 +51,10 @@ func NewRSAKey(pubkeyBytes []byte) (KeyLike, error) {
 		return nil, fmt.Errorf("provided key is not rsa key")
 	}
 
+	maxSize := pubkey.Size() - (2*sha256.Size + 2)
+
 	return &RSAKey{
-		pubkey: pubkey,
+		pubkey:         pubkey,
+		maxMessageSize: maxSize,
 	}, nil
 }

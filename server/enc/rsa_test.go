@@ -56,6 +56,31 @@ func TestRSAEncryptAndDecryptWithKey(t *testing.T) {
 	assert.Equal(t, secretRSAMessage, string(result))
 }
 
+func TestRSAEncryptTrimsLongMessage(t *testing.T) {
+	loadRSAKeys()
+
+	pubKeyBytes, _ := os.ReadFile(rsaPubkeyPath)
+	key, _ := NewRSAKey(pubKeyBytes)
+	rsaKey := key.(*RSAKey)
+	maxSize := rsaKey.maxMessageSize
+
+	longMsg := strings.Repeat("a", maxSize+10)
+
+	encryptedMessage, err := rsaKey.Encrypt(longMsg)
+	assert.NoError(t, err)
+
+	encryptedMessage = strings.Replace(encryptedMessage, "-----BEGIN RSA ENCRYPTED MESSAGE-----", "", 1)
+	encryptedMessage = strings.Replace(encryptedMessage, "-----END RSA ENCRYPTED MESSAGE-----", "", 1)
+	encryptedMessage = strings.TrimSpace(encryptedMessage)
+
+	hash := sha256.New()
+	ciphertext, err := base64.StdEncoding.DecodeString(encryptedMessage)
+	assert.NoError(t, err)
+	result, err := rsa.DecryptOAEP(hash, rand.Reader, rsaPrivateKey, ciphertext, nil)
+	assert.NoError(t, err)
+	assert.Equal(t, longMsg[:maxSize], string(result))
+}
+
 func loadRSAKeys() {
 	privateKeyBytes, _ := os.ReadFile(rsaPrivkeyPath)
 	privateBlock, _ := pem.Decode(privateKeyBytes)
