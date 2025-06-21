@@ -2,7 +2,12 @@
 
 # KPow 💥
 
-A simple loopback form.
+KPow is a self-hosted, privacy-focused contact form designed for secure communication without relying on third-party services.
+It supports modern encryption standards — PGP, Age, and RSA — to ensure that messages are encrypted before delivery.
+Ideal for privacy-conscious developers, open source projects, independent websites, whistleblower platforms,
+and internal tools that require secure, auditable, and self-contained message handling.
+
+
 
 ## Starting the server
 
