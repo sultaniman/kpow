@@ -181,6 +181,22 @@ flowchart TD
     G -- Error --> E
 ```
 
+## Webhook
+
+When `--webhook-url` (or `KPOW_WEBHOOK_URL`) is provided, KPow will POST the
+encrypted form data to the specified endpoint in JSON format:
+
+```json
+{
+  "subject": "<form subject>",
+  "content": "<encrypted message>",
+  "hash": "<sha256-hash>"
+}
+```
+
+The webhook URL must use HTTPS unless it points to `localhost`. Any HTTP status
+code < 400 is considered a success.
+
 ## Development
 
 ### Custom form

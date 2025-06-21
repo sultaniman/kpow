@@ -37,12 +37,18 @@ func TestSendMessageFallback(t *testing.T) {
 }
 
 func TestWebhookMailerSend(t *testing.T) {
-	received := make(chan mailer.Message, 1)
+	type payload struct {
+		Subject          string `json:"subject"`
+		EncryptedMessage string `json:"content"`
+		Hash             string `json:"hash"`
+	}
+
+	received := make(chan payload, 1)
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
-		var m mailer.Message
-		json.NewDecoder(r.Body).Decode(&m)
-		received <- m
+		var p payload
+		json.NewDecoder(r.Body).Decode(&p)
+		received <- p
 	}))
 	defer srv.Close()
 
