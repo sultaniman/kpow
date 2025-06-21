@@ -59,7 +59,7 @@ You can check a configuration file for errors without starting the
 server:
 
 ```sh
-go run main.go verify --config=config.toml
+./kpow verify --config=config.toml
 ```
 
 ## Development Tips
