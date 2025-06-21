@@ -26,7 +26,6 @@ $ kpow start \
   --advertise-key \
   --inbox-path=/data/inbox \
   --inbox-cron="*/5 * * * *" \
-  --batch-size=10 \
   --log-level=INFO \
   --banner=/etc/kpow/banner.html \
   --hide-logo \
@@ -82,7 +81,6 @@ $ kpow start --config=path-to-config.toml
 | `KPOW_KEY_PATH`         | Path to the key file                  | string | ""            |
 | `KPOW_INBOX_PATH`       | Path to inbox                         | string | ""            |
 | `KPOW_INBOX_CRON`       | Cron schedule for inbox processing    | string | `*/5 * * * *` |
-| `KPOW_INBOX_BATCH_SIZE` | Inbox batch size                      | int    | 5             |
 
 ## Encryption
 

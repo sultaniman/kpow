@@ -64,10 +64,6 @@ type Webhook struct {
 type Inbox struct {
 	Path string
 	Cron string
-	// We want to send messages in batches
-	// because otherwise we might ddos the
-	// receiving side/server.
-	BatchSize int `toml:"batch_size"`
 }
 
 type RateLimiter struct {
@@ -335,10 +331,6 @@ func GetConfig(path string) (*Config, error) {
 
 	if inboxCron := env.GetString("INBOX_CRON"); inboxCron != "" {
 		config.Inbox.Cron = inboxCron
-	}
-
-	if inboxBatchSize := env.GetInt("INBOX_BATCH_SIZE"); inboxBatchSize > 0 {
-		config.Inbox.BatchSize = inboxBatchSize
 	}
 
 	return config, nil

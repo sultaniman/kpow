@@ -29,7 +29,18 @@ func loadTestConfig(t *testing.T) *config.Config {
 		t.Fatalf("failed to load config: %v", err)
 	}
 
-	cfg.Key.Path = filepath.Join(root, cfg.Key.Path)
+	keyBytes, err := os.ReadFile(filepath.Join(root, "server/enc/testkeys/pubkey.gpg"))
+	if err != nil {
+		t.Fatalf("failed to read pubkey: %v", err)
+	}
+
+	keyDir := t.TempDir()
+	keyFile := filepath.Join(keyDir, "pubkey.gpg")
+	if err := os.WriteFile(keyFile, keyBytes, 0o644); err != nil {
+		t.Fatalf("failed to write pubkey: %v", err)
+	}
+
+	cfg.Key.Path = keyFile
 
 	return cfg
 }
@@ -151,4 +162,36 @@ func TestAdvertiseKeyRendering(t *testing.T) {
 		body := rec.Body.String()
 		assert.NotContains(t, body, "id=\"pubkey\"")
 	})
+}
+
+func TestFormBannerRendering(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+	cfg.Server.CustomBanner = "<span>test banner</span>"
+
+	e := newTestServer(t, cfg)
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	body := rec.Body.String()
+	assert.Contains(t, body, cfg.Server.CustomBanner)
+}
+
+func TestFormHideLogo(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+	cfg.Server.HideLogo = true
+
+	e := newTestServer(t, cfg)
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	body := rec.Body.String()
+	assert.NotContains(t, body, "class=\"logo\"")
 }
