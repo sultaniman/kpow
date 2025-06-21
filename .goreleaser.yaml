@@ -33,7 +33,8 @@ checksum:
 changelog:
   sort: desc
 release:
+  draft: false
+  prerelease: false
   github:
-    draft: false
-    prerelease: auto
-
+    owner: your-org
+    name: kpow
