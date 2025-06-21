@@ -10,7 +10,7 @@ import (
 
 var verifyCmd = &cobra.Command{
 	Use:   "verify",
-	Short: "Verify configuration file and exit",
+	Short: "Verify configuration file",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		env.SetEnvPrefix(envPrefix)
 		cfg, err := config.GetConfig(configFile)
