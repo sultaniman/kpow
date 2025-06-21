@@ -14,7 +14,17 @@ type WebhookMailer struct {
 }
 
 func (m *WebhookMailer) Send(message Message) error {
-	jsonMessage, err := json.Marshal(message)
+	payload := struct {
+		Subject          string `json:"subject"`
+		EncryptedMessage string `json:"content"`
+		Hash             string `json:"hash"`
+	}{
+		Subject:          message.Subject,
+		EncryptedMessage: message.EncryptedMessage,
+		Hash:             message.Hash,
+	}
+
+	jsonMessage, err := json.Marshal(payload)
 	if err != nil {
 		return err
 	}
