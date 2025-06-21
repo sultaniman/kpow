@@ -1,12 +1,13 @@
 package server
 
 import (
-        "net/http"
-        "net/http/httptest"
-        "net/url"
-        "path/filepath"
-        "strings"
-        "testing"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
 
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
@@ -14,22 +15,23 @@ import (
 )
 
 func loadTestConfig(t *testing.T) *config.Config {
-        t.Helper()
+	t.Helper()
 
-        root, err := filepath.Abs("..")
-        if err != nil {
-                t.Fatalf("failed to resolve root: %v", err)
-        }
+	wd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("failed to resolve working dir: %v", err)
+	}
+	root := filepath.Dir(wd)
 
-        cfgPath := filepath.Join(root, "config.toml")
-        cfg, err := config.GetConfig(cfgPath)
-        if err != nil {
-                t.Fatalf("failed to load config: %v", err)
-        }
+	cfgPath := filepath.Join(root, "config.toml")
+	cfg, err := config.GetConfig(cfgPath)
+	if err != nil {
+		t.Fatalf("failed to load config: %v", err)
+	}
 
-        cfg.Key.Path = filepath.Join(root, cfg.Key.Path)
+	cfg.Key.Path = filepath.Join(root, cfg.Key.Path)
 
-        return cfg
+	return cfg
 }
 
 func newTestServer(t *testing.T, cfg *config.Config) *echo.Echo {
