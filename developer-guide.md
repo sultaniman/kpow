@@ -1,5 +1,8 @@
 # Developer Guide
 
+
+[English](developer-guide.md) | [Qyrgyz](docs/qy/developer-guide.md)
+
 Welcome to the KPow project! This document provides pointers for navigating and contributing to the codebase.
 
 ## Project Layout
