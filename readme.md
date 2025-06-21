@@ -26,7 +26,6 @@ $ kpow start \
   --advertise-key \
   --inbox-path=/data/inbox \
   --inbox-cron="*/5 * * * *" \
-  --batch-size=10 \
   --log-level=INFO \
   --banner=/etc/kpow/banner.html \
   --hide-logo \

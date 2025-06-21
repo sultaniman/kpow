@@ -20,7 +20,6 @@ const (
 	envPrefix               = "KPOW_"
 	defaultMessageSizeBytes = 240
 	defaultCronSpec         = "*/5 * * * *"
-	defaultBatchSize        = 5
 	defaultMaxRetries       = 2
 )
 
@@ -49,10 +48,9 @@ var (
 	// webhook
 	webhookUrl string
 	// inbox
-	inboxPath      string
-	inboxCron      string
-	inboxBatchSize int
-	startCmd       = &cobra.Command{
+	inboxPath string
+	inboxCron string
+	startCmd  = &cobra.Command{
 		Use:   "start",
 		Short: "Start server",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -209,10 +207,6 @@ func getConfig() (*config.Config, error) {
 		appConfig.Inbox.Cron = inboxCron
 	}
 
-	if inboxBatchSize > 1 {
-		appConfig.Inbox.BatchSize = inboxBatchSize
-	}
-
 	if appConfig.RateLimiter == nil {
 		appConfig.RateLimiter = &config.RateLimiter{}
 	}
@@ -331,11 +325,6 @@ func init() {
 
 	startCmd.PersistentFlags().StringVar(
 		&inboxCron, "inbox-cron", "",
-		"Schedule of inbox cleaner",
-	)
-
-	startCmd.PersistentFlags().IntVar(
-		&inboxBatchSize, "batch-size", defaultBatchSize,
 		"Schedule of inbox cleaner",
 	)
 
