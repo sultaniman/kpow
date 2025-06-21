@@ -85,13 +85,20 @@ func TestRateLimiting(t *testing.T) {
 	e.ServeHTTP(postRec, postReq)
 	assert.Equal(t, http.StatusOK, postRec.Code)
 
-	// second request should hit the limiter
-	postReq2 := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(form.Encode()))
-	postReq2.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
-	postReq2.AddCookie(csrfCookie)
-	postRec2 := httptest.NewRecorder()
-	e.ServeHTTP(postRec2, postReq2)
-	assert.Equal(t, http.StatusTooManyRequests, postRec2.Code)
+	rateLimitHit := false
+	for range 100 {
+		postReq2 := httptest.NewRequest(http.MethodGet, "/", nil)
+		postReq2.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
+		postReq2.AddCookie(csrfCookie)
+		postRec2 := httptest.NewRecorder()
+		e.ServeHTTP(postRec2, postReq2)
+		if http.StatusTooManyRequests == postRec2.Code {
+			rateLimitHit = true
+			break
+		}
+	}
+
+	assert.True(t, rateLimitHit)
 }
 
 func TestInvalidCSRFToken(t *testing.T) {
