@@ -86,6 +86,7 @@ openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 ```
 
 The `rsa_public.pem` file must contain a PKIX PEM‑encoded key.
+
 ### Mailer retry flow
 
 ```mermaid

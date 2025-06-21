@@ -15,9 +15,9 @@ Todo:
     ✔ Scheduler scans a folder with messages and tries to send them out @done(25-06-15 17:18)
   ☐ Configuration verification command
   ✔ Introduce and configure rate limiting @done(25-06-07 22:34)
-  ☐ Update user & dev docs
-    ☐ How to generate RSA, PGP, AGE keys
-  ☐ Create github releaser
+  ✔ Update user & dev docs @done(25-06-21 16:52)
+    ✔ How to generate RSA, PGP, AGE keys @done(25-06-21 16:52)
+  ✔ Create github releaser @done(25-06-21 16:40)
   ✔ Add RSA support @done(25-06-18 20:58)
     ✔ Validate rsa key bits >= message size @done(25-06-08 19:47)
     ✔ Test rsa encryption (sanity check) @done(25-06-18 20:57)
