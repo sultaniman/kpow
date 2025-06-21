@@ -36,5 +36,5 @@ release:
   draft: false
   prerelease: false
   github:
-    owner: your-org
+    owner: sultaniman
     name: kpow
