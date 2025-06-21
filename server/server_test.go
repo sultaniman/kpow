@@ -117,3 +117,38 @@ func TestInvalidCSRFToken(t *testing.T) {
 	e.ServeHTTP(postRec, postReq)
 	assert.Equal(t, http.StatusForbidden, postRec.Code)
 }
+
+func TestAdvertiseKeyRendering(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+
+	// ensure the public key bytes are loaded for the form renderer
+	if errs := cfg.Validate(); len(errs) > 0 {
+		t.Fatalf("config validation failed: %v", errs)
+	}
+
+	t.Run("enabled", func(t *testing.T) {
+		cfg.Key.Advertise = true
+		e := newTestServer(t, cfg)
+
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		rec := httptest.NewRecorder()
+		e.ServeHTTP(rec, req)
+		assert.Equal(t, http.StatusOK, rec.Code)
+		body := rec.Body.String()
+		assert.Contains(t, body, "id=\"pubkey\"")
+		assert.Contains(t, body, string(cfg.Key.KeyBytes))
+	})
+
+	t.Run("disabled", func(t *testing.T) {
+		cfg.Key.Advertise = false
+		e := newTestServer(t, cfg)
+
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		rec := httptest.NewRecorder()
+		e.ServeHTTP(rec, req)
+		assert.Equal(t, http.StatusOK, rec.Code)
+		body := rec.Body.String()
+		assert.NotContains(t, body, "id=\"pubkey\"")
+	})
+}
