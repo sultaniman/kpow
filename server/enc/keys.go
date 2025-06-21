@@ -7,6 +7,7 @@ import (
 	"github.com/sultaniman/kpow/config"
 )
 
+// mockgen -source server/enc/keys.go -destination server/enc/keys_mock.go -package enc
 type KeyLike interface {
 	Encrypt(message string) (string, error)
 }

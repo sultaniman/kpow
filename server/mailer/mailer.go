@@ -18,6 +18,7 @@ type MailerConfig struct {
 	ToEmail   string
 }
 
+// mockgen -source server/mailer/mailer.go -destination server/mailer/mailer_mock.go -package mailer
 type Mailer interface {
 	Send(message Message) error
 }
