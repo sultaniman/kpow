@@ -2,7 +2,7 @@
 
 Bul dokument KPow proyektine qoşuluşu üçün nusravkamalar beret.
 
-## Proyekttin Quruluşu
+## Projekttin Quruluşu
 
 - **cmd/** – Cobra menen kurulgen CLI. `start` buyruğu ushul yerde.
 - **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, ortamdaykän değerlerden, CLI flagtardan biriktiret.
