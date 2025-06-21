@@ -59,9 +59,9 @@ func CreateServer(conf *config.Config, handler *Handler) (*echo.Echo, error) {
 			Skipper: middleware.DefaultSkipper,
 			Store: middleware.NewRateLimiterMemoryStoreWithConfig(
 				middleware.RateLimiterMemoryStoreConfig{
-					Rate:      rate.Limit(conf.RateLimiter.RPM),                // requests per minute
-					Burst:     conf.RateLimiter.Burst,                          // max burst
-					ExpiresIn: time.Duration(conf.RateLimiter.CooldownSeconds), // keep IP in memory for cooldown
+					Rate:      rate.Limit(float64(conf.RateLimiter.RPM) / 60.0),              // requests per minute
+					Burst:     conf.RateLimiter.Burst,                                        // max burst
+					ExpiresIn: time.Duration(conf.RateLimiter.CooldownSeconds) * time.Second, // keep IP in memory for cooldown
 				},
 			),
 			IdentifierExtractor: func(c echo.Context) (string, error) {

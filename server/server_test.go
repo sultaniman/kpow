@@ -76,6 +76,7 @@ func TestRateLimiting(t *testing.T) {
 	for range 100 {
 		postReq2 := httptest.NewRequest(http.MethodGet, "/", nil)
 		postReq2.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
+		postReq2.Header.Set("X-Real-IP", "100.100.100.100")
 		postReq2.AddCookie(csrfCookie)
 		postRec2 := httptest.NewRecorder()
 		e.ServeHTTP(postRec2, postReq2)
