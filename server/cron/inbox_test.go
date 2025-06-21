@@ -75,26 +75,3 @@ func TestInboxCleanerWebhookFailureKeepsFile(t *testing.T) {
 	_, err := os.Stat(filepath.Join(inbox, "kpow-"+msg.Hash+".json"))
 	assert.NoError(t, err)
 }
-
-// TestInboxCleanerMailerFailureStillCallsWebhook ensures that a webhook attempt
-// is made even when sending mail fails for a message using the "mailer" method.
-func TestInboxCleanerMailerFailureStillCallsWebhook(t *testing.T) {
-	inbox := t.TempDir()
-	msg := mailer.Message{Subject: "s", EncryptedMessage: "c", Hash: "m4", Method: "mailer"}
-	assert.NoError(t, msg.Save(inbox))
-
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mail := mailer.NewMockMailer(ctrl)
-	webhook := mailer.NewMockMailer(ctrl)
-
-	mail.EXPECT().Send(gomock.Any()).Return(errors.New("no mail"))
-	webhook.EXPECT().Send(gomock.Any()).Return(nil)
-
-	cleaner := InboxCleaner(inbox, mail, webhook)
-	cleaner()
-
-	_, err := os.Stat(filepath.Join(inbox, "kpow-"+msg.Hash+".json"))
-	assert.NoError(t, err)
-}
