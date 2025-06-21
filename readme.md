@@ -91,6 +91,49 @@ Provide the key kind with `--key-kind` (or `KPOW_KEY_KIND`) and the
 path to your public key with `--pubkey` (or `KPOW_KEY_PATH`).
 Available `--key-kind` options: `age`, `pgp`, or `rsa`.
 
+### Generating Keys
+
+Use common command‑line tools to create compatible public keys:
+
+#### Age
+
+```sh
+age-keygen -o age.key
+grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
+```
+
+Use `age.pub` as the value for `--pubkey` (or `KPOW_KEY_PATH`).
+
+#### PGP
+
+```sh
+gpg --quick-generate-key "Your Name <you@example.com>"
+gpg --armor --export you@example.com > pgp.pub
+```
+
+Pass the ASCII-armored `pgp.pub` file to `--pubkey`.
+
+#### RSA
+
+```sh
+openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
+```
+
+Provide `rsa_public.pem` as `--pubkey`. The public key must be a PKIX
+PEM‑encoded RSA key (2048 bits or greater).
+
+### Config file example
+
+Instead of CLI flags, specify the key in a TOML config file:
+
+```toml
+[key]
+kind = "age"           # or "pgp" or "rsa"
+path = "/etc/kpow/key.pub"
+advertise = false
+```
+
 ### RSA Encryption Note
 
 This system uses RSA encryption with OAEP padding and the SHA-256 hashing algorithm.
