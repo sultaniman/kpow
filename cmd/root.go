@@ -18,3 +18,7 @@ func Execute() {
 		log.Fatal().Err(err)
 	}
 }
+
+func init() {
+	rootCmd.AddCommand(verifyCmd)
+}
