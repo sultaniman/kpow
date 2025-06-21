@@ -53,6 +53,15 @@ flowchart TD
     E --> F[Apply CLI Arguments]
 ```
 
+### Verify your configuration
+
+You can check a configuration file for errors without starting the
+server:
+
+```sh
+./kpow verify --config=config.toml
+```
+
 ## Development Tips
 
 - **Templates** live in `server/templates/` and define the HTML form and error pages. Update these to customize the UI.

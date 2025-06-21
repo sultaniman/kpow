@@ -57,6 +57,15 @@ flowchart TD
 $ kpow start --config=path-to-config.toml
 ```
 
+### Verifying a configuration file
+
+Run the `verify` command to load a configuration and report any
+validation problems without starting the server:
+
+```sh
+$ kpow verify --config=path-to-config.toml
+```
+
 ### Environment variables
 
 | Variable Name           | Description                           | Type   | Default       |
