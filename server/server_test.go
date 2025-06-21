@@ -152,3 +152,35 @@ func TestAdvertiseKeyRendering(t *testing.T) {
 		assert.NotContains(t, body, "id=\"pubkey\"")
 	})
 }
+
+func TestFormBannerRendering(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+	cfg.Server.CustomBanner = "<span>test banner</span>"
+
+	e := newTestServer(t, cfg)
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	body := rec.Body.String()
+	assert.Contains(t, body, cfg.Server.CustomBanner)
+}
+
+func TestFormHideLogo(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+	cfg.Server.HideLogo = true
+
+	e := newTestServer(t, cfg)
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	body := rec.Body.String()
+	assert.NotContains(t, body, "class=\"logo\"")
+}
