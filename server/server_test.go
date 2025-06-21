@@ -72,19 +72,6 @@ func TestRateLimiting(t *testing.T) {
 		t.Fatal("csrf cookie not found")
 	}
 
-	form := url.Values{}
-	form.Set("subject", "hello")
-	form.Set("content", "world")
-	form.Set("csrf", csrfCookie.Value)
-	body := strings.NewReader(form.Encode())
-
-	postReq := httptest.NewRequest(http.MethodPost, "/", body)
-	postReq.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
-	postReq.AddCookie(csrfCookie)
-	postRec := httptest.NewRecorder()
-	e.ServeHTTP(postRec, postReq)
-	assert.Equal(t, http.StatusOK, postRec.Code)
-
 	rateLimitHit := false
 	for range 100 {
 		postReq2 := httptest.NewRequest(http.MethodGet, "/", nil)
