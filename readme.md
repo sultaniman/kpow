@@ -147,3 +147,15 @@ The style sources are in the `styles` folder.
 Use `just styles` to customize and build the form styles, and
 `just error-styles` for the error pages.
 Both commands require `bun` and `bunx` to be installed.
+
+## License
+
+KPow is licensed under the **Business Source License 1.1**.
+
+You **may not use** this software to offer a commercial hosted or managed service to third parties without purchasing a separate commercial license.
+
+On **2028-12-04**, this project will be re-licensed under the **Apache License 2.0**.
+
+- 📄 See [`LICENSE`](./LICENSE)
+- 📄 See [`LICENSE-BUSL`](./LICENSE-BUSL)
+- 📄 See [`LICENSE-APACHE`](./LICENSE-APACHE)

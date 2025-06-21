@@ -1,12 +1,14 @@
-KPow
-Copyright (c) 2025 The KPow Authors
+Business Source License 1.1
 
-This source code is made available under the Business Source License 1.1.
-The full license text is provided in LICENSE-BUSL.
+This source code is licensed under the Business Source License 1.1 (BUSL-1.1).
+
+Use Limitation:
+The Licensed Work may not be used for a commercial offering or service where the Licensed Work is provided to third parties as a hosted or managed service.
 
 Change Date: 2028-12-04
-After the Change Date, the source code will be licensed under the Apache
-License, Version 2.0, which can be found in LICENSE-APACHE.
 
-For details on the Business Source License, see
-https://mariadb.com/bsl11.
+Change License: Apache License, Version 2.0
+
+On or after the Change Date, the Licensed Work will be made available under the Change License.
+
+See LICENSE-BUSL and LICENSE-APACHE for full license texts.

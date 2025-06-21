@@ -1,8 +1,8 @@
-KPow
-Copyright (c) 2025 The KPow Authors
+KPow – Privacy-first contact form with PGP/Age/RSA encryption.
+Copyright © 2025
 
-This project is provided under the Business Source License 1.1 until
-2027-06-21. On that date it will transition to the Apache License,
-Version 2.0.
+This project is licensed under the Business Source License 1.1 until 2028-12-04.
 
-See LICENSE-BUSL and LICENSE-APACHE for full license texts.
+After that date, the project will be licensed under the Apache License, Version 2.0.
+
+For more information, see LICENSE, LICENSE-BUSL, and LICENSE-APACHE.
