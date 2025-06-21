@@ -206,7 +206,7 @@ func (c *Config) Validate() []error {
 	}
 
 	if parts.Scheme != "smtp" {
-		errorList = append(errorList, errors.New("only smpt servers supported"))
+		errorList = append(errorList, errors.New("only smtp servers supported"))
 	}
 
 	// validate webhook url
