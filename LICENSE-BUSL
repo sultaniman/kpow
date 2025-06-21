@@ -1,0 +1,22 @@
+Business Source License 1.1
+
+Parameters
+----------
+Licensor: The KPow Authors
+Licensed Work: KPow
+Additional Use Grant: The Licensor grants the right to use, copy, modify, and prepare derivative works, for internal, non-production use, or in up to three production instances.
+Change Date: 2027-06-21
+Change License: Apache License, Version 2.0
+
+Terms
+-----
+1. Grant. The Licensor hereby grants Recipient a non-exclusive, worldwide, non-transferable, limited license to use, copy, modify, create derivative works, and redistribute the Licensed Work, subject to the conditions below.
+2. Redistribution. Any copy of the Licensed Work must include this License and retain the above Parameters in their entirety.
+3. Use Limitation. The Recipient may use the Licensed Work for development, testing, or evaluation purposes, and in up to the number of production instances stated in the Additional Use Grant. Beyond that, a commercial license is required.
+4. Distribution Limitation. Recipient may not sublicense the Licensed Work, except that it may distribute derivative works only for use within Recipient's organization.
+5. Change Date. On the Change Date, the Change License will apply automatically to all copies of the Licensed Work.
+6. Trademarks. This License does not grant permission to use the Licensor's trade names, trademarks, service marks, or product names.
+7. Disclaimer. THE LICENSED WORK IS PROVIDED "AS IS". THE LICENSOR HEREBY DISCLAIMS ALL WARRANTIES AND CONDITIONS, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND TITLE.
+8. Limitation of Liability. TO THE EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL THE LICENSOR BE LIABLE FOR ANY DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE LICENSED WORK, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+For more information, please visit https://mariadb.com/bsl11.
