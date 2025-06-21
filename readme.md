@@ -113,7 +113,7 @@ Please follow these guidelines when using RSA keys and configuring message param
 | 2048 bits    | SHA-256        | 32 bytes  | 66 bytes     | 190 bytes        |
 | 4096 bits    | SHA-256        | 32 bytes  | 66 bytes     | 446 bytes        |
 
-⚠️ Messages must not exceed the maximum size, or encryption will fail with an error.
+⚠️ Messages exceeding the maximum size for the key will be trimmed before encryption.
 
 **Configuration Hint**
 
