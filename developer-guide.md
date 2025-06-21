@@ -31,6 +31,15 @@ Key configuration topics:
 - **Encryption** – Supports `age`, `pgp`, or `rsa` public keys. Keys are loaded on start and used to encrypt form submissions.
 - **Scheduler** – A cron job retries sending failed messages from the inbox.
 
+To specify the encryption key via a config file, include a `[key]` section:
+
+```toml
+[key]
+kind = "age"           # or "pgp" or "rsa"
+path = "/etc/kpow/key.pub"
+advertise = false
+```
+
 ### Configuration flow
 
 ```mermaid
@@ -49,7 +58,34 @@ flowchart TD
 - **Templates** live in `server/templates/` and define the HTML form and error pages. Update these to customize the UI.
 - **Middleware** is configured in `server/server.go` – CSRF protection, rate limiting and body limits can be adjusted there.
 - **Cron jobs** are located under `server/cron/`. The inbox cleaner periodically attempts to resend failed messages.
-- **Encryption utilities** reside in `server/enc/`. Use the tests here as references for generating keys and encrypting data.
+- **Encryption utilities** reside in `server/enc/`. Use the tests here as references for encrypting data.
+
+### Generating Keys
+
+Use the following commands to create test keys for development:
+
+#### Age
+
+```sh
+age-keygen -o age.key
+grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
+```
+
+#### PGP
+
+```sh
+gpg --quick-generate-key "Your Name <you@example.com>"
+gpg --armor --export you@example.com > pgp.pub
+```
+
+#### RSA
+
+```sh
+openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
+```
+
+The `rsa_public.pem` file must contain a PKIX PEM‑encoded key.
 ### Mailer retry flow
 
 ```mermaid
