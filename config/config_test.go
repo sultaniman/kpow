@@ -12,7 +12,12 @@ import (
 // Check if environment variables
 // picked up and set in config
 func TestConfigInit(t *testing.T) {
-	keyPath := path.Join(os.Getenv("TEST_KEYS_DIR"), "pubkey.pub")
+	keyDir := t.TempDir()
+	keyPath := path.Join(keyDir, "pubkey.pub")
+	if err := os.WriteFile(keyPath, []byte("pubkey"), 0o644); err != nil {
+		t.Fatalf("failed to create pubkey: %v", err)
+	}
+	t.Setenv("TEST_KEYS_DIR", keyDir)
 	t.Setenv("PORT", "10001")
 	t.Setenv("LOG_LEVEL", "ERROR")
 	t.Setenv("MAILER_FROM", "max@mustermann.de")
