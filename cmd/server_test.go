@@ -92,6 +92,7 @@ func TestConfigurationOverrides(t *testing.T) {
 	assert.Equal(t, projectRoot, appConfig.Inbox.Path)
 	assert.Equal(t, "*/10 * * * *", appConfig.Inbox.Cron)
 }
+
 func TestBannerFlag(t *testing.T) {
 	resetFlags()
 	pwd, _ := os.Getwd()
