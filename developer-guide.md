@@ -122,3 +122,16 @@ go test ./...
 
 For a deeper explanation of how the form, encryption and retry logic work, see `readme.md` and the source comments throughout the `server` package.
 
+
+## Releasing
+
+Before tagging a new release, work through this open source checklist:
+
+1. Run `just test` to verify all tests pass.
+2. Build the binaries with `just build` or use GoReleaser for official releases.
+3. Verify that all dependencies use acceptable licenses.
+4. Review commits for secrets or credentials and remove anything sensitive.
+5. Create and push a new git tag for the release.
+
+The project is currently under the Business Source License 1.1 and will
+switch to the Apache License 2.0 on 2028‑12‑04 as noted in the README.
