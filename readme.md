@@ -35,7 +35,7 @@ $ kpow start \
 
 ### Using a configuration file
 
-> [!NOTE]
+> [!note]
 > CLI arguments always override environment variables and configuration files.
 
 Configuration resolution order:
@@ -68,7 +68,7 @@ $ kpow start --config=path-to-config.toml
 | `KPOW_LOG_LEVEL`        | Logging level                         | string | INFO          |
 | `KPOW_MESSAGE_SIZE`     | Maximum server message size           | int    | 240           |
 | `KPOW_HIDE_LOGO`        | Whether to hide the logo              | bool   | false         |
-| `KPOW_CUSTOM_BANNER`    | Custom banner text                    | string | ""            |
+| `KPOW_CUSTOM_BANNER`    | Custom banner file                    | string | ""            |
 | `KPOW_LIMITER_RPM`      | Rate limiter: requests per minute     | int    | 0             |
 | `KPOW_LIMITER_BURST`    | Rate limiter: burst size              | int    | -1            |
 | `KPOW_LIMITER_COOLDOWN` | Rate limiter: cooldown in seconds     | int    | -1            |
@@ -147,6 +147,24 @@ The style sources are in the `styles` folder.
 Use `just styles` to customize and build the form styles, and
 `just error-styles` for the error pages.
 Both commands require `bun` and `bunx` to be installed.
+
+### Custom banner
+
+It is possible to customize the form and add a custom banner using `--banner=/path/to/banner.html` or by setting `KPOW_CUSTOM_BANNER=/path/to/banner.html`.
+HTML in the provided banner will be sanitized, below you can see the list of allowed tags.
+
+**Allowed tags**
+
+> [!note]
+> You can use `style` attribute to style your banner.
+
+- `a`
+- `p`
+- `span`
+- `img`
+- `div`
+- `ul,ol,li`
+- `h1-h6`
 
 ## License
 

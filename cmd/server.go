@@ -114,6 +114,15 @@ func getConfig() (*config.Config, error) {
 		AllowElements(
 			"p", "a", "span",
 			"img", "div",
+			"ul", "ol", "li",
+			"h1", "h2", "h3",
+			"h4", "h5", "h6",
+		).
+		AllowAttrs("style").
+		OnElements(
+			"p", "a", "span",
+			"img", "div",
+			"ul", "ol", "li",
 			"h1", "h2", "h3",
 			"h4", "h5", "h6",
 		)
