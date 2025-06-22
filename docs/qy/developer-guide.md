@@ -5,7 +5,7 @@ Bul dokument KPow projektke qoşuluu üçün cardam beret.
 - **cmd/** – Cobra menen kurulgan CLI. `start` bujruğu uşul cerde.
 - **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, sistem çöjrödön, CLI flagtardan biriktiret.
 - **server/** – Negizgi qoşumça kody. HTTP serverdi, formany, şifrlöö, mailerler cana cron qyzmaty bar.
-- **styles/** – Tailwind CSS kaynaklary. `just styles` kompiliasijasyn atkarat.
+- **styles/** – Tailwind CSS stilderi. `just styles` kompiliasijasyn atkarat.
 - **art/** – Dokumentasijada ce web interfejste pajdalanuuçu süröttör.
 1. **Go'nu cüktöö** – Projekt Go modul sistemasyn pajdalanat. Go 1.21+ cüktöö kerek.
 2. **Bun** – `just styles` üçün kerek.
@@ -37,13 +37,13 @@ Konfigurasija fajlda açkyçty körsötüü misaly:
 ```ş
 ### Mailer agymy
 ```ş
-(Testter üçün internet kerek boluşu mümkün.)
-3. Bütün lisenzijalar tuura sharttuu lisenzija ekenin dalildeñiz.
-4. Syrduu maalymat bolso, kommitterden alardy cokko çyğaryñyz.
-Projekt azyrça Business Source License 1.1 astynda, README-da belgilengendej 2028-12-04 de Apache License 2.0gö ötöt.
-
-```mermaid
-flowchart TD
+- **Middleware** `server/server.go` – CSRF, rate limit, maalymatty çektöö.
+    B -- Qata --> D[Inboxko Saluu]
+    D --> E[Cron candatuu]
+    E --> F[Qabarlardy oquu]
+    F --> G{Qajra ciberüü}
+```go
+3. Caña feature üçün test qoşuu kerek.
     A[Bastaş] --> B{Config Barby?}
     B -- Ooba --> C[Config Faylyn Okuu]
     B -- Jok --> D[Default Maanilär]
