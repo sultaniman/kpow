@@ -13,7 +13,7 @@ Todo:
     ✔ If webhook failed then retry only webhook @done(25-06-15 17:18)
     ✔ Failed messages each should be in separate files @done(25-06-08 19:40)
     ✔ Scheduler scans a folder with messages and tries to send them out @done(25-06-15 17:18)
-  ☐ Configuration verification command
+  ✔ Configuration verification command @done(25-06-22 14:51)
   ✔ Introduce and configure rate limiting @done(25-06-07 22:34)
   ✔ Update user & dev docs @done(25-06-21 16:52)
     ✔ How to generate RSA, PGP, AGE keys @done(25-06-21 16:52)
