@@ -1,10 +1,10 @@
 # KPow 💥
 
-KPow bul oz-ozun hosttoolgon, kuptuuluukka bagyttalgan baiylanyş formasy, üçünçü tarap xyzmattarğa tayansyz, koopsuz baylanyşka mümkindik beret.
-Bul Age, PGP cana RSA syyaktuu zamanbap şifrlöö standartu tartyp koldoonu, cönötülgön xatty şifrlöp cazdyrat.
-Bul kupuuluukka önöktör, açykk kaynak proyekttor, müüstakyl saytlar, tor aykyndoo platformalary, cana koopsuz, audit tuu, toluq önkörülgön xattar menen ishtöö kerek içki kuraldar üçün ideal.
+KPow bul öz aldynça tejlengen, kuptuuluukka bagyttalgan bajlanyş formasy, üçünçü tarap qyzmattarğa tayansyz, koopsuz bajlanyşka mümkündük beret.
+Bul Age, PGP cana RSA syjaktuu zamanbap şifrlöö standartty qoldonup, cönötülgön qatty şifrlep bekitet.
+Bul kupuuluukka önöktör, Open Source projektter, köz karandysyz sajttar, tor ajkyndoo platformalary üçün ideal.
 
-## Serverdi baskiloo
+## Serverdi candyruu
 
 ### CLI parametirleri menen
 
@@ -32,14 +32,14 @@ $ kpow start \
   --message-size=512
 ```
 
-### Konfiguraciya fajlyn paydalanuu
+### Konfiguratsija fajlyn paydalanuu
 
 > [!note]
 > CLI parametirleri ar daima orto moynunda turat: alardy ortamende coldoo pyson.
 
-Konfiguraciyanyn tartibi:
+Konfiguratsijanyn tartibi:
 
-1. Konfiguraciya fajlyn cükteü;
+1. Konfiguratsija fajlyn cükteü;
 2. Aylandyñ čeyn geçkenn minezderd (ENV);
 3. CLI parametirleri baryn basty alyştyrat.
 
@@ -58,9 +58,9 @@ flowchart TD
 $ kpow start --config=path-to-config.toml
 ```
 
-### Konfiguraciya fajlyn tekşerüü
+### Konfiguratsija fajlyn tekşerüü
 
-Serverdi baştağynda katali malymatlar bar-cogun teksherüü:
+Serverdi candyruu aldynda konfiguratsijany syndoo:
 
 ```sh
 $ kpow verify --config=path-to-config.toml
@@ -68,13 +68,13 @@ $ kpow verify --config=path-to-config.toml
 
 ### Aylanma Özgörtülör (Environment variables)
 
-| Özgörtü Aty            | Deskripciya                       | Türü  | Default |
-| --------------------- | --------------------------------- | ---- | ------- |
+| Özgörmö Aty            | Deskripciya                       | Tipi  | Algaçky maanisi |
+| --------------------- | --------------------------------- | ---- | ---------------- |
 | `KPOW_TITLE`          | Server atkasy                     | string| ""      |
 | `KPOW_PORT`           | Server portu                      | int   | 8080    |
 | `KPOW_HOST`           | Server host addressi              | string| localhost|
 | `KPOW_LOG_LEVEL`      | Log därecesi                     | string| INFO    |
-| `KPOW_MESSAGE_SIZE`   | Maks xabardyn ölçömi             | int   | 240     |
+| `KPOW_MESSAGE_SIZE`   | Maks qabardyn ölçömi             | int   | 240     |
 | `KPOW_HIDE_LOGO`      | Logo casyrylsynby                | bool  | false   |
 | `KPOW_CUSTOM_BANNER`  | Bannerdin fajly                  | string| ""      |
 | `KPOW_LIMITER_RPM`    | Bir minuttaga süryö sany         | int   | 0       |
@@ -93,13 +93,13 @@ $ kpow verify --config=path-to-config.toml
 
 ## Şifrlöö
 
-KPow Age, PGP, cana RSA publikalyk klyuhtar menen xatty şifrlööyü koldoyt.
+KPow Age, PGP, cana RSA açyk açkyç menen qatty şifrlöö üçün koldonulat.
 `--key-kind` (ce `KPOW_KEY_KIND`) parametri menen klyuç türün, `--pubkey` (ce `KPOW_KEY_PATH`) menen klyuç fajlynyn colun körsötüñüz.
 Mümkün varianttar: `age`, `pgp`, `rsa`.
 
-### Klyuhtar casoo
+### Açkyç casoo
 
-Köb atalkan konzol kuraldary menen koldonuluuda:
+CLI tirkeme arkyluu:
 
 #### Age
 
@@ -108,7 +108,7 @@ age-keygen -o age.key
 grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 ```
 
-`age.pub` fajlyn `--pubkey` boluup qoldonulunuz.
+`age.pub` fajlyn `--pubkey` boluup qoldonuñuz.
 
 #### PGP
 
@@ -117,7 +117,7 @@ gpg --quick-generate-key "Your Name <you@example.com>"
 gpg --armor --export you@example.com > pgp.pub
 ```
 
-`--pubkey` üçün `pgp.pub` fajlyn berriniz.
+`--pubkey` üçün `pgp.pub` fajlyn beriniz.
 
 #### RSA
 
@@ -126,7 +126,7 @@ openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:204
 openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 ```
 
-`rsa_public.pem` fajly `--pubkey` sifatynda qoldonulut. Publikalyk klyuç PKIX PEM kod formatynda boluşu kerek.
+`rsa_public.pem` fajly `--pubkey` sifatynda qoldonulut. Açyk açkyç PKIX PEM formatynda boluşu kerek.
 
 ### Konfig misaly
 
@@ -141,21 +141,21 @@ advertise = false
 
 ### RSA Şifrlöö belgesi
 
-Bul sistemas RSA OAEP padding cana SHA-256 xeshootsu menen ishtöö.
-Klyuqtun uzunduguna karap maks xabar ölçömi tetkiklenet.
-Misal üçün, 2048-bittik RSA menen message_size = 180.
+Bul sistemas RSA OAEP padding cana SHA-256 heşetüü menen ishtöö.
+Açkyçtyn uzunduğuna caraşa qabar da çektelet.
+Misal üçün, 2048-bittik RSA menen `message_size = 180`.
 
 ## Maler logikasy
 
 ```mermaid
 flowchart TD
-    A[Caña habar ciberildi] --> B{Darhol ciberüüga araktylyshaby?}
-    B -- Iygylyk --> C[Habar ciberildi]
+    A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
+    B -- Ijgilik --> C[Qabar ciberildi]
     B -- Qata --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
-    E --> F[Xabarlardy oqoo]
+    E --> F[Qabarlardy oquu]
     F --> G{Qayra ciberüüga araktylyshaby?}
-    G -- Iygylyk --> H[Habar ciberildi]
+    G -- Ijgilik --> H[Qabar ciberildi]
     G -- Qata --> E
 ```
 
@@ -171,13 +171,13 @@ flowchart TD
 }
 ```
 
-Webhook URL HTTPS boluşu şart, `localhost` bolboso. HTTP code < 400 bolsa, iygylyktuu.
+Webhook URL HTTPS boluşu şart, `localhost` bolboso. HTTP code < 400 bolsa, ijgilik qatary eseptelet.
 
 ## Öndürüü
 
-### Formdy özğörtüü
+### Formany özğörtüü
 
-Bun cana Tailwind CSS stil casoo üçün paydalanyladi.
+Bun cana Tailwind CSS stil casoo üçün qoldonulat.
 Stil fajldary `styles` folderinde.
 `just styles` bujruğu stilderdi casoo üçün.
 `just error-styles` - qata betlerin stilleri.
@@ -199,8 +199,8 @@ Banner dinHTML sanitized bolot, ruqsat berilgen tagtardyn tizmesi tömönködöy
 ## Litsenziya
 
 KPow **Business Source License 1.1** menen litsenziyalangan.
-Siz programmany kommersiyalyk hosttoolup içinçü tarapka xyzmat körsötöö üçün özünçö litsenziya satyp almasangiz, paydalana albaysyz.
-**2028-12-04** ta projekt **Apache License 2.0** menen qayta litsenziyalanat.
+Siz programmany kommersijalyk hosttoo uchun üçünçü tarapka qyzmat körsötöö uchun litsenzijasyz pajdalana albajsyz.
+**2028-12-04** ta projekt **Apache License 2.0** menen daroo litsenziyalanat.
 
 - 📄 [`LICENSE`](./LICENSE)
 - 📄 [`LICENSE-BUSL`](./LICENSE-BUSL)
