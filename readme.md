@@ -250,3 +250,11 @@ On **2028-12-04**, this project will be re-licensed under the **Apache License 2
 - 📄 See [`LICENSE`](./LICENSE)
 - 📄 See [`LICENSE-BUSL`](./LICENSE-BUSL)
 - 📄 See [`LICENSE-APACHE`](./LICENSE-APACHE)
+
+## Screenshots
+
+![form](https://github.com/sultaniman/kpow/blob/main/screenshots/form.png?raw=true)
+---
+![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
+---
+![csrf error](https://github.com/sultaniman/kpow/blob/main/screenshots/csrf-error.png?raw=true)
