@@ -1,14 +1,16 @@
 # KPow 💥
 
-KPow bul öz aldynça tejlengen, kuptuuluukka bagyttalgan bajlanyş formasy, üçünçü tarap qyzmattarğa tayansyz, koopsuz bajlanyşka mümkündük beret.
-Bul Age, PGP cana RSA syjaktuu zamanbap şifrlöö standartty qoldonup, cönötülgön qatty şifrlep bekitet.
-Bul kupuuluukka önöktör, Open Source projektter, köz karandysyz sajttar, tor ajkyndoo platformalary üçün ideal.
+KPow bul öz aldynça tejlengen, kupujaluuluk türdö bagyttalgan bajlanyş formasy,
+üçünçü tarap qyzmattarğa tayansyz, koopsuz bajlanyşka mümkündük beret.
+Bul Age, PGP cana RSA syjaktuu zamanbap şifrlöö standartty qoldonup,
+cönötülgön qatty şifrlep bekitet.
+Bul kupuuluukka önöktör, Open Source projektter, köz karandysyz sajttar üçün ideal.
 
 ## Serverdi candyruu
 
 ### CLI parametirleri menen
 
-```ş
+```sh
 $ kpow start \
   --config=/etc/kpow/config.toml \
   --port=8080 \
@@ -39,22 +41,21 @@ $ kpow start \
 
 Konfiguratsijanyn tartibi:
 
-1. Konfiguratsija fajlyn cükteü;
-2. Aylandyñ čeyn geçkenn minezderd (ENV);
-3. CLI parametirleri baryn basty alyştyrat.
-
+1. Konfigurasija fajlyn cüktöö;
+2. Sistem cöjrösünön çüktöö (ENV);
+3. Sonunda CLI parametirleri prioritet alat.
 
 ```mermaid
 flowchart TD
-    A[Start] --> B{Config Fayly Barby?}
-    B -- ooba --> C[Konfig Faylyn Jükteü]
+    A[Start] --> B{Config Fajly Barby?}
+    B -- ooba --> C[Konfig Fajlyn Jüktöö]
     B -- cok --> D[Konfigdyn nökmö boyunça]
     C --> D
-    D --> E[Environment Ozgörtülördü Jükteü]
+    D --> E[Environment Ozgörtüülördü Jüktöö]
     E --> F[CLI Parametirlerin Qoldonuu]
 ```
 
-```ş
+```sh
 $ kpow start --config=path-to-config.toml
 ```
 
@@ -62,34 +63,34 @@ $ kpow start --config=path-to-config.toml
 
 Serverdi candyruu aldynda konfiguratsijany syndoo:
 
-```ş
+```sh
 $ kpow verify --config=path-to-config.toml
 ```
 
 ### Aylanma Özgörtülör (Environment variables)
 
-| Özgörmö Aty            | Deskripciya                       | Tipi  | Algaçky maanisi |
-| --------------------- | --------------------------------- | ---- | ---------------- |
-| `KPOW_TITLE`          | Server atkasy                     | string| ""      |
-| `KPOW_PORT`           | Server portu                      | int   | 8080    |
-| `KPOW_HOST`           | Server host addressi              | string| localhost|
-| `KPOW_LOG_LEVEL`      | Log därecesi                     | string| INFO    |
-| `KPOW_MESSAGE_SIZE`   | Maks qabardyn ölçömi             | int   | 240     |
-| `KPOW_HIDE_LOGO`      | Logo casyrylsynby                | bool  | false   |
-| `KPOW_CUSTOM_BANNER`  | Bannerdin fajly                  | string| ""      |
-| `KPOW_LIMITER_RPM`    | Bir minuttaga süryö sany         | int   | 0       |
-| `KPOW_LIMITER_BURST`  | Burst ölçömi                      | int   | -1      |
-| `KPOW_LIMITER_COOLDOWN`| Söndürüü müdööti                | int   | -1      |
-| `KPOW_MAILER_FROM`    | Joöntöçü email                   | string| ""      |
-| `KPOW_MAILER_TO`      | Kabyldooçu email                 | string| ""      |
-| `KPOW_MAILER_DSN`     | SMTP DSN                          | string| ""      |
-| `KPOW_WEBHOOK_URL`    | Webhook URL                       | string| ""      |
-| `KPOW_MAX_RETRIES`    | Qaytaruu sany                     | int   | 2       |
-| `KPOW_KEY_KIND`       | Açkyç türü: `age`, `pgp`, `rsa`   | string| ""      |
-| `KPOW_ADVERTISE`      | Açkyç caryyalansynby              | bool  | false   |
-| `KPOW_KEY_PATH`       | Açkyç fajlynyn coly              | string| ""      |
-| `KPOW_INBOX_PATH`     | Inbox folderin coly             | string| ""      |
-| `KPOW_INBOX_CRON`     | Inboxti iştetüü cron cädvali     | string| `*/5 * * * *` |
+| Özgörmö Aty             | Deskripciya                     | Tipi   | Algaçky maanisi |
+| ----------------------- | ------------------------------- | ------ | --------------- |
+| `KPOW_TITLE`            | Server atkasy                   | string | ""              |
+| `KPOW_PORT`             | Server portu                    | int    | 8080            |
+| `KPOW_HOST`             | Server host addressi            | string | localhost       |
+| `KPOW_LOG_LEVEL`        | Log därecesi                    | string | INFO            |
+| `KPOW_MESSAGE_SIZE`     | Maks qabardyn ölçömi            | int    | 240             |
+| `KPOW_HIDE_LOGO`        | Logo casyrylsynby               | bool   | false           |
+| `KPOW_CUSTOM_BANNER`    | Bannerdin fajly                 | string | ""              |
+| `KPOW_LIMITER_RPM`      | Bir minuttaga süryö sany        | int    | 0               |
+| `KPOW_LIMITER_BURST`    | Burst ölçömi                    | int    | -1              |
+| `KPOW_LIMITER_COOLDOWN` | Söndürüü müdööti                | int    | -1              |
+| `KPOW_MAILER_FROM`      | Joöntöçü email                  | string | ""              |
+| `KPOW_MAILER_TO`        | Kabyldooçu email                | string | ""              |
+| `KPOW_MAILER_DSN`       | SMTP DSN                        | string | ""              |
+| `KPOW_WEBHOOK_URL`      | Webhook URL                     | string | ""              |
+| `KPOW_MAX_RETRIES`      | Qaytaruu sany                   | int    | 2               |
+| `KPOW_KEY_KIND`         | Açkyç türü: `age`, `pgp`, `rsa` | string | ""              |
+| `KPOW_ADVERTISE`        | Açkyç caryyalansynby            | bool   | false           |
+| `KPOW_KEY_PATH`         | Açkyç fajlynyn coly             | string | ""              |
+| `KPOW_INBOX_PATH`       | Inbox folderin coly             | string | ""              |
+| `KPOW_INBOX_CRON`       | Inboxti iştetüü cron cädvali    | string | `*/5 * * * *`   |
 
 ## Şifrlöö
 
@@ -103,7 +104,7 @@ CLI tirkeme arkyluu:
 
 #### Age
 
-```ş
+```sh
 age-keygen -o age.key
 grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 ```
@@ -112,7 +113,7 @@ grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 
 #### PGP
 
-```ş
+```sh
 gpg --quick-generate-key "Your Name <you@example.com>"
 gpg --armor --export you@example.com > pgp.pub
 ```
@@ -121,7 +122,7 @@ gpg --armor --export you@example.com > pgp.pub
 
 #### RSA
 
-```ş
+```sh
 openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 ```
@@ -165,9 +166,9 @@ flowchart TD
 
 ```json
 {
-  "subject": "<form subject>",
-  "content": "<encrypted message>",
-  "hash": "<sha256-hash>"
+    "subject": "<form subject>",
+    "content": "<encrypted message>",
+    "hash": "<sha256-hash>"
 }
 ```
 
