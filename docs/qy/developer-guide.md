@@ -10,7 +10,7 @@ Bul dokument KPow projektke qoşuluu üçün cardam beret.
 1. **Go'nu cüktöö** – Projekt Go modul sistemasyn pajdalanat. Go 1.21+ cüktöö kerek.
 2. **Bun** – `just styles` üçün kerek.
 3. **Serverdi candandyruu**
-   ```ş
+   ```sh
    ./kpow start
    CLI flagtary çöjrödön maanilerin cana konfiguraciya fajlyn bastary.
 ## Konfigurasija
