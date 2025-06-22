@@ -209,3 +209,11 @@ Siz programmany kommersijalyk hosttoo uchun üçünçü tarapka qyzmat körsöt�
 - 📄 [`LICENSE`](./LICENSE)
 - 📄 [`LICENSE-BUSL`](./LICENSE-BUSL)
 - 📄 [`LICENSE-APACHE`](./LICENSE-APACHE)
+
+## Skrinşottor
+
+![form](https://github.com/sultaniman/kpow/blob/main/screenshots/form.png?raw=true)
+---
+![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
+---
+![csrf error](https://github.com/sultaniman/kpow/blob/main/screenshots/csrf-error.png?raw=true)
