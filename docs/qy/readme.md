@@ -72,26 +72,26 @@ $ kpow verify --config=path-to-config.toml
 
 | Özgörmö Aty             | Deskripciya                     | Tipi   | Algaçky maanisi |
 | ----------------------- | ------------------------------- | ------ | --------------- |
-| `KPOW_TITLE`            | Server atkasy                   | string | ""              |
+| `KPOW_TITLE`            | Server aty                      | string | ""              |
 | `KPOW_PORT`             | Server portu                    | int    | 8080            |
-| `KPOW_HOST`             | Server host addressi            | string | localhost       |
-| `KPOW_LOG_LEVEL`        | Log därecesi                    | string | INFO            |
-| `KPOW_MESSAGE_SIZE`     | Maks qabardyn ölçömi            | int    | 240             |
+| `KPOW_HOST`             | Server host daregi              | string | localhost       |
+| `KPOW_LOG_LEVEL`        | Log daracasy                    | string | INFO            |
+| `KPOW_MESSAGE_SIZE`     | Qabardyn ölçömü                 | int    | 240             |
 | `KPOW_HIDE_LOGO`        | Logo casyrylsynby               | bool   | false           |
 | `KPOW_CUSTOM_BANNER`    | Bannerdin fajly                 | string | ""              |
-| `KPOW_LIMITER_RPM`      | Bir minuttaga süryö sany        | int    | 0               |
-| `KPOW_LIMITER_BURST`    | Burst ölçömi                    | int    | -1              |
-| `KPOW_LIMITER_COOLDOWN` | Söndürüü müdööti                | int    | -1              |
-| `KPOW_MAILER_FROM`      | Joöntöçü email                  | string | ""              |
-| `KPOW_MAILER_TO`        | Kabyldooçu email                | string | ""              |
+| `KPOW_LIMITER_RPM`      | Bir request/m sany              | int    | 0               |
+| `KPOW_LIMITER_BURST`    | Burst requestterdin sany        | int    | -1              |
+| `KPOW_LIMITER_COOLDOWN` | Rate limit kuldaun ubakyty      | int    | -1              |
+| `KPOW_MAILER_FROM`      | Jönötüüçü emaily                | string | ""              |
+| `KPOW_MAILER_TO`        | Kabyldooçu emaily               | string | ""              |
 | `KPOW_MAILER_DSN`       | SMTP DSN                        | string | ""              |
 | `KPOW_WEBHOOK_URL`      | Webhook URL                     | string | ""              |
-| `KPOW_MAX_RETRIES`      | Qaytaruu sany                   | int    | 2               |
+| `KPOW_MAX_RETRIES`      | Retry sany                      | int    | 2               |
 | `KPOW_KEY_KIND`         | Açkyç türü: `age`, `pgp`, `rsa` | string | ""              |
-| `KPOW_ADVERTISE`        | Açkyç caryyalansynby            | bool   | false           |
+| `KPOW_ADVERTISE`        | Açkyç caryjalansynby            | bool   | false           |
 | `KPOW_KEY_PATH`         | Açkyç fajlynyn coly             | string | ""              |
 | `KPOW_INBOX_PATH`       | Inbox folderin coly             | string | ""              |
-| `KPOW_INBOX_CRON`       | Inboxti iştetüü cron cädvali    | string | `*/5 * * * *`   |
+| `KPOW_INBOX_CRON`       | Inboxtu iştetüü cron tartibi    | string | `*/5 * * * *`   |
 
 ## Şifrlöö
 
