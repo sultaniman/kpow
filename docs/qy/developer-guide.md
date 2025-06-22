@@ -29,7 +29,7 @@ Konfigurasija fajlda açkyçty körsötüü misaly:
     B -- Ooba --> C[Config Fajlyn Okuu]
     C --> E[Sistem Ozgörtülörü]
 ### Konfigurasijany tekşerüü
-```ş
+```sh
 - **Cron qyzmaty** `server/cron/` içinde. Inbokstu ciberüü.
 - **Şifrlöö logikasy** `server/enc/` içinde.
 ```ş
