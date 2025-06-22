@@ -1,5 +1,8 @@
 # Developer Guide
 
+
+[English](developer-guide.md) | [Qyrgyz](docs/qy/developer-guide.md)
+
 Welcome to the KPow project! This document provides pointers for navigating and contributing to the codebase.
 
 ## Project Layout
@@ -55,9 +58,6 @@ flowchart TD
 
 ### Verify your configuration
 
-You can check a configuration file for errors without starting the
-server:
-
 ```sh
 ./kpow verify --config=config.toml
 ```
@@ -112,8 +112,6 @@ flowchart TD
 
 
 ## Running Tests
-
-The repository contains unit tests in the `server/enc` package and for CLI configuration overrides. Run them with:
 
 ```sh
 go test ./...
