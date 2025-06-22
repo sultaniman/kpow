@@ -152,12 +152,12 @@ Misal üçün, 2048-bittik RSA menen `message_size = 180`.
 ```mermaid
 flowchart TD
     A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
-    B -- Ijgilik --> C[Qabar ciberildi]
+    B -- Ooba --> C[Qabar ciberildi]
     B -- Cok --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
     F --> G{Qayra ciberüügö macburbu?}
-    G -- Ijgilik --> H[Qabar ciberildi]
+    G -- Ooba --> H[Qabar ciberildi]
     G -- Ooba --> E
 ```
 
