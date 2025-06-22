@@ -11,8 +11,8 @@ Bul dokument KPow projektke qoşuluu üçün cardam beret.
 2. **Bun** – `just styles` üçün kerek.
 3. **Serverdi candandyruu**
 
-   ```sh
-   ./kpow start
+```sh
+./kpow start
    CLI flagtary çöjrödön maanilerin cana konfiguraciya fajlyn bastary.
 ## Konfigurasija
 Yrastoo parametrler TOML fajl menen, ortom özgörtüülör menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden habar beret. `config.toml` cana `example.env` dajarlap qoyulgän.
