@@ -2,9 +2,10 @@
 
 KPow bul öz aldynça tejlengen, kupujaluuluk türdö bagyttalgan bajlanyş formasy,
 üçünçü tarap qyzmattarğa tayansyz, koopsuz bajlanyşka mümkündük beret.
-Bul Age, PGP cana RSA syjaktuu zamanbap şifrlöö standartty qoldonup,
+Bul Age, PGP cana RSA syjaktuu zamanbap şifrlöö standartyn qoldonup,
 cönötülgön qatty şifrlep bekitet.
-Bul kupuuluukka önöktör, Open Source projektter, köz karandysyz sajttar üçün ideal.
+
+Bul kupujaluulukka önöktör, Open Source projektter, köz karandysyz sajttar üçün ideal.
 
 ## Serverdi candyruu
 
@@ -49,7 +50,7 @@ Konfiguratsijanyn tartibi:
 flowchart TD
     A[Start] --> B{Config Fajly Barby?}
     B -- ooba --> C[Konfig Fajlyn Jüktöö]
-    B -- cok --> D[Konfigdyn nökmö boyunça]
+    B -- cok --> D[Konfig defaulttaryn qoldonuu]
     C --> D
     D --> E[Environment Ozgörtüülördü Jüktöö]
     E --> F[CLI Parametirlerin Qoldonuu]
@@ -142,27 +143,27 @@ advertise = false
 
 ### RSA Şifrlöö belgesi
 
-Bul sistemas RSA OAEP padding cana SHA-256 heşetüü menen ishtöö.
+Bul sistemas RSA OAEP padding cana SHA-256 heşetüü menen iştöö.
 Açkyçtyn uzunduğuna caraşa qabar da çektelet.
 Misal üçün, 2048-bittik RSA menen `message_size = 180`.
 
-## Maler logikasy
+## Maler agymy
 
 ```mermaid
 flowchart TD
     A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
     B -- Ijgilik --> C[Qabar ciberildi]
-    B -- Qata --> D[Inbox folderge saktoo]
+    B -- Cok --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
     F --> G{Qayra ciberüügö macburbu?}
     G -- Ijgilik --> H[Qabar ciberildi]
-    G -- Qata --> E
+    G -- Ooba --> E
 ```
 
 ## Webhook
 
-`--webhook-url` (ce `KPOW_WEBHOOK_URL`) berseniz, KPow şifrlöngön maglymatty JSON formatynda koorsötülgön endpointke POST qylat:
+`--webhook-url` (ce `KPOW_WEBHOOK_URL`) berseñiz, KPow şifrlengen maalymaty JSON formatynda korsötülgön endpointke POST arqyluu ciberilet:
 
 ```json
 {
@@ -179,15 +180,17 @@ Webhook URL HTTPS boluşu şart, `localhost` bolboso. HTTP code < 400 bolsa, ijg
 ### Formany özğörtüü
 
 Bun cana Tailwind CSS stil casoo üçün qoldonulat.
-Stil fajldary `styles` folderinde.
-`just styles` bujruğu stilderdi casoo üçün.
-`just error-styles` - qata betlerin stilleri.
-Bul komandalar `bun` cana `bunx` kuraldaryn talab kyladi.
+
+- Stil fajldary `styles` folderinde.
+- `just styles` bujruğu stilderdi casoo üçün.
+- `just error-styles` - qata betlerin stilleri.
+
+Bul komandalar üçün `bun` cana `bunx` kerek.
 
 ### Bannerdi özğörtüü
 
 `--banner=/path/to/banner.html` ce `KPOW_CUSTOM_BANNER=/path/to/banner.html` menen biriktirip, öz bannerdi qoşo alasyz.
-Banner dinHTML sanitized bolot, ruqsat berilgen tagtardyn tizmesi tömönködöy:
+Bannerdin HTMLi tazalanuu cana filtrden ötöt, tuura tagtardyn tizmesi tömönküdöj:
 
 - `a`
 - `p`
@@ -200,7 +203,7 @@ Banner dinHTML sanitized bolot, ruqsat berilgen tagtardyn tizmesi tömönködöy
 ## Litsenziya
 
 KPow **Business Source License 1.1** menen litsenziyalangan.
-Siz programmany kommersijalyk hosttoo uchun üçünçü tarapka qyzmat körsötöö uchun litsenzijasyz pajdalana albajsyz.
+Siz programmany kommersijalyk hosttoo uchun üçünçü tarapka qyzmat körsötüü üçün lisenzijasyz pajdalana albajsyz.
 **2028-12-04** ta projekt **Apache License 2.0** menen daroo litsenziyalanat.
 
 - 📄 [`LICENSE`](./LICENSE)

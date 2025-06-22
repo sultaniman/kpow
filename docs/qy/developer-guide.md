@@ -20,7 +20,7 @@ CLI flagtary çöjrödön maanilerin cana konfiguraciya fajlyn bastary.
 
 ## Konfigurasija
 
-Yrastoo parametrler TOML fajl menen, ortom özgörtüülör menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden habar beret. `config.toml` cana `example.env` dajarlap qoyulgän.
+Yrastoo parametrler TOML fajl menen, ortom özgörtüülör menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden qabar beret. `config.toml` cana `example.env` dajarlap qojylgan.
 
 -   **Server** – Port, host, log cana requestterdi çektöö.
 -   **Mailerler** – SMTP ce webhook arkyluu cönötüü. Ijgiliktüü cetkirilbese inbox folderine saktoo.
@@ -35,7 +35,7 @@ Konfigurasija fajlda açkyçty körsötüü misaly:
 flowchart TD
     A[Start] --> B{Config Fajly Barby?}
     B -- ooba --> C[Konfig Fajlyn Jüktöö]
-    B -- cok --> D[Konfigdyn nökmö boyunça]
+    B -- cok --> D[Konfig defaulttaryn qoldonuu]
     C --> D
     D --> E[Environment Ozgörtüülördü Jüktöö]
     E --> F[CLI Parametirlerin Qoldonuu]
@@ -79,18 +79,18 @@ openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 
 `rsa_public.pem` PKIX PEM formatynda boluşu kerek.
 
-### Mailer qaytuu agymy
+### Mailer agymy
 
 ```mermaid
 flowchart TD
     A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
     B -- Ijgilik --> C[Qabar ciberildi]
-    B -- Qata --> D[Inbox folderge saktoo]
+    B -- Cok --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
     F --> G{Qayra ciberüügö macburbu?}
     G -- Ijgilik --> H[Qabar ciberildi]
-    G -- Qata --> E
+    G -- Ooba --> E
 ```
 
 ## Testterdi Jügürtüü
