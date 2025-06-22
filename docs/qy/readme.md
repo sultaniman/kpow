@@ -217,3 +217,5 @@ Siz programmany kommersijalyk hosttoo uchun üçünçü tarapka qyzmat körsöt�
 ![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
 ---
 ![csrf error](https://github.com/sultaniman/kpow/blob/main/screenshots/csrf-error.png?raw=true)
+
+<p align="center">✨ 🚀 ✨</p>
