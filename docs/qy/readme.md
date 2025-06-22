@@ -85,16 +85,16 @@ $ kpow verify --config=path-to-config.toml
 | `KPOW_MAILER_DSN`     | SMTP DSN                          | string| ""      |
 | `KPOW_WEBHOOK_URL`    | Webhook URL                       | string| ""      |
 | `KPOW_MAX_RETRIES`    | Qaytaruu sany                     | int   | 2       |
-| `KPOW_KEY_KIND`       | Klyuç türü: `age`, `pgp`, `rsa`   | string| ""      |
-| `KPOW_ADVERTISE`      | Klyuç caryyalansynby              | bool  | false   |
-| `KPOW_KEY_PATH`       | Klyuç fajlynyn coly              | string| ""      |
+| `KPOW_KEY_KIND`       | Açkyç türü: `age`, `pgp`, `rsa`   | string| ""      |
+| `KPOW_ADVERTISE`      | Açkyç caryyalansynby              | bool  | false   |
+| `KPOW_KEY_PATH`       | Açkyç fajlynyn coly              | string| ""      |
 | `KPOW_INBOX_PATH`     | Inbox folderin coly             | string| ""      |
 | `KPOW_INBOX_CRON`     | Inboxti iştetüü cron cädvali     | string| `*/5 * * * *` |
 
 ## Şifrlöö
 
 KPow Age, PGP, cana RSA açyk açkyç menen qatty şifrlöö üçün koldonulat.
-`--key-kind` (ce `KPOW_KEY_KIND`) parametri menen klyuç türün, `--pubkey` (ce `KPOW_KEY_PATH`) menen klyuç fajlynyn colun körsötüñüz.
+`--key-kind` (ce `KPOW_KEY_KIND`) parametri menen açkyç türün, `--pubkey` (ce `KPOW_KEY_PATH`) menen açkyç fajlynyn colun körsötüñüz.
 Mümkün varianttar: `age`, `pgp`, `rsa`.
 
 ### Açkyç casoo

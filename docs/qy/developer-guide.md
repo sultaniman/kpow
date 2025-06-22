@@ -1,21 +1,21 @@
-# Öndürüüçüler Geedigi
+# Developerler üçün maalymat
 
 Bul dokument KPow proyektine qoşuluşu üçün nusravkamalar beret.
 
-## Projekttin Quruluşu
+- **cmd/** – Cobra menen kurulgan CLI. `start` buyruğu uşul cerde.
+- **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, ortamdagy değerlerden, CLI flagtardan biriktiret.
+Jylamda parametirler TOML fajl menen, ortam özgörtüler menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden habar beret. `config.toml` cana `example.env` dajarlap qoyulgän.
+- **Şifrlöö** – `age`, `pgp`, `rsa` açyk açkyç kol'donulot.
+- **Middleware** `server/server.go` – CSRF, rate limit, body çektöö.
+- **Cron jobtor** `server/cron/` içinde. Inbokstu ciberüü.
+### Açkyç casoo
 
-- **cmd/** – Cobra menen kurulgen CLI. `start` buyruğu ushul yerde.
-- **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, ortamdaykän değerlerden, CLI flagtardan biriktiret.
-- **server/** – Negizgi qoşumça kody. HTTP serverdi, formany, şifrlöö, mailerler cana cron işteri bar.
-- **styles/** – Tailwind CSS kaynaklary. `just styles` kompilyasiyasyn atkarat.
-- **art/** – Dokumentaciyada ce web interfejste paydalanuulçu sürötter.
-
-## Baştay Başdoo
-
-1. **Go ornatuu** – Proyekt Go modulespaydalanat. Go 1.21+ ornatuu kerek.
-2. **Bun (kaaloocu)** – `just styles` üçün kerek.
-3. **Serverdi cügürgüzüü**
-   ```sh
+1. Reponu forktop, feature branch açynyz.
+2. `gofmt` qoldonup formattañyz.
+3. Caña feature üçün testter qosuu kerek.
+Formanyn, şifrlöö cana retry logikany toluk bilüü üçün `readme.md` cana `server` paketindegi komentarijlerdi qarañyz.
+2. `just build` ce GoReleaser menen binardyq fajldardy casajt.
+Proyekt azyrça Business Source License 1.1 astynda, README-da belgilengendey 2028-12-04 de Apache License 2.0gö ötöt.
    go run main.go start
    ```
    CLI flagtary environment value cana konfiguraciya fajlyn bastary.
