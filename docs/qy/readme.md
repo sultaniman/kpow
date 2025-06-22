@@ -155,7 +155,7 @@ flowchart TD
     B -- Qata --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
-    F --> G{Qayra ciberüüga araktylyshaby?}
+    F --> G{Qayra ciberüügö macburbu?}
     G -- Ijgilik --> H[Qabar ciberildi]
     G -- Qata --> E
 ```

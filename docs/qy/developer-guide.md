@@ -33,13 +33,12 @@ Konfigurasija fajlda açkyçty körsötüü misaly:
 
 ```mermaid
 flowchart TD
-    A[Başy] --> B{Konfig Fajl berildibi?}
-    B -- Ooba --> C[Konfig Fajldy cüktöö]
-    B -- Cok --> D[Konfig defaulttaryn qoldonuu]
-    C --> E[Sistem çöjrösünön konfig çuktöö]
+    A[Start] --> B{Config Fajly Barby?}
+    B -- ooba --> C[Konfig Fajlyn Jüktöö]
+    B -- cok --> D[Konfigdyn nökmö boyunça]
     C --> D
-    D --> E
-    E --> F[Apply CLI Arguments]
+    D --> E[Environment Ozgörtüülördü Jüktöö]
+    E --> F[CLI Parametirlerin Qoldonuu]
 ```
 
 ### Konfigurasijany tekşerüü
@@ -84,13 +83,13 @@ openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 
 ```mermaid
 flowchart TD
-    A[Caña habar] --> B{Darhol cönötüü?}
-    B -- Ooba --> C[Ciberildi]
-    B -- Qata --> D[Inboksko Saluu]
+    A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
+    B -- Ijgilik --> C[Qabar ciberildi]
+    B -- Qata --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
-    F --> G{Qajra ciberüü}
-    G -- Ooba --> H[Ciberildi]
+    F --> G{Qayra ciberüügö macburbu?}
+    G -- Ijgilik --> H[Qabar ciberildi]
     G -- Qata --> E
 ```
 
