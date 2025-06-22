@@ -8,7 +8,7 @@ Bul kupuuluukka önöktör, Open Source projektter, köz karandysyz sajttar, tor
 
 ### CLI parametirleri menen
 
-```sh
+```ş
 $ kpow start \
   --config=/etc/kpow/config.toml \
   --port=8080 \
@@ -54,7 +54,7 @@ flowchart TD
     E --> F[CLI Parametirlerin Qoldonuu]
 ```
 
-```sh
+```ş
 $ kpow start --config=path-to-config.toml
 ```
 
@@ -62,7 +62,7 @@ $ kpow start --config=path-to-config.toml
 
 Serverdi candyruu aldynda konfiguratsijany syndoo:
 
-```sh
+```ş
 $ kpow verify --config=path-to-config.toml
 ```
 
@@ -103,7 +103,7 @@ CLI tirkeme arkyluu:
 
 #### Age
 
-```sh
+```ş
 age-keygen -o age.key
 grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 ```
@@ -112,7 +112,7 @@ grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 
 #### PGP
 
-```sh
+```ş
 gpg --quick-generate-key "Your Name <you@example.com>"
 gpg --armor --export you@example.com > pgp.pub
 ```
@@ -121,7 +121,7 @@ gpg --armor --export you@example.com > pgp.pub
 
 #### RSA
 
-```sh
+```ş
 openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 ```

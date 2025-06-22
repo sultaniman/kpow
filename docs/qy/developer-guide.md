@@ -1,46 +1,46 @@
 # Developerler üçün maalymat
 
-Bul dokument KPow proyektine qoşuluşu üçün nusravkamalar beret.
+Bul dokument KPow projektke qoşuluu üçün cardam beret.
 
-- **cmd/** – Cobra menen kurulgan CLI. `start` buyruğu uşul cerde.
-- **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, ortamdagy değerlerden, CLI flagtardan biriktiret.
-Jylamda parametirler TOML fajl menen, ortam özgörtüler menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden habar beret. `config.toml` cana `example.env` dajarlap qoyulgän.
-- **Şifrlöö** – `age`, `pgp`, `rsa` açyk açkyç kol'donulot.
-- **Middleware** `server/server.go` – CSRF, rate limit, body çektöö.
-- **Cron jobtor** `server/cron/` içinde. Inbokstu ciberüü.
-### Açkyç casoo
+- **cmd/** – Cobra menen kurulgan CLI. `start` bujruğu uşul cerde.
+- **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, sistem çöjrödön, CLI flagtardan biriktiret.
+- **server/** – Negizgi qoşumça kody. HTTP serverdi, formany, şifrlöö, mailerler cana cron qyzmaty bar.
+- **styles/** – Tailwind CSS kaynaklary. `just styles` kompiliasijasyn atkarat.
+- **art/** – Dokumentasijada ce web interfejste pajdalanuuçu süröttör.
+1. **Go'nu cüktöö** – Projekt Go modul sistemasyn pajdalanat. Go 1.21+ cüktöö kerek.
+2. **Bun** – `just styles` üçün kerek.
+3. **Serverdi candandyruu**
+   ```ş
+   ./kpow start
+   CLI flagtary çöjrödön maanilerin cana konfiguraciya fajlyn bastary.
+## Konfigurasija
+Yrastoo parametrler TOML fajl menen, ortom özgörtüülör menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden habar beret. `config.toml` cana `example.env` dajarlap qoyulgän.
+- **Server** – Port, host, log cana requestterdi çektöö.
+- **Mailerler** – SMTP ce webhook arkyluu cönötüü. Ijgiliktüü cetkirilbese inbox folderine saktoo.
+- **Şifrlöö** – `age`, `pgp`, `rsa` açyk açkyç kol'donulat.
+- **Schedulér** – Cron job inboxdon cönötüügö araket qylat.
 
-1. Reponu forktop, feature branch açynyz.
-2. `gofmt` qoldonup formattañyz.
-3. Caña feature üçün testter qosuu kerek.
-Formanyn, şifrlöö cana retry logikany toluk bilüü üçün `readme.md` cana `server` paketindegi komentarijlerdi qarañyz.
-2. `just build` ce GoReleaser menen binardyq fajldardy casajt.
-Proyekt azyrça Business Source License 1.1 astynda, README-da belgilengendey 2028-12-04 de Apache License 2.0gö ötöt.
-   go run main.go start
-   ```
-   CLI flagtary environment value cana konfiguraciya fajlyn bastary.
+Konfigurasija fajlda açkyçty körsötüü misaly:
 
-## Konfiguraciya
+### Konfigurasija agymy
 
-Jylamda parametirler TOML fajl menen, ortam özgörtüler menen ce CLI flagtary menen berilät. `config/config.go` fajly bar parametrlerden habar beret. `config.toml` cana `example.env` dajarlap qoyulgän.
+    A[Başy] --> B{Config Barby?}
+    B -- Ooba --> C[Config Fajlyn Okuu]
+    C --> E[Sistem Ozgörtülörü]
+### Konfigurasijany tekşerüü
+```ş
+- **Cron qyzmaty** `server/cron/` içinde. Inbokstu ciberüü.
+- **Şifrlöö logikasy** `server/enc/` içinde.
+```ş
 
-Negizgi temalar:
-
-- **Server** – Port, host, log cana suranyş çeklö.
-- **Mailerler** – SMTP ce webhook menen cönötüü. Iyiğylbasa inbox folderge sakto.
-- **Şifrlöö** – `age`, `pgp`, `rsa` publikalyk klyuhtar kol'donulur.
-- **Schedulér** – Cron job inboxdan catty cönötüügö araket qylad.
-
-Konfiguraciya fajlda açqyçty körsötüü misaly:
-
-```toml
-[key]
-kind = "age"           # ce "pgp" ce "rsa"
-path = "/etc/kpow/key.pub"
-advertise = false
-```
-
-### Konfiguraciya agymy
+```ş
+```ş
+### Mailer agymy
+```ş
+(Testter üçün internet kerek boluşu mümkün.)
+3. Bütün lisenzijalar tuura sharttuu lisenzija ekenin dalildeñiz.
+4. Syrduu maalymat bolso, kommitterden alardy cokko çyğaryñyz.
+Projekt azyrça Business Source License 1.1 astynda, README-da belgilengendej 2028-12-04 de Apache License 2.0gö ötöt.
 
 ```mermaid
 flowchart TD
