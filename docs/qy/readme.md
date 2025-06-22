@@ -156,7 +156,7 @@ flowchart TD
     B -- Cok --> D[Inbox folderge saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
-    F --> G{Qayra ciberüügö macburbu?}
+    F --> G{Qajra ciberüügö macburbu?}
     G -- Ooba --> H[Qabar ciberildi]
     G -- Ooba --> E
 ```
