@@ -258,3 +258,5 @@ On **2028-12-04**, this project will be re-licensed under the **Apache License 2
 ![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
 ---
 ![csrf error](https://github.com/sultaniman/kpow/blob/main/screenshots/csrf-error.png?raw=true)
+
+<p align="center">✨ 🚀 ✨</p>
