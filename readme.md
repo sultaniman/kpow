@@ -1,6 +1,9 @@
 [![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
+---
+<a href="https://coff.ee/sultaniman" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="36"></a>
 
 # KPow 💥
+
 
 
 [English](readme.md) | [Qyrgyz](docs/qy/readme.md)
