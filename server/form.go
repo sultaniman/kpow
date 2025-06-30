@@ -23,12 +23,18 @@ func (h *Handler) RenderForm(ctx echo.Context) error {
 	}
 
 	if formData.Message.IsValid {
-		formData.EncryptAndSend(
+		errCh := formData.EncryptAndSend(
 			h.Mailer,
 			h.WebhookHandler,
 			h.EncryptionProvider,
 			h.Config.Inbox.Path,
 		)
+
+		go func() {
+			if err := <-errCh; err != nil {
+				log.Err(err).Msg("message delivery failed")
+			}
+		}()
 
 		formData.Note = "Wonderful! Your message is scheduled for delivery."
 		formData.NoteKind = form.SuccessNote
