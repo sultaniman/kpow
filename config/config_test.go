@@ -61,6 +61,5 @@ func TestConfigValidate(t *testing.T) {
 
 	assert.Contains(t, combined, "public key file does not exist")
 	assert.Contains(t, combined, "unable to read pubkey")
-	assert.Contains(t, combined, "mailer dsn is required")
-	assert.Contains(t, combined, "only smtp servers supported")
+	assert.Contains(t, combined, "either mailer dsn or webhook url is required")
 }

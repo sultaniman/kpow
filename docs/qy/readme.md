@@ -1,3 +1,7 @@
+[![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
+---
+<a href="https://coff.ee/sultaniman" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Kofe alyp beriñiz" height="36"></a>
+
 # KPow 💥
 
 KPow bul öz aldynça tejlengen, kupujaluuluk türdö bagyttalgan bajlanyş formasy,
@@ -93,6 +97,9 @@ $ kpow verify --config=path-to-config.toml
 | `KPOW_INBOX_PATH`       | Inbox folderin coly             | string | ""              |
 | `KPOW_INBOX_CRON`       | Inboxtu iştetüü cron tartibi    | string | `*/5 * * * *`   |
 
+> [!note]
+> KPowğo Messec cetkirüü üçün `KPOW_MAILER_DSN` ce `KPOW_WEBHOOK_URL` boluşu kerek.
+
 ## Şifrlöö
 
 KPow Age, PGP, cana RSA açyk açkyç menen qatty şifrlöö üçün koldonulat.
@@ -110,7 +117,7 @@ age-keygen -o age.key
 grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 ```
 
-`age.pub` fajlyn `--pubkey` boluup qoldonuñuz.
+`age.pub` fajlyn `--pubkey` arqyluu qoldonuñuz.
 
 #### PGP
 

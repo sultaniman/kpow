@@ -179,34 +179,36 @@ func (c *Config) Validate() []error {
 		c.Server.MessageSize = DefaultMessageSize
 	}
 
-	// validate mailer options
-	if c.Mailer.From == "" {
-		errorList = append(errorList, errors.New("mailer from is required"))
+	// validate mailer options if configured or required
+	if c.Mailer.DSN == "" && c.Webhook.Url == "" {
+		errorList = append(errorList, errors.New("either mailer dsn or webhook url is required"))
 	}
 
-	if _, err := mail.ParseAddress(c.Mailer.From); err != nil {
-		errorList = append(errorList, errors.New("invalid sender address"))
-	}
+	if c.Mailer.DSN != "" {
+		if c.Mailer.From == "" {
+			errorList = append(errorList, errors.New("mailer from is required"))
+		}
 
-	if c.Mailer.To == "" {
-		errorList = append(errorList, errors.New("recipient email is required"))
-	}
+		if _, err := mail.ParseAddress(c.Mailer.From); err != nil {
+			errorList = append(errorList, errors.New("invalid sender address"))
+		}
 
-	if _, err := mail.ParseAddress(c.Mailer.To); err != nil {
-		errorList = append(errorList, errors.New("invalid recipient address"))
-	}
+		if c.Mailer.To == "" {
+			errorList = append(errorList, errors.New("recipient email is required"))
+		}
 
-	if c.Mailer.DSN == "" {
-		errorList = append(errorList, errors.New("mailer dsn is required"))
-	}
+		if _, err := mail.ParseAddress(c.Mailer.To); err != nil {
+			errorList = append(errorList, errors.New("invalid recipient address"))
+		}
 
-	parts, err := url.Parse(c.Mailer.DSN)
-	if err != nil {
-		errorList = append(errorList, errors.New("invalid mailer dsn"))
-	}
+		parts, err := url.Parse(c.Mailer.DSN)
+		if err != nil {
+			errorList = append(errorList, errors.New("invalid mailer dsn"))
+		}
 
-	if parts.Scheme != "smtp" {
-		errorList = append(errorList, errors.New("only smtp servers supported"))
+		if parts.Scheme != "smtp" {
+			errorList = append(errorList, errors.New("only smtp servers supported"))
+		}
 	}
 
 	// validate webhook url

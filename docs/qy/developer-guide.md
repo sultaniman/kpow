@@ -85,7 +85,7 @@ openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 flowchart TD
     A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
     B -- Ooba --> C[Qabar ciberildi]
-    B -- Cok --> D[Inbox folderge saktoo]
+    B -- Cok --> D[Inbox folderine saktoo]
     D --> E[Cron cügürüü]
     E --> F[Qabarlardy oquu]
     F --> G{Qajra ciberüügö macburbu?}
@@ -93,7 +93,7 @@ flowchart TD
     G -- Ooba --> E
 ```
 
-## Testterdi Jügürtüü
+## Testterdi Cügürtüü
 
 ```sh
 go test ./...

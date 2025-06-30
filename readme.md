@@ -101,6 +101,9 @@ $ kpow verify --config=path-to-config.toml
 | `KPOW_INBOX_PATH`       | Path to inbox                         | string | ""            |
 | `KPOW_INBOX_CRON`       | Cron schedule for inbox processing    | string | `*/5 * * * *` |
 
+> [!note]
+> Either `KPOW_MAILER_DSN` or `KPOW_WEBHOOK_URL` must be provided so KPow can deliver messages.
+
 ## Encryption
 
 KPow supports Age, PGP, and RSA public keys for encrypting messages.
