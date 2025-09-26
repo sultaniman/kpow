@@ -6,7 +6,7 @@
 
 
 
-[English](readme.md) | [Qyrgyz](docs/qy/readme.md)
+[English](readme.md) | [Deutsch](docs/de/readme.md) | [Qyrgyz](docs/qy/readme.md)
 
 KPow is a self-hosted, privacy-focused contact form designed for secure communication without relying on third-party services.
 It supports modern encryption standards — PGP, Age, and RSA — to ensure that messages are encrypted before delivery.
