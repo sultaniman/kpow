@@ -4,16 +4,15 @@
 
 # KPow 💥
 
-KPow bul öz aldynça tejlengen, kupujaluuluk türdö bagyttalgan bajlanyş formasy,
-üçünçü tarap qyzmattarğa tayansyz, koopsuz bajlanyşka mümkündük beret.
-Bul Age, PGP cana RSA syjaktuu zamanbap şifrlöö standartyn qoldonup,
-cönötülgön qatty şifrlep bekitet.
+[English](../../readme.md) | [Deutsch](../de/readme.md) | [Qyrgyz](readme.md)
 
-Bul kupujaluulukka önöktör, Open Source projektter, köz karandysyz sajttar üçün ideal.
+KPow — öz aldınça orunatıla turgan, kupujaaluuluqqa bağyttalğan bağlanyş formasy, üçünçü tarap qyzmattaryna tayanbastan koopsuz kabarlaşuunu camdayt.
+Al PGP, Age cana RSA sıyaktuu zamanbap şifrlöö standarttaryn qoldop, qabarlardı cetkirilgençe murun şifrlööt.
+Kupujaaluuluktu bağalagan iştep çıguuçular, open source doolborlor, bağımsız sayttar, "whistleblower" platformalary cana içki quraldar ücün koopsuz, esep berüüçü cana öz aldınça qabar iştetüü çeçimi.
 
-## Serverdi candyruu
+## Serverdi baştoo
 
-### CLI parametirleri menen
+### CLI parametrlerin qoldonuu
 
 ```sh
 $ kpow start \
@@ -39,25 +38,25 @@ $ kpow start \
   --message-size=512
 ```
 
-### Konfiguratsija fajlyn paydalanuu
+### Konfiguratsija fajlyn qoldonuu
 
 > [!note]
-> CLI parametirleri ar daima orto moynunda turat: alardy ortamende coldoo pyson.
+> CLI parametrleri är daima ortamalyk özgörtülördön cana konfiguratsija fajlınan üstün çıgat.
 
-Konfiguratsijanyn tartibi:
+Konfiguratsijany cañırlöö tartibi:
 
-1. Konfigurasija fajlyn cüktöö;
-2. Sistem cöjrösünön çüktöö (ENV);
-3. Sonunda CLI parametirleri prioritet alat.
+1. Alğaç konfiguratsija fajly (eger berilse) cüktölöt,
+2. Anan ortamalyk özgörtülör (ENV) maantilerdi almastırat,
+3. Akırı CLI parametrleri barın basıp ötöt.
 
 ```mermaid
 flowchart TD
-    A[Start] --> B{Config Fajly Barby?}
-    B -- ooba --> C[Konfig Fajlyn Jüktöö]
-    B -- cok --> D[Konfig defaulttaryn qoldonuu]
+    A[Start] --> B{Config fajly barby?}
+    B -- Ooba --> C[Konfiguratsija fajlyn cüktöö]
+    B -- Joq --> D[Kalıptagı maantilerdi qoldonuu]
     C --> D
-    D --> E[Environment Ozgörtüülördü Jüktöö]
-    E --> F[CLI Parametirlerin Qoldonuu]
+    D --> E[Ortamalyk özgörtülördü cüktöö]
+    E --> F[CLI parametrlerin qoldonuu]
 ```
 
 ```sh
@@ -66,49 +65,50 @@ $ kpow start --config=path-to-config.toml
 
 ### Konfiguratsija fajlyn tekşerüü
 
-Serverdi candyruu aldynda konfiguratsijany syndoo:
+Serverdi iske qozğoodon muрун `verify` buyruğun qoldonuñuz, konfiguratsijany cüktöp, qatalar tuuraluu cabarlardy bildiret:
 
 ```sh
 $ kpow verify --config=path-to-config.toml
 ```
 
-### Aylanma Özgörtülör (Environment variables)
+### Ortamalyk özgörtülör
 
-| Özgörmö Aty             | Deskripciya                     | Tipi   | Algaçky maanisi |
-| ----------------------- | ------------------------------- | ------ | --------------- |
-| `KPOW_TITLE`            | Server aty                      | string | ""              |
-| `KPOW_PORT`             | Server portu                    | int    | 8080            |
-| `KPOW_HOST`             | Server host daregi              | string | localhost       |
-| `KPOW_LOG_LEVEL`        | Log daracasy                    | string | INFO            |
-| `KPOW_MESSAGE_SIZE`     | Qabardyn ölçömü                 | int    | 240             |
-| `KPOW_HIDE_LOGO`        | Logo casyrylsynby               | bool   | false           |
-| `KPOW_CUSTOM_BANNER`    | Bannerdin fajly                 | string | ""              |
-| `KPOW_LIMITER_RPM`      | Bir request/m sany              | int    | 0               |
-| `KPOW_LIMITER_BURST`    | Burst requestterdin sany        | int    | -1              |
-| `KPOW_LIMITER_COOLDOWN` | Rate limit kuldaun ubakyty      | int    | -1              |
-| `KPOW_MAILER_FROM`      | Jönötüüçü emaily                | string | ""              |
-| `KPOW_MAILER_TO`        | Kabyldooçu emaily               | string | ""              |
-| `KPOW_MAILER_DSN`       | SMTP DSN                        | string | ""              |
-| `KPOW_WEBHOOK_URL`      | Webhook URL                     | string | ""              |
-| `KPOW_MAX_RETRIES`      | Retry sany                      | int    | 2               |
-| `KPOW_KEY_KIND`         | Açkyç türü: `age`, `pgp`, `rsa` | string | ""              |
-| `KPOW_ADVERTISE`        | Açkyç caryjalansynby            | bool   | false           |
-| `KPOW_KEY_PATH`         | Açkyç fajlynyn coly             | string | ""              |
-| `KPOW_INBOX_PATH`       | Inbox folderin coly             | string | ""              |
-| `KPOW_INBOX_CRON`       | Inboxtu iştetüü cron tartibi    | string | `*/5 * * * *`   |
+| Özgörtmönün aty         | Tasvirleme                           | Tibi   | Alğaçky maani |
+| ----------------------- | ------------------------------------ | ------ | ------------- |
+| `KPOW_TITLE`            | Serverdin atalyşy                    | string | ""            |
+| `KPOW_PORT`             | Serverdin portu                      | int    | 8080          |
+| `KPOW_HOST`             | Serverdin host dariegi               | string | localhost     |
+| `KPOW_LOG_LEVEL`        | Logdun deñgeeli                      | string | INFO          |
+| `KPOW_MESSAGE_SIZE`     | Server qabılday alğan maksimalduu qabar ölçömi | int    | 240           |
+| `KPOW_HIDE_LOGO`        | Logo cäşirilsinbi                   | bool   | false         |
+| `KPOW_CUSTOM_BANNER`    | Banner fajly                         | string | ""            |
+| `KPOW_LIMITER_RPM`      | Rate limiter: minutuna suranuular    | int    | 0             |
+| `KPOW_LIMITER_BURST`    | Rate limiter: burst ölçömi           | int    | -1            |
+| `KPOW_LIMITER_COOLDOWN` | Rate limiter: muzdatqıç sekunddarı   | int    | -1            |
+| `KPOW_MAILER_FROM`      | Jönötüüçünün email dariegi           | string | ""            |
+| `KPOW_MAILER_TO`        | Qabyldooçunun email dariegi          | string | ""            |
+| `KPOW_MAILER_DSN`       | SMTP DSN (bağlanyş saptygy)          | string | ""            |
+| `KPOW_WEBHOOK_URL`      | Webhook URL                          | string | ""            |
+| `KPOW_MAX_RETRIES`      | Email ciberüü ücün qayra araaketter  | int    | 2             |
+| `KPOW_KEY_KIND`         | Açkyç türü: `age`, `pgp` ce `rsa`    | string | ""            |
+| `KPOW_ADVERTISE`        | Açkyç caryjalansynby                 | bool   | false         |
+| `KPOW_KEY_PATH`         | Açkyç fajlynyn colu                  | string | ""            |
+| `KPOW_INBOX_PATH`       | Inbox papkasy                        | string | ""            |
+| `KPOW_INBOX_CRON`       | Inbox ücün cron-cadwal               | string | `*/5 * * * *` |
 
 > [!note]
-> KPowğo Messec cetkirüü üçün `KPOW_MAILER_DSN` ce `KPOW_WEBHOOK_URL` boluşu kerek.
+> KPow qabarlardy cetkizüü ücün coq degende `KPOW_MAILER_DSN` ce `KPOW_WEBHOOK_URL` berilişi şart.
 
 ## Şifrlöö
 
-KPow Age, PGP, cana RSA açyk açkyç menen qatty şifrlöö üçün koldonulat.
-`--key-kind` (ce `KPOW_KEY_KIND`) parametri menen açkyç türün, `--pubkey` (ce `KPOW_KEY_PATH`) menen açkyç fajlynyn colun körsötüñüz.
+KPow Age, PGP cana RSA açyk açkyçtaryn qoldonup qabarlardy şifrlööt.
+`--key-kind` (ce `KPOW_KEY_KIND`) menen açkyç türün,
+`--pubkey` (ce `KPOW_KEY_PATH`) menen açyk açkyç fajlynyn colun körsötüüñüz.
 Mümkün varianttar: `age`, `pgp`, `rsa`.
 
-### Açkyç casoo
+### Açkyçtardy casoo
 
-CLI tirkeme arkyluu:
+Tömöndögü köb qoldonulgan CLI quraldardy paydalanyñız:
 
 #### Age
 
@@ -117,7 +117,7 @@ age-keygen -o age.key
 grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 ```
 
-`age.pub` fajlyn `--pubkey` arqyluu qoldonuñuz.
+`age.pub` fajlyn `--pubkey` (ce `KPOW_KEY_PATH`) sifatında qoldonuñuz.
 
 #### PGP
 
@@ -126,7 +126,7 @@ gpg --quick-generate-key "Your Name <you@example.com>"
 gpg --armor --export you@example.com > pgp.pub
 ```
 
-`--pubkey` üçün `pgp.pub` fajlyn beriniz.
+ASCII formatındagı `pgp.pub` fajly `--pubkey` ücün dayar bolot.
 
 #### RSA
 
@@ -135,11 +135,12 @@ openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:204
 openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 ```
 
-`rsa_public.pem` fajly `--pubkey` sifatynda qoldonulut. Açyk açkyç PKIX PEM formatynda boluşu kerek.
+`rsa_public.pem` fajlyn `--pubkey` qa qoşyñuz.
+Açyk açkyç PKIX PEM formatında boluşu cana keminde 2048 bittik boluşu zarıl.
 
-### Konfig misaly
+### Konfig fajlynyñ mısaly
 
-CLI flagtardyn ornuna açqyçty TOML fajl menen körsötüñüz:
+CLI flagtardyn ornuna açkyçtı TOML konfiguratsijasına belgileñiz:
 
 ```toml
 [key]
@@ -148,56 +149,87 @@ path = "/etc/kpow/key.pub"
 advertise = false
 ```
 
-### RSA Şifrlöö belgesi
+### RSA şifrlöö tuuraluu eske saluu
 
-Bul sistemas RSA OAEP padding cana SHA-256 heşetüü menen iştöö.
-Açkyçtyn uzunduğuna caraşa qabar da çektelet.
-Misal üçün, 2048-bittik RSA menen `message_size = 180`.
+Bul tuzum RSA şifrlööün OAEP padding cana SHA-256 hash menen qoldonot.
+RSA açkyçtardy ce `message_size` parametrin caylaştırğanda tömönkü nuktalardy eske alıñız:
 
-## Maler agymy
+✅ **Açkyç cana algoritm talaptary**
+
+- **RSA açkyç ündöştügü:** OAEP paddingti qoldoo şart (keminde 2048-bit önerilet).
+- **Hash algoritmi:** Şifrlöö SHA-256 menen atqarıladı — deşifrlöö da uşul hash menen boluşu tiiş.
+
+**OAEP paddingdin kölömü**
+
+- Padding = 2 × Hash kölömü + 2 bayt
+- SHA-256 ücün (Hash kölömü 32 bayt) padding 66 bayttı tüzöt
+
+**Maksimalduu qabar ölçömlör**
+
+| RSA açkyç uzundugu | Hash algoritmi | Hash kölömü | Padding kölömü | Maksimalduu qabar ölçömi |
+| ------------------ | -------------- | ----------- | -------------- | ------------------------ |
+| 2048 bit           | SHA-256        | 32 bayt     | 66 bayt        | 190 bayt                 |
+| 4096 bit           | SHA-256        | 32 bayt     | 66 bayt        | 446 bayt                 |
+
+⚠️ Çektöödön aşqan qabarlardı şifrlöögö dayar kılış ücün qısqartylat.
+
+**Konfiguratsija boyunça keñeş**
+
+TOML konfiguratsijasynda (`message_size`) maaniñizdi RSA açkyç uzunduguna laayıqtap belgileñiz. Mısalı:
+
+```toml
+[server]
+message_size = 180  # 2048-bit RSA (SHA-256) ücün
+```
+
+## Mailer agymy
 
 ```mermaid
 flowchart TD
-    A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
+    A[Cañı qabar ciberildi] --> B{Daroo ciberüü işke aştyby?}
     B -- Ooba --> C[Qabar ciberildi]
-    B -- Cok --> D[Inbox folderge saktoo]
-    D --> E[Cron cügürüü]
-    E --> F[Qabarlardy oquu]
-    F --> G{Qajra ciberüügö macburbu?}
+    B -- Joq --> D[Inbox papkaga saqtaluu]
+    D --> E[Scheduler (cron) iske cügöt]
+    E --> F[Qabarlardı oqoo]
+    F --> G{Qayradan ciberüü araketi?}
     G -- Ooba --> H[Qabar ciberildi]
-    G -- Ooba --> E
+    G -- Joq --> E
 ```
 
 ## Webhook
 
-`--webhook-url` (ce `KPOW_WEBHOOK_URL`) berseñiz, KPow şifrlengen maalymaty JSON formatynda korsötülgön endpointke POST arqyluu ciberilet:
+`--webhook-url` (ce `KPOW_WEBHOOK_URL`) körsötülgön bolso, KPow şifrlengen forma maalymattaryn
+körsötülgön endpointke JSON formatında POST menen ciberet:
 
 ```json
 {
-    "subject": "<form subject>",
-    "content": "<encrypted message>",
-    "hash": "<sha256-hash>"
+  "subject": "<form subject>",
+  "content": "<encrypted message>",
+  "hash": "<sha256-hash>"
 }
 ```
 
-Webhook URL HTTPS boluşu şart, `localhost` bolboso. HTTP code < 400 bolsa, ijgilik qatary eseptelet.
+Webhook URL `localhost` emes bolso, macburduu türdö HTTPS boluşu kerek.
+HTTP status kody < 400 bolso — ijgilik dep eseptelet.
 
 ## Öndürüü
 
-### Formany özğörtüü
+### Formany cañıltoo
 
-Bun cana Tailwind CSS stil casoo üçün qoldonulat.
+Bun cana Tailwind CSS stilderdi casap çıgaruu ücün qoldonulat.
+Stil bu laqtary `styles` papkasynda.
+`just styles` — formanyñ stillerin cañıltoo cana casap çıkaruu,
+`just error-styles` — qata betterdin stillerin casoo ücün.
+Bul komandalar işteşi ücün `bun` cana `bunx` ornatylyşy şart.
 
-- Stil fajldary `styles` folderinde.
-- `just styles` bujruğu stilderdi casoo üçün.
-- `just error-styles` - qata betlerin stilleri.
+### Bannerdi caalaştıruu
 
-Bul komandalar üçün `bun` cana `bunx` kerek.
+Formanı ıñgayılaştıruu ücün `--banner=/path/to/banner.html` ce `KPOW_CUSTOM_BANNER=/path/to/banner.html`
+menen cañı banner qoşoolo bolot.
+Berilgen banner HTML sanitizatsijadan ötöt; tömönkö tagtardy qoldonuuga bolot.
 
-### Bannerdi özğörtüü
-
-`--banner=/path/to/banner.html` ce `KPOW_CUSTOM_BANNER=/path/to/banner.html` menen biriktirip, öz bannerdi qoşo alasyz.
-Bannerdin HTMLi tazalanuu cana filtrden ötöt, tuura tagtardyn tizmesi tömönküdöj:
+> [!note]
+> Bannerdin içindegi elementterge `style` atributun qoşup stillöö alasyñız.
 
 - `a`
 - `p`
@@ -207,15 +239,17 @@ Bannerdin HTMLi tazalanuu cana filtrden ötöt, tuura tagtardyn tizmesi tömönk
 - `ul,ol,li`
 - `h1-h6`
 
-## Litsenziya
+## Litsenzija
 
-KPow **Business Source License 1.1** menen litsenziyalangan.
-Siz programmany kommersijalyk hosttoo uchun üçünçü tarapka qyzmat körsötüü üçün lisenzijasyz pajdalana albajsyz.
-**2028-12-04** ta projekt **Apache License 2.0** menen daroo litsenziyalanat.
+KPow **Business Source License 1.1** astında litsenzijalanğan.
 
-- 📄 [`LICENSE`](./LICENSE)
-- 📄 [`LICENSE-BUSL`](./LICENSE-BUSL)
-- 📄 [`LICENSE-APACHE`](./LICENSE-APACHE)
+Üçünçü tarapka kommersijalyk hosted ce managed qyzmat korsetüü ücün qoşumça litsenzijasız paydalana albaysız.
+
+**2028-12-04** küni bul doolbor **Apache License 2.0** astına ötöt.
+
+- 📄 [`LICENSE`](../../LICENSE)
+- 📄 [`LICENSE-BUSL`](../../LICENSE-BUSL)
+- 📄 [`LICENSE-APACHE`](../../LICENSE-APACHE)
 
 ## Skrinşottor
 
