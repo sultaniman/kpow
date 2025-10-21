@@ -64,24 +64,34 @@ func (f *FormData) EncryptAndSend(
 	webhookHandler mailer.Mailer,
 	encryptionProvider enc.KeyLike,
 	inboxPath string,
-) {
-	// FIXME: find a better way to do this
+) <-chan error {
 	subject := f.Message.Subject
 	content := f.Message.Content
 	hash := f.Message.Hash()
 
-	go (func() {
+	done := make(chan error, 1)
+
+	go func(subject, content, hash string) {
 		encrypted, err := encryptionProvider.Encrypt(content)
 		if err != nil {
-			log.Err(err).Msg("Encryption failed")
+			log.Err(err).Msg("encryption failed")
+			done <- fmt.Errorf("encrypt message: %w", err)
+			return
 		}
 
-		message := mailer.NewMessage(subject, encrypted, hash)
-		mailer.SendMessage(message, sender, webhookHandler, inboxPath)
-	})()
+		msg := mailer.NewMessage(subject, encrypted, hash)
+		if err := mailer.SendMessage(msg, sender, webhookHandler, inboxPath); err != nil {
+			log.Err(err).Msg("send message failed")
+			done <- err
+			return
+		}
+
+		done <- nil
+	}(subject, content, hash)
 
 	// when done reset the form
 	f.Message = MessageForm{}
+	return done
 }
 
 func GetFormData(csrfToken string, config *config.Config) *FormData {
