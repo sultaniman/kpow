@@ -21,4 +21,6 @@ jobs:
       - name: Run tests
         run: just test
       - name: Security scan
-        run: just check
+        uses: securego/gosec@master
+        with:
+          args: ./...
