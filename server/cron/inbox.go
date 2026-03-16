@@ -2,14 +2,14 @@ package cron
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/rs/zerolog/log"
 	"github.com/sultaniman/kpow/server/mailer"
 )
 
-type InboxHander func()
+type InboxHandler func()
 
 func sendWebhook(message mailer.Message, webhookHandler mailer.Mailer, inboxPath string) error {
 	if webhookHandler == nil {
@@ -19,7 +19,7 @@ func sendWebhook(message mailer.Message, webhookHandler mailer.Mailer, inboxPath
 	err := webhookHandler.Send(message)
 	if err != nil {
 		message.Retries += 1
-		log.Println("err", err)
+		log.Err(err).Msg("webhook delivery failed")
 		message.Save(inboxPath)
 		return err
 	}
@@ -27,15 +27,14 @@ func sendWebhook(message mailer.Message, webhookHandler mailer.Mailer, inboxPath
 	return nil
 }
 
-func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.Mailer) InboxHander {
+func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.Mailer) InboxHandler {
 	return func() {
 		filepath.Walk(inboxPath, func(path string, item os.FileInfo, err error) error {
 			if err != nil {
-				log.Println("Unable to read file", path, err)
+				log.Err(err).Str("path", path).Msg("unable to read file")
 				return nil
 			}
 			if item.IsDir() && path != inboxPath {
-				log.Println(path, inboxPath)
 				return filepath.SkipDir
 			}
 
@@ -45,14 +44,14 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 
 			contents, err := os.ReadFile(path)
 			if err != nil {
-				log.Printf("Unable to read file with message under: %s, err=%s", path, err.Error())
+				log.Err(err).Str("path", path).Msg("unable to read message file")
 				return nil
 			}
 
 			var message mailer.Message
 			err = json.Unmarshal(contents, &message)
 			if err != nil {
-				log.Println("Unable to load the message", path, err)
+				log.Err(err).Str("path", path).Msg("unable to load the message")
 			}
 
 			// If it is mailer then we try both
@@ -61,12 +60,12 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				message.Retries += 1
 				err := sender.Send(message)
 				if err != nil {
-					log.Printf("Unable to send a message %s, err=%s", path, err.Error())
+					log.Err(err).Str("path", path).Msg("unable to send message")
 					message.Save(inboxPath)
 				} else {
-					log.Printf("Message successfully sent for %s", path)
+					log.Info().Str("path", path).Msg("message successfully sent")
 					if err := os.Remove(path); err != nil {
-						log.Printf("unable to remove file %s, err=%s", path, err)
+						log.Err(err).Str("path", path).Msg("unable to remove file")
 					}
 				}
 
@@ -77,11 +76,11 @@ func InboxCleaner(inboxPath string, sender mailer.Mailer, webhookHandler mailer.
 				message.Retries += 1
 				err := sendWebhook(message, webhookHandler, inboxPath)
 				if err != nil {
-					log.Printf("unable to send webhook %s, err=%s", path, err.Error())
+					log.Err(err).Str("path", path).Msg("unable to send webhook")
 				} else {
-					log.Printf("Webhook successfully sent for %s", path)
+					log.Info().Str("path", path).Msg("webhook successfully sent")
 					if err := os.Remove(path); err != nil {
-						log.Printf("unable to remove file %s, err=%s", path, err)
+						log.Err(err).Str("path", path).Msg("unable to remove file")
 					}
 				}
 			}

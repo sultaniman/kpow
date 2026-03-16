@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/sultaniman/kpow/config"
 )
 
 type WebhookMailer struct {
@@ -50,9 +52,7 @@ func NewWebhookMailer(webhookUrl string) (Mailer, error) {
 		return nil, err
 	}
 
-	hostname := parts.Hostname()
-	isLoopback := hostname == "localhost" || hostname == "127.0.0.1"
-	if parts.Scheme != "https" && !isLoopback {
+	if parts.Scheme != "https" && !config.IsLocalhost(parts.Hostname()) {
 		return nil, errors.New("webhook url should be https only")
 	}
 

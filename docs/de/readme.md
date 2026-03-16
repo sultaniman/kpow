@@ -1,10 +1,10 @@
-[![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
----
+## [![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
+
 <a href="https://coff.ee/sultaniman" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Spendiere mir einen Kaffee" height="36"></a>
 
 # KPow 💥
 
-**Sprache:** [Deutsch](readme.md) · [English](../../readme.md) · [Qyrgyz](../qy/readme.md)
+[English](../../readme.md) | [Deutsch](readme.md) | [Türkçe](../tr/readme.md) | [Qyrgyz](../qy/readme.md) | [Français](../fr/readme.md) | [Українська](../uk/readme.md) | [Русский](../ru/readme.md)
 
 KPow ist ein selbst gehostetes, auf Privatsphäre ausgerichtetes Kontaktformular,
 das sichere Kommunikation ohne Drittanbieter ermöglicht.
@@ -76,28 +76,28 @@ $ kpow verify --config=path-to-config.toml
 
 ### Umgebungsvariablen
 
-| Variable                | Beschreibung                      | Typ    | Standardwert    |
-| ----------------------- | --------------------------------- | ------ | --------------- |
-| `KPOW_TITLE`            | Anzeigename des Servers           | string | ""              |
-| `KPOW_PORT`             | Server-Port                       | int    | 8080            |
-| `KPOW_HOST`             | Host-Adresse                      | string | localhost       |
-| `KPOW_LOG_LEVEL`        | Log-Level                         | string | INFO            |
-| `KPOW_MESSAGE_SIZE`     | Maximale Nachrichtengröße         | int    | 240             |
-| `KPOW_HIDE_LOGO`        | Logo ausblenden                   | bool   | false           |
-| `KPOW_CUSTOM_BANNER`    | Pfad zur Banner-Datei             | string | ""              |
-| `KPOW_LIMITER_RPM`      | Requests pro Minute               | int    | 0               |
-| `KPOW_LIMITER_BURST`    | Burst-Anzahl                      | int    | -1              |
-| `KPOW_LIMITER_COOLDOWN` | Cooldown für Rate-Limit           | int    | -1              |
-| `KPOW_MAILER_FROM`      | Absenderadresse                   | string | ""              |
-| `KPOW_MAILER_TO`        | Empfängeradresse                  | string | ""              |
-| `KPOW_MAILER_DSN`       | SMTP-DSN                          | string | ""              |
-| `KPOW_WEBHOOK_URL`      | Webhook-URL                       | string | ""              |
-| `KPOW_MAX_RETRIES`      | Anzahl der Wiederholungsversuche  | int    | 2               |
-| `KPOW_KEY_KIND`         | Schlüsseltyp: `age`, `pgp`, `rsa` | string | ""              |
-| `KPOW_ADVERTISE`        | Schlüssel bekannt machen?         | bool   | false           |
-| `KPOW_KEY_PATH`         | Pfad zur Schlüsseldatei           | string | ""              |
-| `KPOW_INBOX_PATH`       | Pfad zum Inbox-Ordner             | string | ""              |
-| `KPOW_INBOX_CRON`       | Cron-Zeitplan für die Inbox       | string | `*/5 * * * *`   |
+| Variable                | Beschreibung                      | Typ    | Standardwert  |
+| ----------------------- | --------------------------------- | ------ | ------------- |
+| `KPOW_TITLE`            | Anzeigename des Servers           | string | ""            |
+| `KPOW_PORT`             | Server-Port                       | int    | 8080          |
+| `KPOW_HOST`             | Host-Adresse                      | string | localhost     |
+| `KPOW_LOG_LEVEL`        | Log-Level                         | string | INFO          |
+| `KPOW_MESSAGE_SIZE`     | Maximale Nachrichtengröße         | int    | 240           |
+| `KPOW_HIDE_LOGO`        | Logo ausblenden                   | bool   | false         |
+| `KPOW_CUSTOM_BANNER`    | Pfad zur Banner-Datei             | string | ""            |
+| `KPOW_LIMITER_RPM`      | Requests pro Minute               | int    | 0             |
+| `KPOW_LIMITER_BURST`    | Burst-Anzahl                      | int    | -1            |
+| `KPOW_LIMITER_COOLDOWN` | Cooldown für Rate-Limit           | int    | -1            |
+| `KPOW_MAILER_FROM`      | Absenderadresse                   | string | ""            |
+| `KPOW_MAILER_TO`        | Empfängeradresse                  | string | ""            |
+| `KPOW_MAILER_DSN`       | SMTP-DSN                          | string | ""            |
+| `KPOW_WEBHOOK_URL`      | Webhook-URL                       | string | ""            |
+| `KPOW_MAX_RETRIES`      | Anzahl der Wiederholungsversuche  | int    | 2             |
+| `KPOW_KEY_KIND`         | Schlüsseltyp: `age`, `pgp`, `rsa` | string | ""            |
+| `KPOW_ADVERTISE`        | Schlüssel bekannt machen?         | bool   | false         |
+| `KPOW_KEY_PATH`         | Pfad zur Schlüsseldatei           | string | ""            |
+| `KPOW_INBOX_PATH`       | Pfad zum Inbox-Ordner             | string | ""            |
+| `KPOW_INBOX_CRON`       | Cron-Zeitplan für die Inbox       | string | `*/5 * * * *` |
 
 > [!note]
 > Für den Versand benötigt KPow entweder `KPOW_MAILER_DSN` oder `KPOW_WEBHOOK_URL`.
@@ -220,16 +220,16 @@ KPow steht unter der **Business Source License 1.1**.
 Das Hosting als Drittanbieterdienst ist ohne zusätzliche Lizenz nicht gestattet.
 Am **04.12.2028** wechselt das Projekt automatisch zur **Apache License 2.0**.
 
-- 📄 [`LICENSE`](./LICENSE)
-- 📄 [`LICENSE-BUSL`](./LICENSE-BUSL)
-- 📄 [`LICENSE-APACHE`](./LICENSE-APACHE)
+- 📄 [`LICENSE`](../../LICENSE)
+- 📄 [`LICENSE-BUSL`](../../LICENSE-BUSL)
+- 📄 [`LICENSE-APACHE`](../../LICENSE-APACHE)
 
 ## Screenshots
 
-![form](https://github.com/sultaniman/kpow/blob/main/screenshots/form.png?raw=true)
----
-![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
----
+## ![form](https://github.com/sultaniman/kpow/blob/main/screenshots/form.png?raw=true)
+
+## ![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
+
 ![csrf error](https://github.com/sultaniman/kpow/blob/main/screenshots/csrf-error.png?raw=true)
 
 <p align="center">✨ 🚀 ✨</p>

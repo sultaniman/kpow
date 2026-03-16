@@ -1,18 +1,14 @@
-[![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
----
+## [![Test](https://github.com/sultaniman/kpow/actions/workflows/test.yml/badge.svg)](https://github.com/sultaniman/kpow/actions/workflows/test.yml)
+
 <a href="https://coff.ee/sultaniman" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="36"></a>
 
 # KPow 💥
 
-
-
-[English](readme.md) | [Deutsch](docs/de/readme.md) | [Qyrgyz](docs/qy/readme.md)
+[English](readme.md) | [Deutsch](docs/de/readme.md) | [Türkçe](docs/tr/readme.md) | [Qyrgyz](docs/qy/readme.md) | [Français](docs/fr/readme.md) | [Українська](docs/uk/readme.md) | [Русский](docs/ru/readme.md)
 
 KPow is a self-hosted, privacy-focused contact form designed for secure communication without relying on third-party services.
 It supports modern encryption standards — PGP, Age, and RSA — to ensure that messages are encrypted before delivery.
 Ideal for privacy-conscious developers, open source projects, independent websites, whistleblower platforms, and internal tools that require secure, auditable, and self-contained message handling.
-
-
 
 ## Starting the server
 
@@ -208,9 +204,9 @@ encrypted form data to the specified endpoint in JSON format:
 
 ```json
 {
-  "subject": "<form subject>",
-  "content": "<encrypted message>",
-  "hash": "<sha256-hash>"
+    "subject": "<form subject>",
+    "content": "<encrypted message>",
+    "hash": "<sha256-hash>"
 }
 ```
 
@@ -259,10 +255,10 @@ On **2028-12-04**, this project will be re-licensed under the **Apache License 2
 
 ## Screenshots
 
-![form](https://github.com/sultaniman/kpow/blob/main/screenshots/form.png?raw=true)
----
-![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
----
+## ![form](https://github.com/sultaniman/kpow/blob/main/screenshots/form.png?raw=true)
+
+## ![rate limited](https://github.com/sultaniman/kpow/blob/main/screenshots/rate-limited.png?raw=true)
+
 ![csrf error](https://github.com/sultaniman/kpow/blob/main/screenshots/csrf-error.png?raw=true)
 
 <p align="center">✨ 🚀 ✨</p>

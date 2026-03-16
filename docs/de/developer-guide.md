@@ -1,14 +1,14 @@
 # Entwicklerhandbuch
 
-[Deutsch](developer-guide.md) | [English](../../developer-guide.md) | [Qyrgyz](../qy/developer-guide.md)
+[English](../../developer-guide.md) | [Deutsch](developer-guide.md) | [Türkçe](../tr/developer-guide.md) | [Qyrgyz](../qy/developer-guide.md) | [Français](../fr/developer-guide.md) | [Українська](../uk/developer-guide.md) | [Русский](../ru/developer-guide.md)
 
 Dieses Dokument hilft dir, dich im KPow-Projekt zurechtzufinden und Beiträge beizusteuern.
 
--   **cmd/** – Befehlszeilenschnittstelle auf Basis von Cobra. Hier befindet sich der Befehl `start`.
--   **config/** – Konfigurationsstrukturen und Hilfsfunktionen. `GetConfig` führt Konfigurationsdateien, Umgebungsvariablen und CLI-Flags zusammen.
--   **server/** – Kern der Anwendung. Enthält HTTP-Server, Formularverarbeitung, Verschlüsselung, Mailer und Cron-Dienste.
--   **styles/** – Tailwind-CSS-Stile. `just styles` kompiliert sie.
--   **art/** – Grafiken, die in der Dokumentation oder im Web-Interface verwendet werden.
+- **cmd/** – Befehlszeilenschnittstelle auf Basis von Cobra. Hier befindet sich der Befehl `start`.
+- **config/** – Konfigurationsstrukturen und Hilfsfunktionen. `GetConfig` führt Konfigurationsdateien, Umgebungsvariablen und CLI-Flags zusammen.
+- **server/** – Kern der Anwendung. Enthält HTTP-Server, Formularverarbeitung, Verschlüsselung, Mailer und Cron-Dienste.
+- **styles/** – Tailwind-CSS-Stile. `just styles` kompiliert sie.
+- **art/** – Grafiken, die in der Dokumentation oder im Web-Interface verwendet werden.
 
 1. **Go installieren** – Das Projekt nutzt Go-Module. Installiere Go 1.21 oder höher.
 2. **Bun** – Wird für `just styles` benötigt.
@@ -24,10 +24,10 @@ CLI-Flags überschreiben Umgebungsvariablen und Einträge in der Konfigurationsd
 
 Einstellungen können per TOML-Datei, Umgebungsvariablen oder CLI-Flags gesetzt werden. Eine Übersicht liefert `config/config.go`. Beispiele findest du in `config.toml` und `example.env`.
 
--   **Server** – Port, Host, Logging und Request-Limits.
--   **Mailer** – Versand per SMTP oder Webhook. Fehlgeschlagene Nachrichten landen im Inbox-Ordner.
--   **Verschlüsselung** – Unterstützt öffentliche Schlüssel vom Typ `age`, `pgp` oder `rsa`.
--   **Scheduler** – Cron-Job, der den Inbox-Ordner erneut versucht zu versenden.
+- **Server** – Port, Host, Logging und Request-Limits.
+- **Mailer** – Versand per SMTP oder Webhook. Fehlgeschlagene Nachrichten landen im Inbox-Ordner.
+- **Verschlüsselung** – Unterstützt öffentliche Schlüssel vom Typ `age`, `pgp` oder `rsa`.
+- **Scheduler** – Cron-Job, der den Inbox-Ordner erneut versucht zu versenden.
 
 Beispiel zur Angabe des Schlüssels in der Konfigurationsdatei:
 
@@ -58,10 +58,10 @@ flowchart TD
 
 ## Tipps für die Entwicklung
 
--   **Templates** befinden sich unter `server/templates/` für Formulare und Fehlerseiten.
--   **Middleware** in `server/server.go` – CSRF-Schutz, Rate-Limiting und Body-Limits.
--   **Cron-Jobs** liegen in `server/cron/`. Versucht erneut zu senden, was im Inbox-Ordner liegt.
--   **Verschlüsselungs-Helfer** findest du unter `server/enc/`.
+- **Templates** befinden sich unter `server/templates/` für Formulare und Fehlerseiten.
+- **Middleware** in `server/server.go` – CSRF-Schutz, Rate-Limiting und Body-Limits.
+- **Cron-Jobs** liegen in `server/cron/`. Versucht erneut zu senden, was im Inbox-Ordner liegt.
+- **Verschlüsselungs-Helfer** findest du unter `server/enc/`.
 
 ### Schlüssel generieren
 

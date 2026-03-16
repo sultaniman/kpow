@@ -1,7 +1,6 @@
 # Developer Guide
 
-
-[English](developer-guide.md) | [Deutsch](docs/de/developer-guide.md) | [Qyrgyz](docs/qy/developer-guide.md)
+[English](developer-guide.md) | [Deutsch](docs/de/developer-guide.md) | [Türkçe](docs/tr/developer-guide.md) | [Qyrgyz](docs/qy/developer-guide.md) | [Français](docs/fr/developer-guide.md) | [Українська](docs/uk/developer-guide.md) | [Русский](docs/ru/developer-guide.md)
 
 Welcome to the KPow project! This document provides pointers for navigating and contributing to the codebase.
 
@@ -18,10 +17,10 @@ Welcome to the KPow project! This document provides pointers for navigating and 
 1. **Install Go** – The project uses Go modules. Ensure you have Go 1.21+ installed.
 2. **Install Bun (optional)** – Needed to rebuild styles with `just styles`.
 3. **Run the server**
-   ```sh
-   go run main.go start
-   ```
-   CLI flags override environment variables and configuration files (see `readme.md`).
+    ```sh
+    go run main.go start
+    ```
+    CLI flags override environment variables and configuration files (see `readme.md`).
 
 ## Configuration
 
@@ -110,7 +109,6 @@ flowchart TD
     G -- Error --> E
 ```
 
-
 ## Running Tests
 
 ```sh
@@ -128,7 +126,6 @@ go test ./...
 5. Submit a pull request describing your changes.
 
 For a deeper explanation of how the form, encryption and retry logic work, see `readme.md` and the source comments throughout the `server` package.
-
 
 ## Releasing
 

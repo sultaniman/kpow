@@ -1,121 +1,140 @@
-# Developerler üçün maalymat
+# Developerler üçün colbosçu
 
-Bul dokument KPow projektke qoşuluu üçün cardam beret.
+[English](../../developer-guide.md) | [Deutsch](../de/developer-guide.md) | [Türkçe](../tr/developer-guide.md) | [Qyrgyz](developer-guide.md) | [Français](../fr/developer-guide.md) | [Українська](../uk/developer-guide.md) | [Русский](../ru/developer-guide.md)
 
--   **cmd/** – Cobra menen kurulgan CLI. `start` bujruğu uşul cerde.
--   **config/** – Konfiguraciya strukturalary, kömekçiler. `GetConfig` fajldardy, sistem çöjrödön, CLI flagtardan biriktiret.
--   **server/** – Negizgi qoşumça kody. HTTP serverdi, formany, şifrlöö, mailerler cana cron qyzmaty bar.
--   **styles/** – Tailwind CSS stilderi. `just styles` kompiliasijasyn atkarat.
--   **art/** – Dokumentasijada ce web interfejste pajdalanuuçu süröttör.
+KPow projektine qoş keldiñiz! Bul dokument kodduq bazany çarlap, salym qoşuuğa cardam beret.
 
-1. **Go'nu cüktöö** – Projekt Go modul sistemasyn pajdalanat. Go 1.21+ cüktöö kerek.
-2. **Bun** – `just styles` üçün kerek.
+## Projekttun tüzümü
+
+- **cmd/** – Cobra menen quralğan CLI. `start` buyruğu uşul cerde.
+- **config/** – Konfiguratsija strukturalary cana kömökçülör. `GetConfig` konfig fajldardy, ortomoluq özgörmölördü cana CLI flagtardy biriktiret.
+- **server/** – Negizgi qoşumça kody. HTTP serverdi, formany, şifrlöö, mailerler cana cron qyzmatyn qamtyjt.
+- **styles/** – Tailwind CSS stilderi. `just styles` alardy `server/public/` astyndağy assetterge kompilijasijalajt.
+- **art/** – Dokumentatsijada ce web interfejste pajdalanylğan süröttör.
+
+## Baştalyşy
+
+1. **Go'nu ornotuu** – Projekt Go modul sistemasyn pajdalanat. Go 1.21+ ornotulğan boluşu kerek.
+2. **Bun ornotuu (mildetemes)** – `just styles` menen stilderdi qajra quruuğa kerek.
 3. **Serverdi candandyruu**
+    ```sh
+    go run main.go start
+    ```
+    CLI flagtary ortomoluq özgörmölördü cana konfiguratsija fajldaryn basyjt (qarap `readme.md`).
 
-```sh
-./kpow start --config=config.yml
+## Konfiguratsija
+
+Cajdoolor TOML fajl, ortomoluq özgörmölör ce CLI flagtary arqyluu berilet. Bar parametrlerdi `config/config.go` fajlynan qarap bilüügö bolot. `config.toml` cana `example.env` pajdaluu mysaldar beret.
+
+Negizgi konfiguratsija temalary:
+
+- **Server** – Port, host, logtoo cana suranuu çektöölörü.
+- **Mailerler** – SMTP ce webhook arqyluu cönötüü. İjgiliktüü cetkirilbegen qabarlar inbox papqasyna saqtalat.
+- **Şifrlöö** – `age`, `pgp` ce `rsa` açyq açqyçtaryn qoldonot. Açqyçtar baştalğanda cüktölöt cana forma qabarlaryn şifrlöögö pajdalanylat.
+- **Scheduler** – Cron qyzmaty inbox papqasyndan ijgiliktüü cönötülbögön qabarlardy qajradan ciberüügö araket qylat.
+
+Konfiguratsija fajlynda şifrlöö açqyçyn körsötüü üçün `[key]` bölümün qoşuñuz:
+
+```toml
+[key]
+kind = "age"           # ce "pgp" ce "rsa"
+path = "/etc/kpow/key.pub"
+advertise = false
 ```
 
-CLI flagtary çöjrödön maanilerin cana konfiguraciya fajlyn bastary.
-
-## Konfigurasija
-
-Yrastoo parametrler TOML fajl menen, ortom özgörtüülör menen ce CLI flagtary menen berilet. `config/config.go` fajly bar parametrlerden qabar beret. `config.toml` cana `example.env` dajarlap qojylgan.
-
--   **Server** – Port, host, log cana requestterdi çektöö.
--   **Mailerler** – SMTP ce webhook arkyluu cönötüü. Ijgiliktüü cetkirilbese inbox folderine saktoo.
--   **Şifrlöö** – `age`, `pgp`, `rsa` açyk açkyç kol'donulat.
--   **Schedulér** – Cron job inboxdon cönötüügö araket qylat.
-
-Konfigurasija fajlda açkyçty körsötüü misaly:
-
-### Konfigurasija agymy
+### Konfiguratsija ağymy
 
 ```mermaid
 flowchart TD
-    A[Start] --> B{Config Fajly Barby?}
-    B -- ooba --> C[Konfig Fajlyn Jüktöö]
-    B -- cok --> D[Konfig defaulttaryn qoldonuu]
+    A[Start] --> B{Konfig fajly berildibi?}
+    B -- Ooba --> C[Konfig fajlyn cüktöö]
+    B -- Coq --> D[Qalyptağy maanilerdi qoldonuu]
+    C --> E[Ortomoluq özgörmölördü cüktöö]
     C --> D
-    D --> E[Environment Ozgörtüülördü Jüktöö]
-    E --> F[CLI Parametirlerin Qoldonuu]
+    D --> E
+    E --> F[CLI parametrlerin qoldonuu]
 ```
 
-### Konfigurasijany tekşerüü
+### Konfiguratsijaŋyzdy tekşerüü
 
 ```sh
 ./kpow verify --config=config.toml
 ```
 
-## Önök Tipter
+## Öndürüü keñeşteri
 
--   **Şablondor** `server/templates/` da, forma cana qata better.
--   **Middleware** `server/server.go` – CSRF, rate limit, body çeklö.
--   **Cron jobtor** `server/cron/` içinde. Inbox-čisti ciberüü.
--   **Şifrlöö kyroyçtary** `server/enc/` içinde.
+- **Şablondor** `server/templates/` da turup, HTML formany cana qata betterdi anıqtajt. UI'nu cajlaştyruu üçün alardy özgörtüñüz.
+- **Middleware** `server/server.go` da cayğaştyryladı – CSRF qorğoo, rate limiting cana body çektöölörün uşul cerden tüzetüügö bolot.
+- **Cron qyzmattary** `server/cron/` da cayğaşqan. Inbox tazalağyç maalimal arasy ijgiliktüü cönötülbögön qabarlardy qajra ciberüügö araket qylat.
+- **Şifrlöö quraldarı** `server/enc/` da cayğaşqan. Maanilerdi şifrlöö bojunça testterdi cabıldardy qarañyz.
 
-### Açkyç casoo
+### Açqyçtardy casoo
 
-Age:
+Öndürüü üçün synaq açqyçtaryn casoo buyruqtary:
+
+#### Age
 
 ```sh
 age-keygen -o age.key
 grep "^# public key:" age.key | cut -d' ' -f3 > age.pub
 ```
 
-PGP:
+#### PGP
 
 ```sh
-gpg --quick-generate-key "Sizdin Atynyz <siz@example.com>"
-gpg --armor --export siz@example.com > pgp.pub
+gpg --quick-generate-key "Your Name <you@example.com>"
+gpg --armor --export you@example.com > pgp.pub
 ```
 
-RSA:
+#### RSA
 
 ```sh
 openssl genpkey -algorithm RSA -out rsa_private.pem -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in rsa_private.pem -out rsa_public.pem
 ```
 
-`rsa_public.pem` PKIX PEM formatynda boluşu kerek.
+`rsa_public.pem` fajly PKIX PEM formatynda boluşu kerek.
 
-### Mailer agymy
+### Mailer qajra ciberüü ağymy
 
 ```mermaid
 flowchart TD
-    A[Cañy qabar ciberüü] --> B{Daroo ciberüü işke aştyby?}
+    A[Cañy qabar ciberildi] --> B{Daroo ciberüü işke aştyby?}
     B -- Ooba --> C[Qabar ciberildi]
-    B -- Cok --> D[Inbox folderine saktoo]
-    D --> E[Cron cügürüü]
-    E --> F[Qabarlardy oquu]
-    F --> G{Qajra ciberüügö macburbu?}
+    B -- Coq --> D[Inbox papqasyna saqtoo]
+    D --> E[Scheduler işke çügöt]
+    E --> F[Qabarlardy toptoşu menen oquu]
+    F --> G{Qajra ciberüü araketi}
     G -- Ooba --> H[Qabar ciberildi]
-    G -- Ooba --> E
+    G -- Coq --> E
 ```
 
-## Testterdi Cügürtüü
+## Testterdi cügürtüü
 
 ```sh
 go test ./...
 ```
 
-(Testter üçün internet kerek boluşu mümkün.)
+(Testter üçün internet bajlanyşy kerek boluşu mümkün.)
 
-## Salym Qoşuu
+## Salym qoşuu
 
-1. Repo-to fork casap, feature branch açynyz.
-2. `gofmt` menen standart format saktañyz.
-3. Caña funzionalnost üçün testter qosuu kerek.
-4. PR cönötüü.
+1. Repozitorijany fork casap, feature branch açyñyz.
+2. Standart Go formatyn saqtañyz (`gofmt`).
+3. Cañy funktsijonaldyk üçün testter qoşuñuz.
+4. Cañy özgöçölük qoşqondo ce qata tüzötköndo testter mildetemes.
+5. Özgörtüülörüñüzdü tasvirloo menen pull request cönötüñüz.
 
-Formanyn, şifrlöö cana retry logikany toluk bilüü üçün `readme.md` cana `server` paketindegi komentarijlerdi qarañyz.
+Formanyñ, şifrlöönün cana qajra ciberüü logikasynyñ işteşi tuuraluu tolyğuraaq `readme.md` cana `server` paketindegi komentarijlerdi qarañyz.
 
-## Çygaruu
+## Çyğaruu
 
-1. `just test` atqaryñyz.
-2. `just build` ce GoReleaser qoldonulat.
-3. Lisenzijalardy tekşerüü.
-4. Syrduu maalymat bolso alardy kommitterden cokko çyğaryñyz.
-5. Git tag çekiniz.
+Cañy relizge tag qojoodon murun, bul açyq bulaq tekşerme tizbemesin atqaryñyz:
 
-Projekt azyrynça Business Source License 1.1 astynda, README-da belgilengendey 2028-12-04 de Apache License 2.0gö daroo ötöt.
+1. `just test` arqyluu bardyq testterdin ötkönün tekşeriñiz.
+2. `just build` ce GoReleaser menen binarnik quruñuz.
+3. Bardyq köz karançılıqtardyn lisenzijasy qabyl alynarlıq ekenin tekşeriñiz.
+4. Kommitterdi syr maaniler ce credential üçün tekşerip, sezdüü nerselerdi alalyñyz.
+5. Reliz üçün cañy git tag casap, push qylyñyz.
+
+Projekt azyrynça Business Source License 1.1 astynda cana README-da belgilengendej 2028-12-04 küni Apache License 2.0 gö ötöt.

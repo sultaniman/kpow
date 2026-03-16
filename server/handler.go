@@ -17,13 +17,6 @@ type Handler struct {
 	WebhookHandler     mailer.Mailer
 }
 
-func (h *Handler) internalError(message string) *echo.HTTPError {
-	return echo.NewHTTPError(
-		http.StatusInternalServerError,
-		message,
-	)
-}
-
 type ServerError struct {
 	Code   int
 	Title  string
