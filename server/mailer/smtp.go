@@ -16,8 +16,12 @@ type SMTPMailer struct {
 func (m *SMTPMailer) Send(message Message) error {
 	email := mail.NewMsg()
 	email.Subject(message.Subject)
-	email.From(m.fromEmail)
-	email.To(m.toEmail)
+	if err := email.From(m.fromEmail); err != nil {
+		return fmt.Errorf("failed to set from address: %s", err)
+	}
+	if err := email.To(m.toEmail); err != nil {
+		return fmt.Errorf("failed to set to address: %s", err)
+	}
 	email.SetBodyString(mail.TypeTextPlain, message.EncryptedMessage)
 	if err := m.client.DialAndSend(email); err != nil {
 		return fmt.Errorf("failed to send mail: %s", err)

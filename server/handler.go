@@ -58,7 +58,7 @@ func errorHandler(err error, ctx echo.Context) {
 		Str("URL", ctx.Request().RequestURI).
 		Msg("")
 
-	ctx.Render(code, "error.html", serverError)
+	_ = ctx.Render(code, "error.html", serverError)
 }
 
 func NewHandler(config *config.Config) (*Handler, error) {

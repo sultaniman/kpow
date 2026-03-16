@@ -24,7 +24,7 @@ func (m *Message) Save(basepath string) error {
 	}
 
 	if _, err := os.Stat(filepath); errors.Is(err, os.ErrNotExist) {
-		return os.WriteFile(filepath, messageBytes, 0644)
+		return os.WriteFile(filepath, messageBytes, 0600)
 	}
 
 	return nil

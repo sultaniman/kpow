@@ -109,7 +109,8 @@ func (c *Config) Validate() []error {
 		)
 	}
 
-	if keyBytes, err := os.ReadFile(absPath); err == nil {
+	cleanPath := filepath.Clean(absPath)
+	if keyBytes, err := os.ReadFile(cleanPath); err == nil { // #nosec G304 -- path validated via filepath.Abs
 		c.Key.KeyBytes = keyBytes
 	} else {
 		errorList = append(

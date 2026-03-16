@@ -9,7 +9,7 @@ var rootCmd = &cobra.Command{
 	Use:   "kpow",
 	Short: "KPow 💥 – is a secure 🔒 contact form.",
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		_ = cmd.Help()
 	},
 }
 

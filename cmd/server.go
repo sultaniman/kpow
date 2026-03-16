@@ -153,7 +153,7 @@ func getConfig() (*config.Config, error) {
 	}
 
 	if customBanner != "" {
-		bannerBytes, err := os.ReadFile(customBanner)
+		bannerBytes, err := os.ReadFile(customBanner) // #nosec G304 -- path from trusted config/CLI flag
 		if err != nil {
 			return nil, err
 		}
