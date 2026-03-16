@@ -72,32 +72,26 @@ Generate mocks with `mockgen` (go.uber.org/mock).
 
 Use simple commits, should not start with capital case letter. No conventional commits. Simple short sentences.
 
-## Rust
-
-### Implementation
+## Implementation
 
 - Prefer the simplest approach. Do not add complexity unless explicitly requested.
 - Before implementing, grep the codebase for similar patterns and match them exactly.
-- Use existing project APIs and utilities (e.g. `render_doc`, `KdfPreset::Default`, settings.toml persistence). Do not reimplement what exists.
-- If a plan specifies a migration path, follow it exactly. Check `darkroom-db` for existing migration directory structure.
-- Keep types simple — use `String` over `Ulid` for error types and IDs unless there's a clear reason.
+- Use existing project interfaces and utilities. Do not reimplement what exists.
 
-### Crypto & Security
+## Crypto & Security
 
-When modifying crypto or security code:
+When modifying encryption or security code:
 
-1. Read relevant files in `darkroom-crypto/` and `darkroom-db/` to understand patterns for PEK, MEK, KDF, envelope contexts.
-2. Read `docs/adr/` for security-related decisions.
-3. Grep for all usages of the types/functions being changed.
-4. Present analysis: current patterns, proposed approach, conventions you'll follow.
-5. Wait for approval before implementing.
+1. Read relevant files in `server/enc/` to understand the `KeyLike` interface and existing patterns.
+2. Grep for all usages of the types/functions being changed.
+3. Present analysis: current patterns, proposed approach, conventions you'll follow.
+4. Wait for approval before implementing.
 
-After changes verify: no keys logged/exposed in errors, PEK redacted in audit logs, envelope contexts consistent.
+After changes verify: no keys logged/exposed in errors, sensitive data not leaked in error messages.
 
-### Testing
+## Testing
 
-After changes to Rust files, always run:
+After changes, always run:
 
-1. `cargo check` — compilation errors
-2. `cargo test` — all tests must pass
-3. `cargo clippy -- -D warnings` — for security-sensitive changes
+1. `just test` — all tests must pass
+2. `just check` — security scan with gosec

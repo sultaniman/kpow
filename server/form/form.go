@@ -16,10 +16,17 @@ type MessageForm struct {
 	SubjectError string
 	Content      string `form:"content" validate:"required"`
 	ContentError string
+	Website      string `form:"website"` // honeypot field
 	IsValid      bool
 }
 
 func (m *MessageForm) Check() {
+	// honeypot: if the hidden website field is filled, it's a bot
+	if m.Website != "" {
+		m.IsValid = false
+		return
+	}
+
 	if m.Subject == "" {
 		m.SubjectError = "Subject is required"
 	}
@@ -64,24 +71,29 @@ func (f *FormData) EncryptAndSend(
 	webhookHandler mailer.Mailer,
 	encryptionProvider enc.KeyLike,
 	inboxPath string,
-) {
-	// FIXME: find a better way to do this
+) error {
 	subject := f.Message.Subject
 	content := f.Message.Content
 	hash := f.Message.Hash()
 
-	go (func() {
-		encrypted, err := encryptionProvider.Encrypt(content)
-		if err != nil {
-			log.Err(err).Msg("Encryption failed")
+	encrypted, err := encryptionProvider.Encrypt(content)
+	if err != nil {
+		log.Err(err).Msg("encryption failed")
+		return err
+	}
+
+	message := mailer.NewMessage(subject, encrypted, hash)
+
+	// delivery is async since SMTP/webhook can be slow
+	go func() {
+		if err := mailer.SendMessage(message, sender, webhookHandler, inboxPath); err != nil {
+			log.Err(err).Str("hash", hash).Msg("delivery failed, saved to inbox")
 		}
+	}()
 
-		message := mailer.NewMessage(subject, encrypted, hash)
-		mailer.SendMessage(message, sender, webhookHandler, inboxPath)
-	})()
-
-	// when done reset the form
+	// reset the form
 	f.Message = MessageForm{}
+	return nil
 }
 
 func GetFormData(csrfToken string, config *config.Config) *FormData {

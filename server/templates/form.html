@@ -30,6 +30,7 @@
         />
         {{if .Message.SubjectError}}<p class="error">{{.Message.SubjectError}}</p>{{end}}
         <input type="hidden" name="csrf" value="{{.CSRFToken}}" />
+        <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" />
         <textarea
           name="content"
           id="body"

@@ -18,6 +18,18 @@ import (
 //go:embed templates/* templates/icons/*
 var resources embed.FS
 
+func securityHeaders(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		h := c.Response().Header()
+		h.Set("X-Content-Type-Options", "nosniff")
+		h.Set("X-Frame-Options", "DENY")
+		h.Set("Referrer-Policy", "strict-origin-when-cross-origin")
+		h.Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+		h.Set("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'")
+		return next(c)
+	}
+}
+
 func CreateServer(conf *config.Config, handler *Handler) (*echo.Echo, error) {
 	app := echo.New()
 	app.HideBanner = true
@@ -30,6 +42,8 @@ func CreateServer(conf *config.Config, handler *Handler) (*echo.Echo, error) {
 	app.Renderer = &Template{
 		templates: templates,
 	}
+
+	app.Use(securityHeaders)
 
 	app.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:       "public",
@@ -90,6 +104,10 @@ func CreateServer(conf *config.Config, handler *Handler) (*echo.Echo, error) {
 		handler.RenderForm,
 		formMiddlewares...,
 	)
+
+	app.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
+	})
 
 	app.HTTPErrorHandler = errorHandler
 

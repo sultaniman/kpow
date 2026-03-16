@@ -1,0 +1,13 @@
+.git
+.github
+.vscode
+art
+screenshots
+docs
+inbox
+*.md
+!readme.md
+LICENSE*
+.editorconfig
+.air.toml
+.goreleaser.yaml

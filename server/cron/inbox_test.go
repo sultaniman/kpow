@@ -13,7 +13,7 @@ import (
 
 // TestInboxCleanerMailerAndWebhook verifies that messages saved with the
 // "mailer" method trigger both mail and webhook delivery attempts. The inbox
-// file should remain because only webhook-only messages are removed on success.
+// file should be removed after successful mailer delivery.
 func TestInboxCleanerMailerAndWebhook(t *testing.T) {
 	inbox := t.TempDir()
 	msg := mailer.Message{Subject: "s", EncryptedMessage: "c", Hash: "m1", Method: "mailer"}
@@ -32,7 +32,8 @@ func TestInboxCleanerMailerAndWebhook(t *testing.T) {
 	cleaner()
 
 	_, err := os.Stat(filepath.Join(inbox, "kpow-"+msg.Hash+".json"))
-	assert.NoError(t, err)
+	assert.Error(t, err)
+	assert.True(t, errors.Is(err, os.ErrNotExist))
 }
 
 // TestInboxCleanerWebhookSuccessRemovesFile ensures webhook-only messages are

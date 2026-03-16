@@ -180,6 +180,80 @@ func TestFormBannerRendering(t *testing.T) {
 	assert.Contains(t, body, cfg.Server.CustomBanner)
 }
 
+func TestHealthEndpoint(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+	e := newTestServer(t, cfg)
+
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.Contains(t, rec.Body.String(), `"status":"ok"`)
+}
+
+func TestSecurityHeaders(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+	e := newTestServer(t, cfg)
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, "nosniff", rec.Header().Get("X-Content-Type-Options"))
+	assert.Equal(t, "DENY", rec.Header().Get("X-Frame-Options"))
+	assert.Equal(t, "strict-origin-when-cross-origin", rec.Header().Get("Referrer-Policy"))
+	assert.NotEmpty(t, rec.Header().Get("Content-Security-Policy"))
+}
+
+func TestHoneypotRejectsBot(t *testing.T) {
+	cfg := loadTestConfig(t)
+	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
+
+	if errs := cfg.Validate(); len(errs) > 0 {
+		t.Fatalf("config validation failed: %v", errs)
+	}
+
+	e := newTestServer(t, cfg)
+
+	// GET to obtain CSRF token
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+	csrfCookie := findCSRFCookie(rec.Result().Cookies())
+	if csrfCookie == nil {
+		t.Fatal("csrf cookie not found")
+	}
+
+	// extract CSRF token from the response body
+	body := rec.Body.String()
+	csrfIdx := strings.Index(body, `name="csrf" value="`)
+	if csrfIdx == -1 {
+		t.Fatal("csrf token not found in form")
+	}
+	csrfToken := body[csrfIdx+19:]
+	csrfToken = csrfToken[:strings.Index(csrfToken, `"`)]
+
+	// POST with honeypot field filled (bot behavior)
+	form := url.Values{}
+	form.Set("subject", "hello")
+	form.Set("content", "world")
+	form.Set("website", "http://spam.com")
+	form.Set("csrf", csrfToken)
+
+	postReq := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(form.Encode()))
+	postReq.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
+	postReq.AddCookie(csrfCookie)
+	postRec := httptest.NewRecorder()
+	e.ServeHTTP(postRec, postReq)
+
+	assert.Equal(t, http.StatusOK, postRec.Code)
+	// should NOT contain the success message
+	assert.NotContains(t, postRec.Body.String(), "scheduled for delivery")
+}
+
 func TestFormHideLogo(t *testing.T) {
 	cfg := loadTestConfig(t)
 	cfg.RateLimiter = &config.RateLimiter{RPM: 0}
