@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(go test:*)",
+      "Bash(for dir:*)",
+      "Bash(do echo:*)",
+      "Bash(done)"
     ]
   }
 }
